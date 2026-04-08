@@ -68,5 +68,15 @@
 
             <Button Grid.Column="5" Height="60" Background="White" Content="Записать посетителя" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
         </Grid>
+
+        <ListView Name="ClientsListView" Grid.Row="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ФИО" DisplayMemberBinding="{Binding FullName}"/>
+                    <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding PhoneNumber}"/>
+                    <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding BirthDate}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
     </Grid>
 </Page>

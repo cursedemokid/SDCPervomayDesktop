@@ -1,0 +1,56 @@
+﻿<Page x:Class="SDCPervomayDesktop.View.Pages.SchedulePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SDCPervomayDesktop.View.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="434" d:DesignWidth="1280"
+        Title="ClientsPage">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Name="MondayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Пн" MouseDown="MondayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="2" Name="TuesdayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Вт" MouseDown="TuesdayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="4" Name="WednesdayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Ср" MouseDown="WednesdayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="6" Name="ThursdayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Чт" MouseDown="ThursdayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="8" Name="FridayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Пт" MouseDown="FridayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="10" Name="SaturdayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Сб" MouseDown="SaturdayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="12" Name="SundayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Вс" MouseDown="SundayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+        <Grid>
+            
+        </Grid>
+            <ListBox Grid.Row="4">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        
+                    </Border>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</Page>
