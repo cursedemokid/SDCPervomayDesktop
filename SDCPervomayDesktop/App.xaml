@@ -1,0 +1,29 @@
+﻿<Application x:Class="SDCPervomayDesktop.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:SDCPervomayDesktop" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Pink" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <FontFamily x:Key="GothamProFamily">
+                /Fonts/gothampro.ttf#Gotham Pro,
+         /Fonts/gothampro_bold.ttf#Gotham Pro,
+         /Fonts/gothampro_italic.ttf#Gotham Pro,
+         /Fonts/gothampro_bolditalic.ttf#Gotham Pro,
+         /Fonts/gothampro_light.ttf#Gotham Pro,
+         /Fonts/gothampro_lightitalic.ttf#Gotham Pro,
+         /Fonts/gothampro_medium.ttf#Gotham Pro,
+         /Fonts/gothampro_mediumitalic.ttf#Gotham Pro
+            </FontFamily>
+
+            <FontFamily x:Key="GothamProLight">/Fonts/gothampro_light.ttf#Gotham Pro</FontFamily>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
