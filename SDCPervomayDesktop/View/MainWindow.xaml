@@ -1,0 +1,72 @@
+﻿<Window x:Class="SDCPervomayDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SDCPervomayDesktop"
+        mc:Ignorable="d"
+        Title="" MinHeight="720" MinWidth="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0"  Background="White"  ClipToBounds="False">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.25" Color="Gray"/>
+            </Border.Effect>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="40" />
+                </Grid.RowDefinitions>
+                <Image Source="/Resources/Logo.png" />
+                <TextBlock Grid.Column="2" Text="СДЦ Первомайское" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold" FontFamily="{StaticResource GothamProFamily}"/>
+                <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="20" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Name="ClientsTbl" Grid.Column="0" Text="Посетители" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ClientsTbl_MouseDown"/>
+                    <TextBlock Name="ScheduleTbl" Grid.Column="2" Text="Расписание" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ScheduleTbl_MouseDown"/>
+                    <TextBlock Name="KeysTbl" Grid.Column="4" Text="Ключи" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="KeysTbl_MouseDown"/>
+                    <TextBlock Name="BackTbl" Grid.Column="6" Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="BackTbl_MouseDown"/>
+                    <TextBlock Name="ExitTbl" Grid.Column="8" Text="Выход" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ExitTbl_MouseDown"/>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Frame Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
+        <Border Grid.Row="2" Background="White" ClipToBounds="False">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.25" Color="Gray"/>
+            </Border.Effect>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Контакты" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="Тех. поддержка" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

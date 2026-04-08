@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SDCPervomayDesktop
+namespace SDCPervomayDesktop.View.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для ClientsPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ClientsPage : Page
     {
-        public MainWindow()
+        public ClientsPage()
         {
             InitializeComponent();
         }

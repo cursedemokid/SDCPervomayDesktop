@@ -1,0 +1,107 @@
+﻿<Window x:Class="SDCPervomayDesktop.View.AuthorizationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SDCPervomayDesktop.View"
+        mc:Ignorable="d"
+                Title="" MinHeight="720" MinWidth="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="100" />
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0"  Background="White"  ClipToBounds="False">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.25" Color="Gray"/>
+            </Border.Effect>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="/Resources/Logo.png" />
+                <TextBlock Grid.Column="2" Text="СДЦ Первомайское" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" FontWeight="Bold" FontFamily="{StaticResource GothamProFamily}"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" Grid.Column="1" 
+                    CornerRadius="10" 
+                Background="White" 
+                ClipToBounds="False" 
+                UseLayoutRounding="True"
+                Margin="10">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" 
+                  ShadowDepth="0" 
+                  Opacity="0.25" 
+                  Color="Gray"/>
+                </Border.Effect>
+
+                <Grid Margin="50">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <GroupBox x:Name="LoginGroupBox" Style="{x:Null}" Grid.Column="1" Grid.ColumnSpan="3" 
+          BorderBrush="Black" Width="400">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="LoginHeader" Text="Логин" FontSize="20" 
+                   FontFamily="{StaticResource GothamProFamily}"/>
+                        </GroupBox.Header>
+                        <TextBox x:Name="LoginTextBox" FontSize="15" FontFamily="{StaticResource GothamProFamily}"
+             TextChanged="LoginTextBox_TextChanged"/>
+                    </GroupBox>
+                    <GroupBox x:Name="PasswordGroupBox" Style="{x:Null}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" 
+          BorderBrush="Black" Width="400">
+                        <GroupBox.Header>
+                            <TextBlock x:Name="PasswordHeader" Text="Пароль" FontSize="20" 
+                   FontFamily="{StaticResource GothamProFamily}"/>
+                        </GroupBox.Header>
+                        <PasswordBox x:Name="PasswordPasswordBox" FontSize="15" FontFamily="{StaticResource GothamProFamily}" 
+                                     PasswordChanged="PasswordPasswordBox_PasswordChanged"/>
+                    </GroupBox>
+                    <CheckBox Grid.Row="4" Content="Запомнить меня" FontSize="20" 
+                   FontFamily="{StaticResource GothamProFamily}" HorizontalAlignment="Center" Width="400"/>
+                    <Button Name="EnterBtn" Grid.Row="6" Content="Войти" Width="400" FontSize="20" 
+                   FontFamily="{StaticResource GothamProFamily}" Height="32" VerticalAlignment="Bottom" Click="EnterBtn_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+        <Border Grid.Row="2" Background="White" ClipToBounds="False">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.25" Color="Gray"/>
+            </Border.Effect>
+            <Grid Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="10" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Контакты" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="Тех. поддержка" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
