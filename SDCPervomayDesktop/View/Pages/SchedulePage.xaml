@@ -40,8 +40,13 @@
             <TextBlock Grid.Column="10" Name="SaturdayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Сб" MouseDown="SaturdayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <TextBlock Grid.Column="12" Name="SundayTbl" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="Вс" MouseDown="SundayTbl_MouseDown" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
-        <Grid>
-            
+        <Grid Name="AdminGrid" Grid.Row="2" Visibility="Visible" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="Редактировать"/>
         </Grid>
             <ListBox Grid.Row="4">
             <ListBox.ItemTemplate>
