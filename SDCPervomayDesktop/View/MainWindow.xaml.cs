@@ -1,4 +1,5 @@
-﻿using SDCPervomayDesktop.View.Pages;
+﻿using SDCPervomayDesktop.View;
+using SDCPervomayDesktop.View.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,29 +29,19 @@ namespace SDCPervomayDesktop
             MainFrame.Navigate(new ClientsPage());
         }
 
-        private void PasswordPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void LoginTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void ClientsTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            MainFrame.Navigate(new ClientsPage());
         }
 
         private void ScheduleTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            MainFrame.Navigate(new SchedulePage());
         }
 
         private void KeysTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            MainFrame.Navigate(new KeysPage());
         }
 
         private void BackTbl_MouseDown(object sender, MouseButtonEventArgs e)
@@ -60,7 +51,9 @@ namespace SDCPervomayDesktop
 
         private void ExitTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            AuthorizationWindow authorizationWindow = new AuthorizationWindow();
+            authorizationWindow.Show();
+            Close();
         }
     }
 }
