@@ -66,15 +66,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppData\CustomMessageBox.xaml.cs">
+      <DependentUpon>CustomMessageBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AppData\FeedbackService.cs" />
+    <Compile Include="AppData\SystemEnums.cs" />
+    <Compile Include="Converters\StringToBrushConverter.cs" />
+    <Compile Include="ViewModels\Locker.cs" />
+    <Compile Include="ViewModels\MenKeysPageViewModel.cs" />
     <Compile Include="View\Pages\ClientsPage.xaml.cs">
       <DependentUpon>ClientsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Pages\KeysPage.xaml.cs">
-      <DependentUpon>KeysPage.xaml</DependentUpon>
+    <Compile Include="View\Pages\MenKeysPage.xaml.cs">
+      <DependentUpon>MenKeysPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Pages\WomanKeysPage.xaml.cs">
+      <DependentUpon>WomanKeysPage.xaml</DependentUpon>
+    </Compile>
+    <Page Include="AppData\CustomMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\AuthorizationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -98,11 +113,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Pages\KeysPage.xaml">
+    <Page Include="View\Pages\MenKeysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\SchedulePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\WomanKeysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -166,9 +185,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="AppData\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\Logo.png" />
   </ItemGroup>

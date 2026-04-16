@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SDCPervomayDesktop.View"
         mc:Ignorable="d"
-                Title="" MinHeight="720" MinWidth="1280">
+                Title="" MinHeight="720" MinWidth="1280" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100" />
@@ -99,8 +99,8 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="Контакты" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="2" Text="Тех. поддержка" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Name="ContactsTbl" Text="Контакты" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                <TextBlock Name="SupportTbl" Grid.Column="2" Text="Тех. поддержка" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Grid>
         </Border>
     </Grid>

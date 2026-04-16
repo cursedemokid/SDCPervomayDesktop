@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SDCPervomayDesktop"
         mc:Ignorable="d"
-        Title="" MinHeight="720" MinWidth="1280">
+        Title="" MinHeight="720" MinWidth="1280" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -43,11 +43,11 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="20" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Name="ClientsTbl" Grid.Column="0" Text="Посетители" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ClientsTbl_MouseDown"/>
-                    <TextBlock Name="ScheduleTbl" Grid.Column="2" Text="Расписание" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ScheduleTbl_MouseDown"/>
-                    <TextBlock Name="KeysTbl" Grid.Column="4" Text="Ключи" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="KeysTbl_MouseDown"/>
-                    <TextBlock Name="BackTbl" Grid.Column="6" Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="BackTbl_MouseDown"/>
-                    <TextBlock Name="ExitTbl" Grid.Column="8" Text="Выход" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ExitTbl_MouseDown"/>
+                    <TextBlock Name="ClientsTbl" Grid.Column="0" Text="Посетители" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ClientsTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="ScheduleTbl" Grid.Column="2" Text="Расписание" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ScheduleTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="KeysTbl" Grid.Column="4" Text="Ключи" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="KeysTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="BackTbl" Grid.Column="6" Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="BackTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="ExitTbl" Grid.Column="8" Text="Выход" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ExitTbl_MouseDown" Cursor="Hand"/>
                 </Grid>
             </Grid>
         </Border>
