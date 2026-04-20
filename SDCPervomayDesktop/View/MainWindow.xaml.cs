@@ -75,12 +75,15 @@ namespace SDCPervomayDesktop
 
         private void EmployeesTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            MainFrame.Navigate(new EmployeesPage());
+            UpdateMenuUnderline(typeof(EmployeesPage));
 
         }
 
         private void SectionTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            MainFrame.Navigate(new SectionPage());
+            UpdateMenuUnderline(typeof(SectionPage));
         }
     }
 }

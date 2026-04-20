@@ -4,7 +4,7 @@ namespace SDCPervomayDesktop.Models
 {
     public class ScheduleItem
     {
-        public string DayName { get; set; }      // "Понедельник", "Вторник"...
+        public string DayName { get; set; }
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 

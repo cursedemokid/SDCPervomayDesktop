@@ -1,113 +1,97 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
+using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Models;
 
 namespace SDCPervomayDesktop.View
 {
     public partial class AddEditScheduleWindow : Window
     {
-        // Режим окна: true - редактирование, false - добавление
         private bool _isEditMode;
-        private Training _currentTraining;
+        private Section _currentSection;
+        private ObservableCollection<ScheduleItem> _scheduleItems;
 
-        // Коллекции для привязки
-        public ObservableCollection<Trainer> Trainers { get; set; }
-        public ObservableCollection<ScheduleItem> ScheduleItems { get; set; }
+        public ObservableCollection<Section> Sections { get; set; }
 
-        public AddEditScheduleWindow(Training trainingToEdit = null)
+        public AddEditScheduleWindow(Section sectionToEdit = null)
         {
             InitializeComponent();
             DataContext = this;
 
-            // Загружаем статический список тренеров
-            LoadTrainers();
+            LoadSections();
 
-            // Инициализируем коллекцию расписания
-            ScheduleItems = new ObservableCollection<ScheduleItem>();
-            ScheduleListBox.ItemsSource = ScheduleItems;
-
-            if (trainingToEdit != null)
+            if (sectionToEdit != null)
             {
-                // Режим редактирования
                 _isEditMode = true;
-                _currentTraining = trainingToEdit;
-                LoadTrainingData();
+                _currentSection = sectionToEdit;
+                SectionCombo.SelectedValue = _currentSection.Id;
+                SectionCombo.IsEnabled = false;
+                LoadSchedule();
                 AddBtn.Visibility = Visibility.Collapsed;
                 SaveBtn.Visibility = Visibility.Visible;
-                Title = "Редактирование занятия";
+                Title = $"Редактирование расписания: {_currentSection.Title}";
             }
             else
             {
-                // Режим добавления
                 _isEditMode = false;
-                _currentTraining = new Training();
+                _currentSection = new Section();
+                _scheduleItems = new ObservableCollection<ScheduleItem>();
+                ScheduleListBox.ItemsSource = _scheduleItems;
                 AddBtn.Visibility = Visibility.Visible;
                 SaveBtn.Visibility = Visibility.Collapsed;
-                Title = "Добавление занятия";
+                Title = "Добавление расписания для секции";
             }
         }
 
-        private void LoadTrainers()
+        private void LoadSections()
         {
-            // Статические данные тренеров
-            Trainers = new ObservableCollection<Trainer>
+            // Заглушка
+            Sections = new ObservableCollection<Section>
             {
-                new Trainer { Id = 1, FullName = "Иванов Иван Иванович" },
-                new Trainer { Id = 2, FullName = "Петров Петр Петрович" },
-                new Trainer { Id = 3, FullName = "Сидорова Анна Владимировна" }
+                new Section { Id = 1, Title = "Футбол" },
+                new Section { Id = 2, Title = "Баскетбол" },
+                new Section { Id = 3, Title = "Плавание" }
             };
+            SectionCombo.ItemsSource = Sections;
         }
 
-        private void LoadTrainingData()
+        private void LoadSchedule()
         {
-            // Заполняем поля формы из переданного объекта
-            var titleTextBox = (TextBox)((GroupBox)this.FindName("TitleGroupBox")).Content;
-            titleTextBox.Text = _currentTraining.Title;
-
-            var descTextBox = (TextBox)((GroupBox)this.FindName("DescGroupBox")).Content;
-            descTextBox.Text = _currentTraining.Description;
-
-            var trainerCombo = (ComboBox)((GroupBox)this.FindName("TrainerGroupBox")).Content;
-            trainerCombo.SelectedValue = _currentTraining.TrainerId;
-
-            // Заполняем расписание
-            ScheduleItems.Clear();
-            foreach (var item in _currentTraining.Schedule)
-                ScheduleItems.Add(item);
-
-            // Загружаем изображение, если есть
-            if (_currentTraining.ImageData != null && _currentTraining.ImageData.Length > 0)
-            {
-                var image = (Image)this.FindName("PreviewImage");
-                image.Source = ByteArrayToBitmapImage(_currentTraining.ImageData);
-            }
+            _scheduleItems = new ObservableCollection<ScheduleItem>(_currentSection.Schedule);
+            ScheduleListBox.ItemsSource = _scheduleItems;
         }
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Режим добавления: собираем данные и сохраняем новую запись
-            if (!ValidateFields()) return;
-
-            UpdateTrainingFromForm();
-            // Здесь обычно вызов сервиса для сохранения в БД
-            MessageBox.Show($"Занятие \"{_currentTraining.Title}\" добавлено!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (SectionCombo.SelectedItem == null)
+            {
+                FeedbackService.Error("Выберите секцию.", "Ошибка");
+                return;
+            }
+            if (_scheduleItems.Count == 0)
+            {
+                FeedbackService.Error("Добавьте хотя бы один день расписания.", "Ошибка");
+                return;
+            }
+            var selectedSection = (Section)SectionCombo.SelectedItem;
+            selectedSection.Schedule = _scheduleItems;
+            FeedbackService.Information("Расписание добавлено!", "Успех");
             DialogResult = true;
             Close();
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Режим редактирования
-            if (!ValidateFields()) return;
-
-            UpdateTrainingFromForm();
-            MessageBox.Show($"Изменения сохранены!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            if (_scheduleItems.Count == 0)
+            {
+                FeedbackService.Error("Добавьте хотя бы один день расписания.", "Ошибка");
+                return;
+            }
+            _currentSection.Schedule = _scheduleItems;
+            FeedbackService.Information("Изменения сохранены!", "Успех");
             DialogResult = true;
             Close();
         }
@@ -120,84 +104,11 @@ namespace SDCPervomayDesktop.View
 
         private void AddDayBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Открываем диалог добавления дня недели и времени
             var dialog = new AddScheduleItemWindow();
             if (dialog.ShowDialog() == true)
             {
-                ScheduleItems.Add(dialog.ScheduleItem);
+                _scheduleItems.Add(dialog.ScheduleItem);
             }
-        }
-
-        private void UpdateTrainingFromForm()
-        {
-            var titleTextBox = (TextBox)((GroupBox)this.FindName("TitleGroupBox")).Content;
-            var descTextBox = (TextBox)((GroupBox)this.FindName("DescGroupBox")).Content;
-            var trainerCombo = (ComboBox)((GroupBox)this.FindName("TrainerGroupBox")).Content;
-
-            _currentTraining.Title = titleTextBox.Text;
-            _currentTraining.Description = descTextBox.Text;
-            _currentTraining.TrainerId = (int)trainerCombo.SelectedValue;
-            _currentTraining.Schedule.Clear();
-            foreach (var item in ScheduleItems)
-                _currentTraining.Schedule.Add(item);
-        }
-
-        private bool ValidateFields()
-        {
-            var titleTextBox = (TextBox)((GroupBox)this.FindName("TitleGroupBox")).Content;
-            if (string.IsNullOrWhiteSpace(titleTextBox.Text))
-            {
-                MessageBox.Show("Введите название занятия.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            var trainerCombo = (ComboBox)((GroupBox)this.FindName("TrainerGroupBox")).Content;
-            if (trainerCombo.SelectedValue == null)
-            {
-                MessageBox.Show("Выберите тренера.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            if (ScheduleItems.Count == 0)
-            {
-                MessageBox.Show("Добавьте хотя бы один день в расписание.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
-            return true;
-        }
-
-        private void AddImageBtn_Click(object sender, RoutedEventArgs e)
-        {
-            var openDialog = new OpenFileDialog();
-            openDialog.Filter = "Изображения|*.jpg;*.jpeg;*.png;*.bmp";
-            if (openDialog.ShowDialog() == true)
-            {
-                byte[] imageData = File.ReadAllBytes(openDialog.FileName);
-                _currentTraining.ImageData = imageData;
-                var image = (Image)this.FindName("PreviewImage");
-                image.Source = ByteArrayToBitmapImage(imageData);
-            }
-        }
-
-        private BitmapImage ByteArrayToBitmapImage(byte[] imageData)
-        {
-            if (imageData == null || imageData.Length == 0) return null;
-            var bitmap = new BitmapImage();
-            using (var stream = new MemoryStream(imageData))
-            {
-                bitmap.BeginInit();
-                bitmap.StreamSource = stream;
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
-            }
-            return bitmap;
-        }
-
-        // Вспомогательный метод для поиска элементов по имени (упрощает код)
-        private T FindControl<T>(string name) where T : FrameworkElement
-        {
-            return (T)this.FindName(name);
         }
 
         private void EditScheduleItem_Click(object sender, RoutedEventArgs e)
@@ -206,17 +117,12 @@ namespace SDCPervomayDesktop.View
             var item = button?.Tag as ScheduleItem;
             if (item == null) return;
 
-            // Открыть диалог редактирования, передав текущий item
             var dialog = new AddScheduleItemWindow(item);
             if (dialog.ShowDialog() == true)
             {
-                // Обновить данные в существующем объекте
                 item.DayName = dialog.ScheduleItem.DayName;
                 item.StartTime = dialog.ScheduleItem.StartTime;
                 item.EndTime = dialog.ScheduleItem.EndTime;
-                // Обновить отображение (коллекция ObservableCollection сама обновит ListBox)
-                var index = ScheduleItems.IndexOf(item);
-                ScheduleItems[index] = item; // принудительное обновление, если нужно
                 ScheduleListBox.Items.Refresh();
             }
         }
@@ -227,10 +133,9 @@ namespace SDCPervomayDesktop.View
             var item = button?.Tag as ScheduleItem;
             if (item == null) return;
 
-            if (MessageBox.Show($"Удалить расписание для {item.DayName}?", "Подтверждение",
-                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (FeedbackService.Question($"Удалить расписание для {item.DayName}?") == MessageBoxResult.Yes)
             {
-                ScheduleItems.Remove(item);
+                _scheduleItems.Remove(item);
             }
         }
     }

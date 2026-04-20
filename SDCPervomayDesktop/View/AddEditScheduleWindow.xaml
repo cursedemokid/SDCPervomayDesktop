@@ -1,17 +1,9 @@
 ﻿<Window x:Class="SDCPervomayDesktop.View.AddEditScheduleWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SDCPervomayDesktop.View"
-        mc:Ignorable="d"
-        Title="AddEditScheduleWindow" Width="800" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Расписание секции" Width="800" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
@@ -20,24 +12,17 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <GroupBox x:Name="TitleGroupBox" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Название" BorderThickness="2" BorderBrush="Black">
-            <TextBox FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        <GroupBox Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Секция" BorderThickness="2" BorderBrush="Black">
+            <ComboBox x:Name="SectionCombo" FontSize="20" FontFamily="{StaticResource GothamProFamily}" DisplayMemberPath="Title" SelectedValuePath="Id"/>
         </GroupBox>
 
-        <GroupBox x:Name="DescGroupBox" Grid.Row="1" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Описание" BorderThickness="2" BorderBrush="Black">
-            <TextBox FontSize="20" FontFamily="{StaticResource GothamProFamily}" Height="115" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
-        </GroupBox>
-
-        <GroupBox x:Name="TrainerGroupBox" Grid.Row="2" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Тренер" BorderThickness="2" BorderBrush="Black">
-            <ComboBox FontSize="20" FontFamily="{StaticResource GothamProFamily}" DisplayMemberPath="FullName" SelectedValuePath="Id"/>
-        </GroupBox>
-
-        <TextBlock Grid.Row="3" Text="Расписание" Margin="10 10 0 0" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="4" CornerRadius="10">
+        <TextBlock Grid.Row="1" Text="Расписание" Margin="10 10 0 0" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="2" CornerRadius="10">
             <ListBox Name="ScheduleListBox" Height="150" 
-         SelectionMode="Single" 
-         BorderThickness="0" 
-         Background="Transparent">
+                     SelectionMode="Single" 
+                     BorderThickness="0" 
+                     Background="Transparent"
+                     HorizontalContentAlignment="Left">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Focusable" Value="False"/>
@@ -46,7 +31,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <ContentPresenter/>
+                                    <ContentPresenter HorizontalAlignment="Left"/>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -74,18 +59,10 @@
                                 <TextBlock Grid.Column="2" Text="{Binding StartTimeString}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
                                 <TextBlock Grid.Column="3" Text="-" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
                                 <TextBlock Grid.Column="4" Text="{Binding EndTimeString}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-
-                                <!-- Кнопка редактирования -->
-                                <Button Padding="2" Grid.Column="6" Width="35" Height="35"
-                            Click="EditScheduleItem_Click"
-                            Tag="{Binding}">
+                                <Button Padding="2" Grid.Column="6" Width="35" Height="35" Click="EditScheduleItem_Click" Tag="{Binding}">
                                     <Image Source="/Resources/edit.png" Width="30" Height="30"/>
                                 </Button>
-
-                                <!-- Кнопка удаления -->
-                                <Button Padding="2" Grid.Column="8" Width="35" Height="35"
-                            Click="DeleteScheduleItem_Click"
-                            Tag="{Binding}">
+                                <Button Padding="2" Grid.Column="8" Width="35" Height="35" Click="DeleteScheduleItem_Click" Tag="{Binding}">
                                     <Image Source="/Resources/bin.png" Width="30" Height="30"/>
                                 </Button>
                             </Grid>
@@ -94,26 +71,9 @@
                 </ListBox.ItemTemplate>
             </ListBox>
         </Border>
-        <Button Name="AddDayBtn" Click="AddDayBtn_Click" Margin="0 10 0 0" Grid.Row="5" Content="Добавить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250"/>
+        <Button Name="AddDayBtn" Click="AddDayBtn_Click" Margin="0 10 0 0" Grid.Row="3" Content="Добавить день" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250"/>
 
-        <Grid Grid.Row="7">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="10" />
-                <RowDefinition Height="auto" />
-            </Grid.RowDefinitions>
-            <TextBlock Text="Изображение" Margin="10 10 0 0" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-
-            <Border BorderBrush="Black" BorderThickness="2" Grid.Row="2" CornerRadius="10">
-                <Image x:Name="PreviewImage" Width="150" Height="150"/>
-            </Border>
-
-            <Button Name="AddImageBtn" Click="AddImageBtn_Click" Grid.Row="5" Content="Добавить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250"/>
-        </Grid>
-
-        <Grid Grid.Row="9">
+        <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="auto" />

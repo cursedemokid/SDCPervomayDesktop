@@ -24,5 +24,16 @@ namespace SDCPervomayDesktop.View.Pages
         {
             InitializeComponent();
         }
+
+        private void ReceptionBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new AddEditClientWindow();
+            window.ShowDialog();
+        }
     }
 }

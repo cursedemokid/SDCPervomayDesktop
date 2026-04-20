@@ -1,0 +1,147 @@
+﻿<Window x:Class="SDCPervomayDesktop.View.AddEditEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SDCPervomayDesktop.View"
+        mc:Ignorable="d"
+        Title="AddEditEmployeeWindow" Width="800" SizeToContent="Height" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Фамилия -->
+        <GroupBox x:Name="LastNameGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Фамилия" BorderThickness="2" BorderBrush="Black">
+            <TextBox x:Name="LastNameBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </GroupBox>
+
+        <!-- Имя -->
+        <GroupBox Grid.Row="1" x:Name="FirstNameGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Имя" BorderThickness="2" BorderBrush="Black">
+            <TextBox x:Name="FirstNameBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </GroupBox>
+
+        <!-- Отчество -->
+        <GroupBox Grid.Row="2" x:Name="PatronymicGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Отчество" BorderThickness="2" BorderBrush="Black">
+            <TextBox x:Name="PatronymicBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </GroupBox>
+
+        <!-- Дата рождения -->
+        <GroupBox Grid.Row="3" x:Name="BirthDateGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Дата рождения" BorderThickness="2" BorderBrush="Black">
+            <DatePicker x:Name="BirthDatePicker" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </GroupBox>
+
+        <!-- Телефон -->
+        <GroupBox Grid.Row="4" x:Name="PhoneGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Номер телефона" BorderThickness="2" BorderBrush="Black">
+            <TextBox x:Name="PhoneBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </GroupBox>
+
+        <!-- Почта -->
+        <GroupBox Grid.Row="5" x:Name="EmailGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Почта" BorderThickness="2" BorderBrush="Black">
+            <TextBox x:Name="EmailBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </GroupBox>
+
+        <!-- Должность -->
+        <GroupBox Grid.Row="6" x:Name="RoleGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Должность" BorderThickness="2" BorderBrush="Black">
+            <ComboBox x:Name="RoleCombo" FontSize="20" FontFamily="{StaticResource GothamProFamily}" DisplayMemberPath="Name" SelectedValuePath="Id"/>
+        </GroupBox>
+
+        <!-- Зарплата -->
+        <GroupBox Grid.Row="7" x:Name="SalaryGroup" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Зарплата (₽)" BorderThickness="2" BorderBrush="Black">
+            <TextBox x:Name="SalaryBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Text="0"/>
+        </GroupBox>
+
+        <!-- Заслуги (блок) -->
+        <TextBlock Grid.Row="8" Text="Заслуги" Margin="10 10 0 0" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        <Border Grid.Row="9" BorderBrush="Black" BorderThickness="2" CornerRadius="10">
+            <ListBox x:Name="AchievementsListBox" Height="150" 
+                     SelectionMode="Single" 
+                     BorderThickness="0" 
+                     Background="Transparent"
+                     HorizontalContentAlignment="Left">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Focusable" Value="False"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <ContentPresenter HorizontalAlignment="Left"/>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border CornerRadius="10" Background="White" ClipToBounds="False" UseLayoutRounding="True" Margin="10">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.25" Color="Gray"/>
+                            </Border.Effect>
+                            <Grid Margin="10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="{Binding Text}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+                                <Button Padding="2" Grid.Column="2" Width="35" Height="35"
+                                        Click="EditAchievement_Click" Tag="{Binding}">
+                                    <Image Source="/Resources/edit.png" Width="30" Height="30"/>
+                                </Button>
+                                <Button Padding="2" Grid.Column="3" Width="35" Height="35"
+                                        Click="DeleteAchievement_Click" Tag="{Binding}">
+                                    <Image Source="/Resources/bin.png" Width="30" Height="30"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Border>
+        <Button x:Name="AddAchievementBtn" Grid.Row="10" Click="AddAchievement_Click" Margin="0 10 0 0" Content="Добавить заслугу" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250"/>
+
+        <!-- Изображение (фото) -->
+        <Grid Grid.Row="11">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="10" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Фото сотрудника" Margin="10 10 0 0" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Border BorderBrush="Black" BorderThickness="2" Grid.Row="2" CornerRadius="10">
+                <Image x:Name="EmployeeImage" Width="150" Height="150" Stretch="UniformToFill"/>
+            </Border>
+            <Button x:Name="AddImageBtn" Grid.Row="4" Click="AddImage_Click" Content="Добавить фото" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250"/>
+        </Grid>
+
+        <!-- Кнопки действий -->
+        <Grid Grid.Row="12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="AddBtn" Grid.Column="1" Content="Добавить" Click="AddBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button x:Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button x:Name="CancelBtn" Grid.Column="3" Content="Отмена" Click="CancelBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+        </Grid>
+    </Grid>
+</Window>

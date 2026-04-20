@@ -69,7 +69,7 @@
                 </Grid>
             </Border>
 
-            <Button Grid.Column="5" Height="60" Background="White" Content="Записать посетителя" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
+            <Button Name="ReceptionBtn" Grid.Column="5" Height="60" Background="White" Content="Записать посетителя" FontFamily="{StaticResource GothamProFamily}" FontSize="20" Click="ReceptionBtn_Click"/>
         </Grid>
 
         <ListView Name="ClientsListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
@@ -100,7 +100,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Name="AddBtn" Grid.Column="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+            <Button Name="AddBtn" Grid.Column="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5" Click="AddBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Добавить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
