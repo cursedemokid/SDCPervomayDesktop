@@ -1,0 +1,68 @@
+﻿<Page x:Class="SDCPervomayDesktop.View.Pages.EmployeesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:SDCPervomayDesktop.View.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="434" d:DesignWidth="1280"
+      Title="EmployeesPage">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="20" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+        <Grid Name="AdminGrid" Grid.Row="2" Visibility="Visible" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Name="EditBtn" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Редактировать" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
+                        <Image Source="/Resources/edit.png" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="AddBtn" Grid.Column="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Добавить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
+                        <Image Source="/Resources/more.png" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="DeleteBtn" Grid.Column="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Удалить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
+                        <Image Source="/Resources/bin.png" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
+        <ListView Name="SectionListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ФИО" DisplayMemberBinding="{Binding FullName}"/>
+                    <GridViewColumn Header="Почта" DisplayMemberBinding="{Binding Email}"/>
+                    <GridViewColumn Header="Номер телефона" DisplayMemberBinding="{Binding PhoneNumber}"/>
+                    <GridViewColumn Header="Логин" DisplayMemberBinding="{Binding Login}"/>
+                    <GridViewColumn Header="Должность" DisplayMemberBinding="{Binding Role}"/>
+                    <GridViewColumn Header="Дата рождения" DisplayMemberBinding="{Binding BirthDate}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

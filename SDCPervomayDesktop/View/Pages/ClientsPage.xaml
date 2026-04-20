@@ -12,7 +12,10 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="10" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="10" />
             <RowDefinition Height="1*" />
+            <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -69,7 +72,7 @@
             <Button Grid.Column="5" Height="60" Background="White" Content="Записать посетителя" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
         </Grid>
 
-        <ListView Name="ClientsListView" Grid.Row="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
+        <ListView Name="ClientsListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ФИО" DisplayMemberBinding="{Binding FullName}"/>
@@ -78,5 +81,41 @@
                 </GridView>
             </ListView.View>
         </ListView>
+
+        <Grid Name="AdminGrid" Grid.Row="2" Visibility="Visible" Height="50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Name="EditBtn" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Редактировать" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
+                        <Image Source="/Resources/edit.png" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="AddBtn" Grid.Column="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Добавить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
+                        <Image Source="/Resources/more.png" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+            <Button Name="DeleteBtn" Grid.Column="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Удалить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
+                        <Image Source="/Resources/bin.png" />
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

@@ -33,9 +33,9 @@
                 <Grid Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="20" />
                         <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="auto" />
@@ -43,9 +43,11 @@
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition Width="20" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Name="ClientsTbl" Grid.Column="0" Text="Посетители" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ClientsTbl_MouseDown" Cursor="Hand"/>
-                    <TextBlock Name="ScheduleTbl" Grid.Column="2" Text="Расписание" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ScheduleTbl_MouseDown" Cursor="Hand"/>
-                    <TextBlock Name="KeysTbl" Grid.Column="4" Text="Ключи" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="KeysTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="ClientsTbl" Margin="0 0 0 0" Grid.Column="0" Text="Посетители" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ClientsTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="ScheduleTbl" Margin="20 0 0 0" Grid.Column="1" Text="Расписание" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ScheduleTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="KeysTbl" Margin="20 0 0 0" Grid.Column="2" Text="Ключи" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="KeysTbl_MouseDown" Cursor="Hand"/>
+                    <TextBlock Name="SectionTbl" Margin="20 0 0 0" Grid.Column="3" Text="Секции" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="SectionTbl_MouseDown"  Cursor="Hand"/>
+                    <TextBlock Name="EmployeesTbl" Margin="20 0 0 0" Grid.Column="4" Text="Сотрудники" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="EmployeesTbl_MouseDown"  Cursor="Hand"/>
                     <TextBlock Name="BackTbl" Grid.Column="6" Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="BackTbl_MouseDown" Cursor="Hand"/>
                     <TextBlock Name="ExitTbl" Grid.Column="8" Text="Выход" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MouseDown="ExitTbl_MouseDown" Cursor="Hand"/>
                 </Grid>

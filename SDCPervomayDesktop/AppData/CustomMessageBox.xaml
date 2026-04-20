@@ -44,7 +44,7 @@
                 Click="NoButton_Click" Visibility="Collapsed"/>
                 <Button Name="OkButton" Content="ОК" Width="80" Height="35"
                 Style="{StaticResource MaterialDesignFlatButton}" 
-                Click="OkButton_Click" IsDefault="True"/>
+                Click="OkButton_Click" IsDefault="True" Foreground="Black"/>
             </StackPanel>
         </Grid>
     </Border>

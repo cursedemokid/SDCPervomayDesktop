@@ -72,5 +72,15 @@ namespace SDCPervomayDesktop
             else if (pageType == typeof(MenKeysPage))
                 KeysTbl.TextDecorations = TextDecorations.Underline;
         }
+
+        private void EmployeesTbl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void SectionTbl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
