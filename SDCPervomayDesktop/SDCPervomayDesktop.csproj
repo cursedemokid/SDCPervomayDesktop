@@ -72,6 +72,9 @@
     <Compile Include="AppData\FeedbackService.cs" />
     <Compile Include="AppData\SystemEnums.cs" />
     <Compile Include="Converters\StringToBrushConverter.cs" />
+    <Compile Include="Models\ScheduleItem.cs" />
+    <Compile Include="Models\Trainer.cs" />
+    <Compile Include="Models\Training.cs" />
     <Compile Include="ViewModels\Locker.cs" />
     <Compile Include="ViewModels\MenKeysPageViewModel.cs" />
     <Compile Include="View\AddEditClientWindow.xaml.cs">
@@ -79,6 +82,9 @@
     </Compile>
     <Compile Include="View\AddEditScheduleWindow.xaml.cs">
       <DependentUpon>AddEditScheduleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AddScheduleItemWindow.xaml.cs">
+      <DependentUpon>AddScheduleItemWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\ClientsPage.xaml.cs">
       <DependentUpon>ClientsPage.xaml</DependentUpon>
@@ -107,6 +113,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddEditScheduleWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\AddScheduleItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

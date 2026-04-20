@@ -8,7 +8,7 @@
       d:DesignHeight="434" d:DesignWidth="1280"
       Title="ClientsPage">
 
-    <Grid Margin="0 10 0 10">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="10" />

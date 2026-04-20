@@ -59,5 +59,16 @@ namespace SDCPervomayDesktop.View.Pages
         {
 
         }
+
+        private void AddBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddEditScheduleWindow window = new AddEditScheduleWindow();
+            window.ShowDialog();
+        }
+
+        private void EditBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
