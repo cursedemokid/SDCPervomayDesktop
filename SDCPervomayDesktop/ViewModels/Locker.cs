@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Collections.ObjectModel;
+using SDCPervomayDesktop.Models;
 
 namespace SDCPervomayDesktop.ViewModels
 {
@@ -7,12 +9,20 @@ namespace SDCPervomayDesktop.ViewModels
     {
         private bool _isOccupied;
         public string Number { get; set; }
+        public ObservableCollection<LockerHistory> History { get; } = new ObservableCollection<LockerHistory>();
+        public ObservableCollection<Visitor> Visitors { get; } = new ObservableCollection<Visitor>();
+        public ObservableCollection<Product> Products { get; } = new ObservableCollection<Product>();
 
         public bool IsOccupied
         {
             get => _isOccupied;
             set
             {
+                if (_isOccupied == value)
+                {
+                    return;
+                }
+
                 _isOccupied = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ButtonColor));
