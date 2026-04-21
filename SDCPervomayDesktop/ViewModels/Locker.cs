@@ -9,6 +9,7 @@ namespace SDCPervomayDesktop.ViewModels
     {
         private bool _isOccupied;
         public string Number { get; set; }
+        public string CurrentVisitorFullName { get; set; }
         public ObservableCollection<LockerHistory> History { get; } = new ObservableCollection<LockerHistory>();
         public ObservableCollection<Visitor> Visitors { get; } = new ObservableCollection<Visitor>();
         public ObservableCollection<Product> Products { get; } = new ObservableCollection<Product>();

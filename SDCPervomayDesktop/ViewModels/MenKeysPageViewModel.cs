@@ -8,14 +8,21 @@ namespace SDCPervomayDesktop.ViewModels
 {
     public class MenKeysPageViewModel
     {
+        private readonly bool _isMaleLockerRoom;
+
         public ObservableCollection<Locker> UpperLockers { get; set; } // Ш10-Ш18
         public ObservableCollection<Locker> LowerLockers { get; set; } // Ш01-Ш09
         public ObservableCollection<Reminder> Reminders { get; set; }
         public ObservableCollection<Product> Products { get; set; }
         public ObservableCollection<Visitor> Visitors { get; set; }
 
-        public MenKeysPageViewModel()
+        public MenKeysPageViewModel() : this(true)
         {
+        }
+
+        public MenKeysPageViewModel(bool isMaleLockerRoom)
+        {
+            _isMaleLockerRoom = isMaleLockerRoom;
             UpperLockers = new ObservableCollection<Locker>();
             LowerLockers = new ObservableCollection<Locker>();
             Reminders = new ObservableCollection<Reminder>();
@@ -75,9 +82,18 @@ namespace SDCPervomayDesktop.ViewModels
                 ExpirationDate = DateTime.Today.AddDays(3)
             });
 
-            Visitors.Add(new Visitor { FullName = "Иван Петров", ArrivalTime = DateTime.Now.AddMinutes(-20) });
-            Visitors.Add(new Visitor { FullName = "Мария Соколова", ArrivalTime = DateTime.Now.AddMinutes(-10) });
-            Visitors.Add(new Visitor { FullName = "Артем Смирнов", ArrivalTime = DateTime.Now.AddMinutes(-5) });
+            if (_isMaleLockerRoom)
+            {
+                Visitors.Add(new Visitor { FullName = "Иван Петров", Gender = "Мужской", ArrivalTime = DateTime.Now.AddMinutes(-20) });
+                Visitors.Add(new Visitor { FullName = "Артем Смирнов", Gender = "Мужской", ArrivalTime = DateTime.Now.AddMinutes(-5) });
+                Visitors.Add(new Visitor { FullName = "Дмитрий Орлов", Gender = "Мужской", ArrivalTime = DateTime.Now.AddMinutes(-2) });
+            }
+            else
+            {
+                Visitors.Add(new Visitor { FullName = "Мария Соколова", Gender = "Женский", ArrivalTime = DateTime.Now.AddMinutes(-10) });
+                Visitors.Add(new Visitor { FullName = "Анна Кузнецова", Gender = "Женский", ArrivalTime = DateTime.Now.AddMinutes(-7) });
+                Visitors.Add(new Visitor { FullName = "Елена Воронцова", Gender = "Женский", ArrivalTime = DateTime.Now.AddMinutes(-3) });
+            }
         }
 
         // Команда для действия (выдать/вернуть ключ)

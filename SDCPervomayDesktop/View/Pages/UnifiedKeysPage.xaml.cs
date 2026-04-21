@@ -10,9 +10,13 @@ namespace SDCPervomayDesktop.View.Pages
 {
     public partial class UnifiedKeysPage : Page
     {
+        private readonly MenKeysPageViewModel _maleViewModel = new MenKeysPageViewModel(true);
+        private readonly MenKeysPageViewModel _femaleViewModel = new MenKeysPageViewModel(false);
+
         public UnifiedKeysPage()
         {
             InitializeComponent();
+            DataContext = _maleViewModel;
             MaleToggle.Checked += GenderToggle_Checked;
             FemaleToggle.Checked += GenderToggle_Checked;
         }
@@ -22,6 +26,7 @@ namespace SDCPervomayDesktop.View.Pages
             var toggle = sender as ToggleButton;
             if (toggle == MaleToggle)
             {
+                DataContext = _maleViewModel;
                 MaleGrid.Visibility = Visibility.Visible;
                 FemaleGrid.Visibility = Visibility.Collapsed;
                 MaleToggle.IsChecked = true;
@@ -29,6 +34,7 @@ namespace SDCPervomayDesktop.View.Pages
             }
             else if (toggle == FemaleToggle)
             {
+                DataContext = _femaleViewModel;
                 MaleGrid.Visibility = Visibility.Collapsed;
                 FemaleGrid.Visibility = Visibility.Visible;
                 MaleToggle.IsChecked = false;
@@ -63,18 +69,21 @@ namespace SDCPervomayDesktop.View.Pages
 
             var historyText = new TextBlock
             {
-                Text = locker.History.Any()
-                    ? string.Join("\n", locker.History
-                        .OrderByDescending(h => h.EventTime)
-                        .Take(5)
-                        .Select(h => $"{h.EventTime:dd.MM.yyyy HH:mm} - {h.Action}"))
-                    : "История пока пуста",
+                Text = BuildHistoryText(locker),
                 FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
                 Foreground = Brushes.Black,
-                TextWrapping = TextWrapping.Wrap,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            var historyScroll = new ScrollViewer
+            {
+                Content = historyText,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                MaxHeight = 180,
                 Margin = new Thickness(0, 0, 0, 8)
             };
-            tooltipPanel.Children.Add(historyText);
+            tooltipPanel.Children.Add(historyScroll);
 
             var separator = new Border
             {
@@ -103,11 +112,16 @@ namespace SDCPervomayDesktop.View.Pages
                 returnButton.Click += (s, args) =>
                 {
                     locker.IsOccupied = false;
+                    var visitorName = string.IsNullOrWhiteSpace(locker.CurrentVisitorFullName)
+                        ? "посетитель"
+                        : locker.CurrentVisitorFullName;
+
                     locker.History.Add(new LockerHistory
                     {
                         LockerNumber = locker.Number,
-                        Action = "Ключ принят на ресепшне"
+                        Action = $"{visitorName} вернул(а) ключ"
                     });
+                    locker.CurrentVisitorFullName = null;
 
                     if (button.ToolTip is ToolTip openedToolTip)
                     {
@@ -154,10 +168,11 @@ namespace SDCPervomayDesktop.View.Pages
                     selectedVisitor.AssignedLockerNumber = locker.Number;
                     locker.Visitors.Add(selectedVisitor);
                     locker.IsOccupied = true;
+                    locker.CurrentVisitorFullName = selectedVisitor.FullName;
                     locker.History.Add(new LockerHistory
                     {
                         LockerNumber = locker.Number,
-                        Action = $"Ключ выдан посетителю: {selectedVisitor.FullName}"
+                        Action = $"Ключ выдан: {selectedVisitor.FullName}"
                     });
 
                     if (button.ToolTip is ToolTip openedToolTip)
@@ -181,6 +196,41 @@ namespace SDCPervomayDesktop.View.Pages
 
             button.ToolTip = tooltip;
             tooltip.IsOpen = true;
+        }
+
+        private static string BuildHistoryText(Locker locker)
+        {
+            if (!locker.History.Any())
+            {
+                return "История пока пуста";
+            }
+
+            var ordered = locker.History.OrderBy(h => h.EventTime).ToList();
+            var lines = new System.Collections.Generic.List<string>();
+
+            for (int i = 0; i < ordered.Count; i++)
+            {
+                var entry = ordered[i];
+                if (entry.Action.StartsWith("Ключ выдан:", System.StringComparison.OrdinalIgnoreCase))
+                {
+                    lines.Add($"[{entry.EventTime:dd.MM.yyyy HH:mm}] {entry.Action}");
+
+                    if (i + 1 < ordered.Count && ordered[i + 1].Action.Contains("вернул(а) ключ"))
+                    {
+                        var returned = ordered[i + 1];
+                        lines.Add($"[{returned.EventTime:dd.MM.yyyy HH:mm}] {returned.Action}");
+                        lines.Add("-----");
+                        i++;
+                    }
+                }
+                else
+                {
+                    lines.Add($"[{entry.EventTime:dd.MM.yyyy HH:mm}] {entry.Action}");
+                }
+            }
+
+            lines.Reverse();
+            return string.Join("\n", lines);
         }
     }
 }

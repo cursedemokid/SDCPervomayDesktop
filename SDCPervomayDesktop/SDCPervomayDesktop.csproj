@@ -99,6 +99,9 @@
     <Compile Include="View\AddEditSectionWindow.xaml.cs">
       <DependentUpon>AddEditSectionWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\AddParentWindow.xaml.cs">
+      <DependentUpon>AddParentWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\AddScheduleItemWindow.xaml.cs">
       <DependentUpon>AddScheduleItemWindow.xaml</DependentUpon>
     </Compile>
@@ -147,6 +150,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\AddParentWindow.xaml" />
     <Page Include="View\AddScheduleItemWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
