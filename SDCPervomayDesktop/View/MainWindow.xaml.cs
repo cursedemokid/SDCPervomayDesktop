@@ -31,8 +31,8 @@ namespace SDCPervomayDesktop
 
         private void KeysTbl_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            MainFrame.Navigate(new MenKeysPage());
-            UpdateMenuUnderline(typeof(MenKeysPage));
+            MainFrame.Navigate(new UnifiedKeysPage());
+            UpdateMenuUnderline(typeof(UnifiedKeysPage));
         }
 
         private void BackTbl_MouseDown(object sender, MouseButtonEventArgs e)

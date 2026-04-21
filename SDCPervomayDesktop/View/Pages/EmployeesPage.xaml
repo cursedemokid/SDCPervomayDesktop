@@ -35,7 +35,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Name="AddBtn" Grid.Column="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+            <Button Name="AddBtn" Grid.Column="2" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5" Click="AddBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Добавить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>

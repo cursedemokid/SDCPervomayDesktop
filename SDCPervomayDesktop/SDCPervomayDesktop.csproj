@@ -72,6 +72,8 @@
     <Compile Include="AppData\FeedbackService.cs" />
     <Compile Include="AppData\SystemEnums.cs" />
     <Compile Include="Converters\StringToBrushConverter.cs" />
+    <Compile Include="Models\Achivement.cs" />
+    <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\ScheduleItem.cs" />
     <Compile Include="Models\Section.cs" />
     <Compile Include="Models\Trainer.cs" />
@@ -110,6 +112,9 @@
     </Compile>
     <Compile Include="View\Pages\SectionPage.xaml.cs">
       <DependentUpon>SectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Pages\UnifiedKeysPage.xaml.cs">
+      <DependentUpon>UnifiedKeysPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Pages\WomanKeysPage.xaml.cs">
       <DependentUpon>WomanKeysPage.xaml</DependentUpon>
@@ -178,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Pages\SectionPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Pages\UnifiedKeysPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

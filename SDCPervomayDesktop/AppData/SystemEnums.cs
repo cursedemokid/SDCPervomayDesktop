@@ -14,7 +14,7 @@ namespace SDCPervomayDesktop.AppData
             Worker = 2,
             Coach = 3,
             Client = 4,
-            Paremt = 5,
+            Parent = 5,
         }
     }
 }

@@ -47,12 +47,11 @@ namespace SDCPervomayDesktop.View
 
         private void LoadRoles()
         {
-            var roles = new ObservableCollection<Role>
-            {
-                new Role { Id = 1, Name = "Тренер" },
-                new Role { Id = 2, Name = "Администратор" },
-                new Role { Id = 3, Name = "Медицинский персонал" }
-            };
+            // Загружаем роли из перечисления SystemEnums.Role
+            var roles = Enum.GetValues(typeof(Role))
+                .Cast<Role>()
+                .Select(r => new { Id = (int)r, Name = r.ToString() })
+                .ToList();
             RoleCombo.ItemsSource = roles;
             RoleCombo.SelectedValuePath = "Id";
             RoleCombo.DisplayMemberPath = "Name";
