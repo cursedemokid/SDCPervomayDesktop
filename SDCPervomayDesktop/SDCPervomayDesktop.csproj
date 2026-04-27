@@ -211,16 +211,6 @@
     <Compile Include="Entities\Visitors.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Achivement.cs" />
-    <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\LockerHistory.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\Reminder.cs" />
-    <Compile Include="Models\ScheduleItem.cs" />
-    <Compile Include="Models\Section.cs" />
-    <Compile Include="Models\Trainer.cs" />
-    <Compile Include="Models\Training.cs" />
-    <Compile Include="Models\Visitor.cs" />
     <Compile Include="ViewModels\Locker.cs" />
     <Compile Include="ViewModels\MenKeysPageViewModel.cs" />
     <Compile Include="View\AddAchievementDialog.xaml.cs">

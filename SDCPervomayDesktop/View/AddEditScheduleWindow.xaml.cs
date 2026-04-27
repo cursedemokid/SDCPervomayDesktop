@@ -4,19 +4,19 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using SDCPervomayDesktop.AppData;
-using SDCPervomayDesktop.Models;
+using SDCPervomayDesktop.Entities;
 
 namespace SDCPervomayDesktop.View
 {
     public partial class AddEditScheduleWindow : Window
     {
         private bool _isEditMode;
-        private Section _currentSection;
-        private ObservableCollection<ScheduleItem> _scheduleItems;
+        private Sections _currentSection;
+        private ObservableCollection<ScheduleItems> _scheduleItems;
 
-        public ObservableCollection<Section> Sections { get; set; }
+        public ObservableCollection<Sections> Sections { get; set; }
 
-        public AddEditScheduleWindow(Section sectionToEdit = null)
+        public AddEditScheduleWindow(Sections sectionToEdit = null)
         {
             InitializeComponent();
             DataContext = this;
@@ -37,8 +37,8 @@ namespace SDCPervomayDesktop.View
             else
             {
                 _isEditMode = false;
-                _currentSection = new Section();
-                _scheduleItems = new ObservableCollection<ScheduleItem>();
+                _currentSection = new Sections();
+                _scheduleItems = new ObservableCollection<ScheduleItems>();
                 ScheduleListBox.ItemsSource = _scheduleItems;
                 AddBtn.Visibility = Visibility.Visible;
                 SaveBtn.Visibility = Visibility.Collapsed;
@@ -49,18 +49,18 @@ namespace SDCPervomayDesktop.View
         private void LoadSections()
         {
             // Заглушка
-            Sections = new ObservableCollection<Section>
+            Sections = new ObservableCollection<Sections>
             {
-                new Section { Id = 1, Title = "Футбол" },
-                new Section { Id = 2, Title = "Баскетбол" },
-                new Section { Id = 3, Title = "Плавание" }
+                new Sections { Id = 1, Title = "Футбол" },
+                new Sections { Id = 2, Title = "Баскетбол" },
+                new Sections { Id = 3, Title = "Плавание" }
             };
             SectionCombo.ItemsSource = Sections;
         }
 
         private void LoadSchedule()
         {
-            _scheduleItems = new ObservableCollection<ScheduleItem>(_currentSection.Schedule);
+            _scheduleItems = new ObservableCollection<ScheduleItems>(_currentSection.ScheduleItems);
             ScheduleListBox.ItemsSource = _scheduleItems;
         }
 
@@ -76,8 +76,8 @@ namespace SDCPervomayDesktop.View
                 FeedbackService.Error("Добавьте хотя бы один день расписания.", "Ошибка");
                 return;
             }
-            var selectedSection = (Section)SectionCombo.SelectedItem;
-            selectedSection.Schedule = _scheduleItems;
+            var selectedSection = (Sections)SectionCombo.SelectedItem;
+            selectedSection.ScheduleItems = _scheduleItems;
             FeedbackService.Information("Расписание добавлено!", "Успех");
             DialogResult = true;
             Close();
@@ -90,7 +90,7 @@ namespace SDCPervomayDesktop.View
                 FeedbackService.Error("Добавьте хотя бы один день расписания.", "Ошибка");
                 return;
             }
-            _currentSection.Schedule = _scheduleItems;
+            _currentSection.ScheduleItems = _scheduleItems;
             FeedbackService.Information("Изменения сохранены!", "Успех");
             DialogResult = true;
             Close();
@@ -114,7 +114,7 @@ namespace SDCPervomayDesktop.View
         private void EditScheduleItem_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var item = button?.Tag as ScheduleItem;
+            var item = button?.Tag as ScheduleItems;
             if (item == null) return;
 
             var dialog = new AddScheduleItemWindow(item);
@@ -130,7 +130,7 @@ namespace SDCPervomayDesktop.View
         private void DeleteScheduleItem_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var item = button?.Tag as ScheduleItem;
+            var item = button?.Tag as ScheduleItems;
             if (item == null) return;
 
             if (FeedbackService.Question($"Удалить расписание для {item.DayName}?") == MessageBoxResult.Yes)

@@ -1,5 +1,4 @@
 using System.Windows;
-using SDCPervomayDesktop.Models;
 using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 

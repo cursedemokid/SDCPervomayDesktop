@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
-using SDCPervomayDesktop.Models;
+using SDCPervomayDesktop.Entities;
 
 namespace SDCPervomayDesktop.ViewModels
 {
@@ -11,8 +11,8 @@ namespace SDCPervomayDesktop.ViewModels
         public string Number { get; set; }
         public string CurrentVisitorFullName { get; set; }
         public ObservableCollection<LockerHistory> History { get; } = new ObservableCollection<LockerHistory>();
-        public ObservableCollection<Visitor> Visitors { get; } = new ObservableCollection<Visitor>();
-        public ObservableCollection<Product> Products { get; } = new ObservableCollection<Product>();
+        public ObservableCollection<Visitors> Visitors { get; } = new ObservableCollection<Visitors>();
+        public ObservableCollection<Products> Products { get; } = new ObservableCollection<Products>();
 
         public bool IsOccupied
         {

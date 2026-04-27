@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using SDCPervomayDesktop.AppData;
-using SDCPervomayDesktop.Models;
+using SDCPervomayDesktop.Entities;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -15,10 +15,10 @@ namespace SDCPervomayDesktop.View
     public partial class AddEditEmployeeWindow : Window
     {
         private bool _isEditMode;
-        private Employee _currentEmployee;
-        private ObservableCollection<Achievement> _achievements;
+        private Employees _currentEmployee;
+        private ObservableCollection<Achievements> _achievements;
 
-        public AddEditEmployeeWindow(Employee employeeToEdit = null)
+        public AddEditEmployeeWindow(Employees employeeToEdit = null)
         {
             InitializeComponent();
 
@@ -36,8 +36,8 @@ namespace SDCPervomayDesktop.View
             else
             {
                 _isEditMode = false;
-                _currentEmployee = new Employee();
-                _achievements = new ObservableCollection<Achievement>();
+                _currentEmployee = new Employees();
+                _achievements = new ObservableCollection<Achievements>();
                 AchievementsListBox.ItemsSource = _achievements;
                 AddBtn.Visibility = Visibility.Visible;
                 SaveBtn.Visibility = Visibility.Collapsed;
@@ -68,7 +68,7 @@ namespace SDCPervomayDesktop.View
             RoleCombo.SelectedValue = _currentEmployee.RoleId;
             SalaryBox.Text = _currentEmployee.Salary.ToString();
 
-            _achievements = new ObservableCollection<Achievement>(_currentEmployee.Achievements ?? new ObservableCollection<Achievement>());
+            _achievements = new ObservableCollection<Achievements>(_currentEmployee.Achievements ?? new ObservableCollection<Achievements>());
             AchievementsListBox.ItemsSource = _achievements;
 
             if (_currentEmployee.PhotoData != null && _currentEmployee.PhotoData.Length > 0)
@@ -80,14 +80,14 @@ namespace SDCPervomayDesktop.View
             var dialog = new AddAchievementDialog();
             if (dialog.ShowDialog() == true)
             {
-                _achievements.Add(new Achievement { Text = dialog.AchievementText });
+                _achievements.Add(new Achievements { Text = dialog.AchievementText });
             }
         }
 
         private void EditAchievement_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var achievement = button?.Tag as Achievement;
+            var achievement = button?.Tag as Achievements;
             if (achievement == null) return;
 
             var dialog = new AddAchievementDialog(achievement.Text);
@@ -101,7 +101,7 @@ namespace SDCPervomayDesktop.View
         private void DeleteAchievement_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var achievement = button?.Tag as Achievement;
+            var achievement = button?.Tag as Achievements;
             if (achievement == null) return;
 
             if (FeedbackService.Question($"Удалить заслугу \"{achievement.Text}\"?") == MessageBoxResult.Yes)

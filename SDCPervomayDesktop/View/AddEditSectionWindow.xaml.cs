@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 using SDCPervomayDesktop.AppData;
-using SDCPervomayDesktop.Models;
+using SDCPervomayDesktop.Entities;
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -13,10 +13,10 @@ namespace SDCPervomayDesktop.View
     public partial class AddEditSectionWindow : Window
     {
         private bool _isEditMode;
-        private Section _currentSection;
-        public ObservableCollection<Trainer> Trainers { get; set; }
+        private Sections _currentSection;
+        public ObservableCollection<Employees> Trainers { get; set; }
 
-        public AddEditSectionWindow(Section sectionToEdit = null)
+        public AddEditSectionWindow(Sections sectionToEdit = null)
         {
             InitializeComponent();
             DataContext = this;
@@ -35,7 +35,7 @@ namespace SDCPervomayDesktop.View
             else
             {
                 _isEditMode = false;
-                _currentSection = new Section();
+                _currentSection = new Sections();
                 AddBtn.Visibility = Visibility.Visible;
                 SaveBtn.Visibility = Visibility.Collapsed;
                 Title = "Добавление секции";
@@ -44,14 +44,12 @@ namespace SDCPervomayDesktop.View
 
         private void LoadTrainers()
         {
-            // Статические данные (можно вынести в общий сервис)
-            Trainers = new ObservableCollection<Trainer>
-            {
-                new Trainer { Id = 1, FullName = "Иванов Иван Иванович" },
-                new Trainer { Id = 2, FullName = "Петров Петр Петрович" },
-                new Trainer { Id = 3, FullName = "Сидорова Анна Владимировна" }
-            };
+            Trainers = new ObservableCollection<Employees>(
+                App.context.Employees.Where(e => e.RoleId == 2 && e.IsActive).ToList()
+            );
             TrainerCombo.ItemsSource = Trainers;
+            TrainerCombo.DisplayMemberPath = "FullName";
+            TrainerCombo.SelectedValuePath = "Id";
         }
 
         private void LoadSectionData()
@@ -67,7 +65,8 @@ namespace SDCPervomayDesktop.View
         {
             if (!ValidateFields()) return;
             UpdateSectionFromForm();
-            // Здесь сохранить в БД
+            App.context.Sections.Add(_currentSection);
+            App.context.SaveChanges();
             FeedbackService.Information($"Секция \"{_currentSection.Title}\" добавлена!", "Успех");
             DialogResult = true;
             Close();
@@ -77,6 +76,7 @@ namespace SDCPervomayDesktop.View
         {
             if (!ValidateFields()) return;
             UpdateSectionFromForm();
+            App.context.SaveChanges();
             FeedbackService.Information("Изменения сохранены!", "Успех");
             DialogResult = true;
             Close();

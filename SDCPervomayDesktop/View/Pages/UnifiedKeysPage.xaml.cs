@@ -1,11 +1,13 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
-using System.Linq;
-using SDCPervomayDesktop.Models;
+using SDCPervomayDesktop.Entities;
 using SDCPervomayDesktop.ViewModels;
-using System.Collections.ObjectModel;
 
 namespace SDCPervomayDesktop.View.Pages
 {
@@ -17,11 +19,9 @@ namespace SDCPervomayDesktop.View.Pages
         public UnifiedKeysPage()
         {
             InitializeComponent();
-            var maleLockers = App.context.Lockers.Where(l => l.Gender == "М").ToList();
-            var femaleLockers = App.context.Lockers.Where(l => l.Gender == "Ж").ToList();
 
-            maleViewModel = new MenKeysPageViewModel(maleLockers);
-            femaleViewModel = new MenKeysPageViewModel(femaleLockers);
+            maleViewModel = new MenKeysPageViewModel(true);
+            femaleViewModel = new MenKeysPageViewModel(false);
             DataContext = maleViewModel;
 
             LoadVisitors();
@@ -32,13 +32,18 @@ namespace SDCPervomayDesktop.View.Pages
             var activeVisitors = App.context.Visitors
                 .Where(v => v.DepartureTime == null)
                 .ToList()
-                .Select(v => new Visitor
+                .Select(v => new Visitors
                 {
-                    FullName = App.context.Clients.FirstOrDefault(c => c.Id == v.ClientId)?.FullName,
-
+                    Id = v.Id,
+                    ClientId = v.ClientId,
+                    ArrivalTime = v.ArrivalTime,
+                    AssignedLockerId = v.AssignedLockerId,
+                    Gender = v.Gender,
+                    DepartureTime = v.DepartureTime,
                 }).ToList();
-            maleViewModel.Visitors = new ObservableCollection<Visitor>(activeVisitors);
-            femaleViewModel.Visitors = new ObservableCollection<Visitor>(activeVisitors); 
+
+            maleViewModel.Visitors = new ObservableCollection<Visitors>(activeVisitors);
+            femaleViewModel.Visitors = new ObservableCollection<Visitors>(activeVisitors);
         }
 
         private void GenderToggle_Checked(object sender, RoutedEventArgs e)
@@ -46,7 +51,7 @@ namespace SDCPervomayDesktop.View.Pages
             var toggle = sender as ToggleButton;
             if (toggle == MaleToggle)
             {
-                DataContext = _maleViewModel;
+                DataContext = maleViewModel;
                 MaleGrid.Visibility = Visibility.Visible;
                 FemaleGrid.Visibility = Visibility.Collapsed;
                 MaleToggle.IsChecked = true;
@@ -54,7 +59,7 @@ namespace SDCPervomayDesktop.View.Pages
             }
             else if (toggle == FemaleToggle)
             {
-                DataContext = _femaleViewModel;
+                DataContext = femaleViewModel;
                 MaleGrid.Visibility = Visibility.Collapsed;
                 FemaleGrid.Visibility = Visibility.Visible;
                 MaleToggle.IsChecked = false;
@@ -65,12 +70,13 @@ namespace SDCPervomayDesktop.View.Pages
         private void LockerButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var locker = button?.Tag as Locker;
+            var locker = button?.Tag as Lockers;
             if (locker == null) return;
 
             var vm = DataContext as MenKeysPageViewModel;
             if (vm == null) return;
 
+            var history = GetLockerHistory(locker.Id);
             var tooltipPanel = new StackPanel
             {
                 Width = 260,
@@ -79,7 +85,7 @@ namespace SDCPervomayDesktop.View.Pages
 
             var titleText = new TextBlock
             {
-                Text = $"История: {locker.Number}",
+                Text = $"Шкафчик: {locker.Number}",
                 FontWeight = FontWeights.SemiBold,
                 FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
                 Foreground = Brushes.Black,
@@ -89,7 +95,7 @@ namespace SDCPervomayDesktop.View.Pages
 
             var historyText = new TextBlock
             {
-                Text = BuildHistoryText(locker),
+                Text = BuildHistoryText(history),
                 FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
                 Foreground = Brushes.Black,
                 TextWrapping = TextWrapping.Wrap
@@ -99,7 +105,6 @@ namespace SDCPervomayDesktop.View.Pages
             {
                 Content = historyText,
                 VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
                 MaxHeight = 180,
                 Margin = new Thickness(0, 0, 0, 8)
             };
@@ -132,21 +137,19 @@ namespace SDCPervomayDesktop.View.Pages
                 returnButton.Click += (s, args) =>
                 {
                     locker.IsOccupied = false;
-                    var visitorName = string.IsNullOrWhiteSpace(locker.CurrentVisitorFullName)
-                        ? "посетитель"
-                        : locker.CurrentVisitorFullName;
+                    locker.CurrentClientId = null;
+                    App.context.SaveChanges();
 
-                    locker.History.Add(new LockerHistory
+                    App.context.LockerHistory.Add(new LockerHistory
                     {
-                        LockerNumber = locker.Number,
-                        Action = $"{visitorName} вернул(а) ключ"
+                        LockerId = locker.Id,
+                        ActionType = "Returned",
+                        EventTime = DateTime.Now,
+                        Comment = "Ключ возвращён"
                     });
-                    locker.CurrentVisitorFullName = null;
+                    App.context.SaveChanges();
 
-                    if (button.ToolTip is ToolTip openedToolTip)
-                    {
-                        openedToolTip.IsOpen = false;
-                    }
+                    button.ToolTip = null;
                 };
             }
             else
@@ -164,13 +167,8 @@ namespace SDCPervomayDesktop.View.Pages
                 {
                     Width = 220,
                     Height = 25,
-                    DisplayMemberPath = nameof(Visitor.FullName),
-                    FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
-                    FontSize = 14,
-                    Background = Brushes.White,
-                    Foreground = Brushes.Black,
-                    BorderBrush = Brushes.Black,
-                    BorderThickness = new Thickness(1),
+                    DisplayMemberPath = "FullName",
+                    SelectedValuePath = "Id",
                     ItemsSource = vm.Visitors,
                     SelectedIndex = -1
                 };
@@ -178,27 +176,24 @@ namespace SDCPervomayDesktop.View.Pages
 
                 visitorComboBox.SelectionChanged += (s, args) =>
                 {
-                    var selectedVisitor = visitorComboBox.SelectedItem as Visitor;
-                    if (selectedVisitor == null)
-                    {
-                        return;
-                    }
+                    var selected = visitorComboBox.SelectedItem as Visitors;
+                    if (selected == null) return;
 
-                    selectedVisitor.ArrivalTime = System.DateTime.Now;
-                    selectedVisitor.AssignedLockerNumber = locker.Number;
-                    locker.Visitors.Add(selectedVisitor);
                     locker.IsOccupied = true;
-                    locker.CurrentVisitorFullName = selectedVisitor.FullName;
-                    locker.History.Add(new LockerHistory
-                    {
-                        LockerNumber = locker.Number,
-                        Action = $"Ключ выдан: {selectedVisitor.FullName}"
-                    });
+                    locker.CurrentClientId = selected.ClientId;
+                    App.context.SaveChanges();
 
-                    if (button.ToolTip is ToolTip openedToolTip)
+                    App.context.LockerHistory.Add(new LockerHistory
                     {
-                        openedToolTip.IsOpen = false;
-                    }
+                        LockerId = locker.Id,
+                        ClientId = selected.ClientId,
+                        ActionType = "Issued",
+                        EventTime = DateTime.Now,
+                        Comment = $"Ключ выдан: {selected.Clients.FullName}"
+                    });
+                    App.context.SaveChanges();
+
+                    button.ToolTip = null;
                 };
             }
 
@@ -218,38 +213,28 @@ namespace SDCPervomayDesktop.View.Pages
             tooltip.IsOpen = true;
         }
 
-        private static string BuildHistoryText(Locker locker)
+        private List<LockerHistory> GetLockerHistory(int lockerId)
         {
-            if (!locker.History.Any())
+            return App.context.LockerHistory
+                .Where(h => h.LockerId == lockerId)
+                .OrderByDescending(h => h.EventTime)
+                .ToList();
+        }
+
+        private string BuildHistoryText(List<LockerHistory> history)
+        {
+            if (history.Count == 0)
+                return "История пуста";
+
+            var lines = new List<string>();
+            foreach (var h in history)
             {
-                return "История пока пуста";
+                string action = h.ActionType == "Issued" ? "Выдан" : "Возвращён";
+                string clientName = h.ClientId != null
+                    ? App.context.Clients.FirstOrDefault(c => c.Id == h.ClientId)?.FullName ?? "Клиент"
+                    : "";
+                lines.Add($"[{h.EventTime:dd.MM.yyyy HH:mm}] {action}: {clientName}");
             }
-
-            var ordered = locker.History.OrderBy(h => h.EventTime).ToList();
-            var lines = new System.Collections.Generic.List<string>();
-
-            for (int i = 0; i < ordered.Count; i++)
-            {
-                var entry = ordered[i];
-                if (entry.Action.StartsWith("Ключ выдан:", System.StringComparison.OrdinalIgnoreCase))
-                {
-                    lines.Add($"[{entry.EventTime:dd.MM.yyyy HH:mm}] {entry.Action}");
-
-                    if (i + 1 < ordered.Count && ordered[i + 1].Action.Contains("вернул(а) ключ"))
-                    {
-                        var returned = ordered[i + 1];
-                        lines.Add($"[{returned.EventTime:dd.MM.yyyy HH:mm}] {returned.Action}");
-                        lines.Add("-----");
-                        i++;
-                    }
-                }
-                else
-                {
-                    lines.Add($"[{entry.EventTime:dd.MM.yyyy HH:mm}] {entry.Action}");
-                }
-            }
-
-            lines.Reverse();
             return string.Join("\n", lines);
         }
     }

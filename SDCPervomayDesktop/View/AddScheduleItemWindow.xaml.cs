@@ -1,5 +1,5 @@
 ﻿using SDCPervomayDesktop.AppData;
-using SDCPervomayDesktop.Models;
+using SDCPervomayDesktop.Entities;
 using System;
 using System.Linq;
 using System.Windows;
@@ -9,9 +9,9 @@ namespace SDCPervomayDesktop.View
 {
     public partial class AddScheduleItemWindow : Window
     {
-        public ScheduleItem ScheduleItem { get; private set; }
+        public ScheduleItems ScheduleItem { get; private set; }
 
-        public AddScheduleItemWindow(ScheduleItem editItem = null)
+        public AddScheduleItemWindow(ScheduleItems editItem = null)
         {
             InitializeComponent();
             if (editItem != null)
@@ -45,7 +45,7 @@ namespace SDCPervomayDesktop.View
                 return;
             }
 
-            ScheduleItem = new ScheduleItem
+            ScheduleItem = new ScheduleItems
             {
                 DayName = dayComboItem.Content.ToString(),
                 StartTime = start,
