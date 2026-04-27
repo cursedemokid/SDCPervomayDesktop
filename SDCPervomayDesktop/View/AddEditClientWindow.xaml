@@ -20,23 +20,23 @@
         </Grid.RowDefinitions>
 
         <GroupBox Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Фамилия" BorderThickness="2" BorderBrush="Black">
-            <TextBox FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <TextBox Name="LastNameTb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
         <GroupBox Grid.Row="1" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Имя" BorderThickness="2" BorderBrush="Black">
-            <TextBox FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <TextBox Name="FirstNameTb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
         <GroupBox Grid.Row="2" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Отчество" BorderThickness="2" BorderBrush="Black">
-            <TextBox FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <TextBox Name="PatronymicTb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
         <GroupBox Grid.Row="3" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Дата рождения" BorderThickness="2" BorderBrush="Black">
-            <DatePicker FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <DatePicker Name="BirthDateDp" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
         <GroupBox Grid.Row="4" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Номер телефона" BorderThickness="2" BorderBrush="Black">
-            <TextBox Name="PhoneNumber" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <TextBox Name="PhoneNumberTb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
         <Grid Grid.Row="5" Name="IsYoung" Visibility="Visible">

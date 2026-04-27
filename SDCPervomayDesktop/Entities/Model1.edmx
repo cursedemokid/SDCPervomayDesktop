@@ -1,0 +1,1190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище SDCPervomayDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Achievements">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Text" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cleanings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CleanedAt" Type="datetime" Nullable="false" />
+          <Property Name="PerformedByEmployeeId" Type="int" />
+          <Property Name="Notes" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="ParentId" Type="int" />
+          <Property Name="IsParent" Type="bit" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ClientSections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="EnrollmentDate" Type="date" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Patronymic" Type="nvarchar" MaxLength="50" />
+          <Property Name="BirthDate" Type="date" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+          <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="Salary" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PhotoData" Type="varbinary(max)" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LockerHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LockerId" Type="int" Nullable="false" />
+          <Property Name="ClientId" Type="int" />
+          <Property Name="ActionType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="EventTime" Type="datetime" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Lockers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="Gender" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="IsOccupied" Type="bit" Nullable="false" />
+          <Property Name="CurrentClientId" Type="int" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="50" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="ShelfCode" Type="nvarchar" MaxLength="20" />
+          <Property Name="HasExpirationDate" Type="bit" Nullable="false" />
+          <Property Name="ExpirationDate" Type="date" />
+          <Property Name="ImageData" Type="varbinary(max)" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Reminders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="DueTime" Type="datetime" Nullable="false" />
+          <Property Name="IsCompleted" Type="bit" Nullable="false" />
+          <Property Name="Category" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="datetime" Nullable="false" />
+          <Property Name="TotalCost" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="SaleProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SaleId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="TotalCost" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="ScheduleItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SectionId" Type="int" Nullable="false" />
+          <Property Name="DayName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="TrainerId" Type="int" Nullable="false" />
+          <Property Name="ImageData" Type="varbinary(max)" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Visitors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClientId" Type="int" Nullable="false" />
+          <Property Name="ArrivalTime" Type="datetime" Nullable="false" />
+          <Property Name="AssignedLockerId" Type="int" />
+          <Property Name="Gender" Type="char" MaxLength="1" />
+          <Property Name="DepartureTime" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Achieveme__Emplo__5441852A">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Achievements" Type="Self.Achievements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Achievements">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cleanings__Perfo__02084FDA">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Cleanings" Type="Self.Cleanings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cleanings">
+              <PropertyRef Name="PerformedByEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Clients__ParentI__5812160E">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="Clients1" Type="Self.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSec__Clien__6754599E">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="ClientSections" Type="Self.ClientSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSections">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSec__Secti__68487DD7">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="ClientSections" Type="Self.ClientSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSections">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Employees__RoleI__4D94879B">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerHis__Clien__787EE5A0">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="LockerHistory" Type="Self.LockerHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LockerHistory">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerHis__Locke__778AC167">
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="1" />
+          <End Role="LockerHistory" Type="Self.LockerHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lockers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LockerHistory">
+              <PropertyRef Name="LockerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Lockers__Current__74AE54BC">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lockers">
+              <PropertyRef Name="CurrentClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ScheduleI__Secti__628FA481">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ScheduleItems" Type="Self.ScheduleItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScheduleItems">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Sections__Traine__5DCAEF64">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Sections" Type="Self.Sections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sections">
+              <PropertyRef Name="TrainerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Visitors__Assign__7F2BE32F">
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="0..1" />
+          <End Role="Visitors" Type="Self.Visitors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lockers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitors">
+              <PropertyRef Name="AssignedLockerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Visitors__Client__7D439ABD">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Visitors" Type="Self.Visitors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitors">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminders_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Reminders" Type="Self.Reminders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reminders">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sale_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sale">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProduct_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="SaleProduct" Type="Self.SaleProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaleProduct">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProduct_Sale">
+          <End Role="Sale" Type="Self.Sale" Multiplicity="1" />
+          <End Role="SaleProduct" Type="Self.SaleProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sale">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaleProduct">
+              <PropertyRef Name="SaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище SDCPervomayDBModelContainer">
+          <EntitySet Name="Achievements" EntityType="Self.Achievements" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cleanings" EntityType="Self.Cleanings" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ClientSections" EntityType="Self.ClientSections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LockerHistory" EntityType="Self.LockerHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Lockers" EntityType="Self.Lockers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reminders" EntityType="Self.Reminders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sale" EntityType="Self.Sale" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SaleProduct" EntityType="Self.SaleProduct" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScheduleItems" EntityType="Self.ScheduleItems" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sections" EntityType="Self.Sections" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Visitors" EntityType="Self.Visitors" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Achieveme__Emplo__5441852A" Association="Self.FK__Achieveme__Emplo__5441852A">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Achievements" EntitySet="Achievements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cleanings__Perfo__02084FDA" Association="Self.FK__Cleanings__Perfo__02084FDA">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Cleanings" EntitySet="Cleanings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Clients__ParentI__5812160E" Association="Self.FK__Clients__ParentI__5812160E">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Clients1" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSec__Clien__6754599E" Association="Self.FK__ClientSec__Clien__6754599E">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="ClientSections" EntitySet="ClientSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSec__Secti__68487DD7" Association="Self.FK__ClientSec__Secti__68487DD7">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="ClientSections" EntitySet="ClientSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employees__RoleI__4D94879B" Association="Self.FK__Employees__RoleI__4D94879B">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerHis__Clien__787EE5A0" Association="Self.FK__LockerHis__Clien__787EE5A0">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="LockerHistory" EntitySet="LockerHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerHis__Locke__778AC167" Association="Self.FK__LockerHis__Locke__778AC167">
+            <End Role="Lockers" EntitySet="Lockers" />
+            <End Role="LockerHistory" EntitySet="LockerHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Lockers__Current__74AE54BC" Association="Self.FK__Lockers__Current__74AE54BC">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Lockers" EntitySet="Lockers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ScheduleI__Secti__628FA481" Association="Self.FK__ScheduleI__Secti__628FA481">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="ScheduleItems" EntitySet="ScheduleItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Sections__Traine__5DCAEF64" Association="Self.FK__Sections__Traine__5DCAEF64">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Sections" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Visitors__Assign__7F2BE32F" Association="Self.FK__Visitors__Assign__7F2BE32F">
+            <End Role="Lockers" EntitySet="Lockers" />
+            <End Role="Visitors" EntitySet="Visitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Visitors__Client__7D439ABD" Association="Self.FK__Visitors__Client__7D439ABD">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Visitors" EntitySet="Visitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminders_Employees" Association="Self.FK_Reminders_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Reminders" EntitySet="Reminders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sale_Employees" Association="Self.FK_Sale_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Sale" EntitySet="Sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProduct_Products" Association="Self.FK_SaleProduct_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="SaleProduct" EntitySet="SaleProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProduct_Sale" Association="Self.FK_SaleProduct_Sale">
+            <End Role="Sale" EntitySet="Sale" />
+            <End Role="SaleProduct" EntitySet="SaleProduct" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SDCPervomayDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Achievements">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Text" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK__Achieveme__Emplo__5441852A" FromRole="Achievements" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Cleanings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CleanedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PerformedByEmployeeId" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK__Cleanings__Perfo__02084FDA" FromRole="Cleanings" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Clients">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" />
+          <Property Name="IsParent" Type="Boolean" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Clients1" Relationship="Self.FK__Clients__ParentI__5812160E" FromRole="Clients" ToRole="Clients1" />
+          <NavigationProperty Name="Clients2" Relationship="Self.FK__Clients__ParentI__5812160E" FromRole="Clients1" ToRole="Clients" />
+          <NavigationProperty Name="ClientSections" Relationship="Self.FK__ClientSec__Clien__6754599E" FromRole="Clients" ToRole="ClientSections" />
+          <NavigationProperty Name="LockerHistory" Relationship="Self.FK__LockerHis__Clien__787EE5A0" FromRole="Clients" ToRole="LockerHistory" />
+          <NavigationProperty Name="Lockers" Relationship="Self.FK__Lockers__Current__74AE54BC" FromRole="Clients" ToRole="Lockers" />
+          <NavigationProperty Name="Visitors" Relationship="Self.FK__Visitors__Client__7D439ABD" FromRole="Clients" ToRole="Visitors" />
+        </EntityType>
+        <EntityType Name="ClientSections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="EnrollmentDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__ClientSec__Clien__6754599E" FromRole="ClientSections" ToRole="Clients" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK__ClientSec__Secti__68487DD7" FromRole="ClientSections" ToRole="Sections" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="DateTime" Precision="0" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="Salary" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="PhotoData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Achievements" Relationship="Self.FK__Achieveme__Emplo__5441852A" FromRole="Employees" ToRole="Achievements" />
+          <NavigationProperty Name="Cleanings" Relationship="Self.FK__Cleanings__Perfo__02084FDA" FromRole="Employees" ToRole="Cleanings" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK__Employees__RoleI__4D94879B" FromRole="Employees" ToRole="Roles" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK__Sections__Traine__5DCAEF64" FromRole="Employees" ToRole="Sections" />
+          <NavigationProperty Name="Reminders" Relationship="Self.FK_Reminders_Employees" FromRole="Employees" ToRole="Reminders" />
+          <NavigationProperty Name="Sale" Relationship="Self.FK_Sale_Employees" FromRole="Employees" ToRole="Sale" />
+        </EntityType>
+        <EntityType Name="LockerHistory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LockerId" Type="Int32" Nullable="false" />
+          <Property Name="ClientId" Type="Int32" />
+          <Property Name="ActionType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EventTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Comment" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__LockerHis__Clien__787EE5A0" FromRole="LockerHistory" ToRole="Clients" />
+          <NavigationProperty Name="Lockers" Relationship="Self.FK__LockerHis__Locke__778AC167" FromRole="LockerHistory" ToRole="Lockers" />
+        </EntityType>
+        <EntityType Name="Lockers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="IsOccupied" Type="Boolean" Nullable="false" />
+          <Property Name="CurrentClientId" Type="Int32" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__Lockers__Current__74AE54BC" FromRole="Lockers" ToRole="Clients" />
+          <NavigationProperty Name="LockerHistory" Relationship="Self.FK__LockerHis__Locke__778AC167" FromRole="Lockers" ToRole="LockerHistory" />
+          <NavigationProperty Name="Visitors" Relationship="Self.FK__Visitors__Assign__7F2BE32F" FromRole="Lockers" ToRole="Visitors" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="ShelfCode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="HasExpirationDate" Type="Boolean" Nullable="false" />
+          <Property Name="ExpirationDate" Type="DateTime" Precision="0" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="SaleProduct" Relationship="Self.FK_SaleProduct_Products" FromRole="Products" ToRole="SaleProduct" />
+        </EntityType>
+        <EntityType Name="Reminders">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DueTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsCompleted" Type="Boolean" Nullable="false" />
+          <Property Name="Category" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Reminders_Employees" FromRole="Reminders" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK__Employees__RoleI__4D94879B" FromRole="Roles" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Sale">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TotalCost" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Sale_Employees" FromRole="Sale" ToRole="Employees" />
+          <NavigationProperty Name="SaleProduct" Relationship="Self.FK_SaleProduct_Sale" FromRole="Sale" ToRole="SaleProduct" />
+        </EntityType>
+        <EntityType Name="SaleProduct">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SaleId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="TotalCost" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="Products" Relationship="Self.FK_SaleProduct_Products" FromRole="SaleProduct" ToRole="Products" />
+          <NavigationProperty Name="Sale" Relationship="Self.FK_SaleProduct_Sale" FromRole="SaleProduct" ToRole="Sale" />
+        </EntityType>
+        <EntityType Name="ScheduleItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SectionId" Type="Int32" Nullable="false" />
+          <Property Name="DayName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Sections" Relationship="Self.FK__ScheduleI__Secti__628FA481" FromRole="ScheduleItems" ToRole="Sections" />
+        </EntityType>
+        <EntityType Name="Sections">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TrainerId" Type="Int32" Nullable="false" />
+          <Property Name="ImageData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ClientSections" Relationship="Self.FK__ClientSec__Secti__68487DD7" FromRole="Sections" ToRole="ClientSections" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK__Sections__Traine__5DCAEF64" FromRole="Sections" ToRole="Employees" />
+          <NavigationProperty Name="ScheduleItems" Relationship="Self.FK__ScheduleI__Secti__628FA481" FromRole="Sections" ToRole="ScheduleItems" />
+        </EntityType>
+        <EntityType Name="Visitors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="ArrivalTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AssignedLockerId" Type="Int32" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="DepartureTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK__Visitors__Client__7D439ABD" FromRole="Visitors" ToRole="Clients" />
+          <NavigationProperty Name="Lockers" Relationship="Self.FK__Visitors__Assign__7F2BE32F" FromRole="Visitors" ToRole="Lockers" />
+        </EntityType>
+        <Association Name="FK__Achieveme__Emplo__5441852A">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Achievements" Type="Self.Achievements" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Achievements">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Cleanings__Perfo__02084FDA">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Cleanings" Type="Self.Cleanings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Cleanings">
+              <PropertyRef Name="PerformedByEmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Clients__ParentI__5812160E">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="Clients1" Type="Self.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSec__Clien__6754599E">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="ClientSections" Type="Self.ClientSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSections">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerHis__Clien__787EE5A0">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="LockerHistory" Type="Self.LockerHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LockerHistory">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Lockers__Current__74AE54BC">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="0..1" />
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Lockers">
+              <PropertyRef Name="CurrentClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Visitors__Client__7D439ABD">
+          <End Role="Clients" Type="Self.Clients" Multiplicity="1" />
+          <End Role="Visitors" Type="Self.Visitors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clients">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitors">
+              <PropertyRef Name="ClientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ClientSec__Secti__68487DD7">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1" />
+          <End Role="ClientSections" Type="Self.ClientSections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ClientSections">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Employees__RoleI__4D94879B">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Sections__Traine__5DCAEF64">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Sections" Type="Self.Sections" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sections">
+              <PropertyRef Name="TrainerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Reminders_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Reminders" Type="Self.Reminders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Reminders">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sale_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="Sale" Type="Self.Sale" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Sale">
+              <PropertyRef Name="EmployeeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__LockerHis__Locke__778AC167">
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="1" />
+          <End Role="LockerHistory" Type="Self.LockerHistory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lockers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="LockerHistory">
+              <PropertyRef Name="LockerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Visitors__Assign__7F2BE32F">
+          <End Role="Lockers" Type="Self.Lockers" Multiplicity="0..1" />
+          <End Role="Visitors" Type="Self.Visitors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Lockers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Visitors">
+              <PropertyRef Name="AssignedLockerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProduct_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="SaleProduct" Type="Self.SaleProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaleProduct">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SaleProduct_Sale">
+          <End Role="Sale" Type="Self.Sale" Multiplicity="1" />
+          <End Role="SaleProduct" Type="Self.SaleProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sale">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SaleProduct">
+              <PropertyRef Name="SaleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ScheduleI__Secti__628FA481">
+          <End Role="Sections" Type="Self.Sections" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ScheduleItems" Type="Self.ScheduleItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sections">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ScheduleItems">
+              <PropertyRef Name="SectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SDCPervomayDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Achievements" EntityType="Self.Achievements" />
+          <EntitySet Name="Cleanings" EntityType="Self.Cleanings" />
+          <EntitySet Name="Clients" EntityType="Self.Clients" />
+          <EntitySet Name="ClientSections" EntityType="Self.ClientSections" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" />
+          <EntitySet Name="LockerHistory" EntityType="Self.LockerHistory" />
+          <EntitySet Name="Lockers" EntityType="Self.Lockers" />
+          <EntitySet Name="Products" EntityType="Self.Products" />
+          <EntitySet Name="Reminders" EntityType="Self.Reminders" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Sale" EntityType="Self.Sale" />
+          <EntitySet Name="SaleProduct" EntityType="Self.SaleProduct" />
+          <EntitySet Name="ScheduleItems" EntityType="Self.ScheduleItems" />
+          <EntitySet Name="Sections" EntityType="Self.Sections" />
+          <EntitySet Name="Visitors" EntityType="Self.Visitors" />
+          <AssociationSet Name="FK__Achieveme__Emplo__5441852A" Association="Self.FK__Achieveme__Emplo__5441852A">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Achievements" EntitySet="Achievements" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Cleanings__Perfo__02084FDA" Association="Self.FK__Cleanings__Perfo__02084FDA">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Cleanings" EntitySet="Cleanings" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Clients__ParentI__5812160E" Association="Self.FK__Clients__ParentI__5812160E">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Clients1" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSec__Clien__6754599E" Association="Self.FK__ClientSec__Clien__6754599E">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="ClientSections" EntitySet="ClientSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerHis__Clien__787EE5A0" Association="Self.FK__LockerHis__Clien__787EE5A0">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="LockerHistory" EntitySet="LockerHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Lockers__Current__74AE54BC" Association="Self.FK__Lockers__Current__74AE54BC">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Lockers" EntitySet="Lockers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Visitors__Client__7D439ABD" Association="Self.FK__Visitors__Client__7D439ABD">
+            <End Role="Clients" EntitySet="Clients" />
+            <End Role="Visitors" EntitySet="Visitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ClientSec__Secti__68487DD7" Association="Self.FK__ClientSec__Secti__68487DD7">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="ClientSections" EntitySet="ClientSections" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Employees__RoleI__4D94879B" Association="Self.FK__Employees__RoleI__4D94879B">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Sections__Traine__5DCAEF64" Association="Self.FK__Sections__Traine__5DCAEF64">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Sections" EntitySet="Sections" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Reminders_Employees" Association="Self.FK_Reminders_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Reminders" EntitySet="Reminders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sale_Employees" Association="Self.FK_Sale_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Sale" EntitySet="Sale" />
+          </AssociationSet>
+          <AssociationSet Name="FK__LockerHis__Locke__778AC167" Association="Self.FK__LockerHis__Locke__778AC167">
+            <End Role="Lockers" EntitySet="Lockers" />
+            <End Role="LockerHistory" EntitySet="LockerHistory" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Visitors__Assign__7F2BE32F" Association="Self.FK__Visitors__Assign__7F2BE32F">
+            <End Role="Lockers" EntitySet="Lockers" />
+            <End Role="Visitors" EntitySet="Visitors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProduct_Products" Association="Self.FK_SaleProduct_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="SaleProduct" EntitySet="SaleProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SaleProduct_Sale" Association="Self.FK_SaleProduct_Sale">
+            <End Role="Sale" EntitySet="Sale" />
+            <End Role="SaleProduct" EntitySet="SaleProduct" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ScheduleI__Secti__628FA481" Association="Self.FK__ScheduleI__Secti__628FA481">
+            <End Role="Sections" EntitySet="Sections" />
+            <End Role="ScheduleItems" EntitySet="ScheduleItems" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище SDCPervomayDBModelContainer" CdmEntityContainer="SDCPervomayDBEntities">
+          <EntitySetMapping Name="Achievements">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Achievements">
+              <MappingFragment StoreEntitySet="Achievements">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Cleanings">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Cleanings">
+              <MappingFragment StoreEntitySet="Cleanings">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CleanedAt" ColumnName="CleanedAt" />
+                <ScalarProperty Name="PerformedByEmployeeId" ColumnName="PerformedByEmployeeId" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Clients">
+              <MappingFragment StoreEntitySet="Clients">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="IsParent" ColumnName="IsParent" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClientSections">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.ClientSections">
+              <MappingFragment StoreEntitySet="ClientSections">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="EnrollmentDate" ColumnName="EnrollmentDate" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Patronymic" ColumnName="Patronymic" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+                <ScalarProperty Name="PhotoData" ColumnName="PhotoData" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LockerHistory">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.LockerHistory">
+              <MappingFragment StoreEntitySet="LockerHistory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="LockerId" ColumnName="LockerId" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ActionType" ColumnName="ActionType" />
+                <ScalarProperty Name="EventTime" ColumnName="EventTime" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lockers">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Lockers">
+              <MappingFragment StoreEntitySet="Lockers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="IsOccupied" ColumnName="IsOccupied" />
+                <ScalarProperty Name="CurrentClientId" ColumnName="CurrentClientId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Products">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ShelfCode" ColumnName="ShelfCode" />
+                <ScalarProperty Name="HasExpirationDate" ColumnName="HasExpirationDate" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reminders">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Reminders">
+              <MappingFragment StoreEntitySet="Reminders">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="DueTime" ColumnName="DueTime" />
+                <ScalarProperty Name="IsCompleted" ColumnName="IsCompleted" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sale">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Sale">
+              <MappingFragment StoreEntitySet="Sale">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SaleProduct">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.SaleProduct">
+              <MappingFragment StoreEntitySet="SaleProduct">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SaleId" ColumnName="SaleId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="TotalCost" ColumnName="TotalCost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScheduleItems">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.ScheduleItems">
+              <MappingFragment StoreEntitySet="ScheduleItems">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SectionId" ColumnName="SectionId" />
+                <ScalarProperty Name="DayName" ColumnName="DayName" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sections">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Sections">
+              <MappingFragment StoreEntitySet="Sections">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="TrainerId" ColumnName="TrainerId" />
+                <ScalarProperty Name="ImageData" ColumnName="ImageData" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Visitors">
+            <EntityTypeMapping TypeName="SDCPervomayDBModel.Visitors">
+              <MappingFragment StoreEntitySet="Visitors">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+                <ScalarProperty Name="ArrivalTime" ColumnName="ArrivalTime" />
+                <ScalarProperty Name="AssignedLockerId" ColumnName="AssignedLockerId" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DepartureTime" ColumnName="DepartureTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

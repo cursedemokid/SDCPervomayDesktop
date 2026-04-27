@@ -1,12 +1,13 @@
 using System.Windows;
 using SDCPervomayDesktop.Models;
 using SDCPervomayDesktop.AppData;
+using SDCPervomayDesktop.Entities;
 
 namespace SDCPervomayDesktop.View
 {
     public partial class AddParentWindow : Window
     {
-        public Client CreatedParent { get; private set; }
+        public Clients CreatedParent { get; private set; }
 
         public AddParentWindow()
         {
@@ -32,7 +33,7 @@ namespace SDCPervomayDesktop.View
                 return;
             }
 
-            CreatedParent = new Client
+            CreatedParent = new Clients
             {
                 LastName = LastNameBox.Text.Trim(),
                 FirstName = FirstNameBox.Text.Trim(),

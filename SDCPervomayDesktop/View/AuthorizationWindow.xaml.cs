@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDCPervomayDesktop.AppData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,9 +37,26 @@ namespace SDCPervomayDesktop.View
 
         private void EnterBtn_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow = new MainWindow();
-            mainWindow.Show();
-            Close();
+            string login = LoginTextBox.Text.Trim();
+            string password = PasswordPasswordBox.Password;
+            if (string.IsNullOrEmpty(login) || string.IsNullOrEmpty(password))
+            {
+                FeedbackService.Error("Введите логин и пароль", "Ошибка");
+                return;
+            }
+            // Хеширование пароля (например, SHA256) – в реальном проекте должно быть единообразно
+            string passwordHash = HashPassword(password);
+            var employee = App.context.Employees
+                .FirstOrDefault(emp => emp.Login == login && emp.PasswordHash == passwordHash && emp.IsActive);
+            if (employee == null)
+            {
+                FeedbackService.Error("Неверный логин или пароль", "Ошибка");
+                return;
+            }
+            App.CurrentEmployee = employee;
+            MainWindow main = new MainWindow();
+            main.Show();
+            this.Close();
         }
     }
 }

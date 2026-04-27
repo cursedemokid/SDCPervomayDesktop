@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SDCPervomayDesktop.Entities;
+using System;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace SDCPervomayDesktop.View
 {
@@ -19,9 +11,21 @@ namespace SDCPervomayDesktop.View
     /// </summary>
     public partial class AddEditClientWindow : Window
     {
-        public AddEditClientWindow()
+        private ObservableCollection<Clients> parents;
+        public AddEditClientWindow(Clients editClient = null)
         {
             InitializeComponent();
+            parents = new ObservableCollection<Clients>(
+                App.context.Clients.Where(c => c.IsActive && c.IsParent).ToList()
+            );
+            GrowClientsCmb.ItemsSource = parents;
+            GrowClientsCmb.DisplayMemberPath = "FullName";
+            GrowClientsCmb.SelectedValuePath = "Id";
+
+            if (editClient != null)
+            {
+                
+            }
         }
 
         private void AddBtn_Click(object sender, RoutedEventArgs e)
@@ -31,12 +35,50 @@ namespace SDCPervomayDesktop.View
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            var client = new Clients
+            {
+                LastName = LastNameTb.Text,
+                FirstName = FirstNameTb.Text,
+                Patronymic = PatronymicTb.Text,
+                BirthDate = BirthDateDp.SelectedDate,
+                Phone = PhoneNumberTb.IsEnabled ? PhoneNumberTb.Text : null,
+                Email = "",
+                ParentId = (int?)GrowClientsCmb.SelectedValue
+            };
+            App.context.Clients.Add(client);
+            App.context.SaveChanges();
+            DialogResult = true;
         }
 
         private void CancelBtn_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UpdateParentVisibility()
+        {
+            var birthDate = BirthDateDp.SelectedDate;
+            if (birthDate == null) return;
+            int age = DateTime.Today.Year - birthDate.Value.Year;
+            if (birthDate.Value.Date > DateTime.Today.AddYears(-age)) age--;
+
+            bool isYoung = age < 18;
+            IsYoung.Visibility = isYoung ? Visibility.Visible : Visibility.Collapsed;
+            PhoneNumberTb.IsEnabled = !isYoung;
+        }
+
+        private void AddParent_Click(object sender, RoutedEventArgs e)
+        {
+            var addParent = new AddParentWindow();
+            if (addParent.ShowDialog() == true)
+            {
+                var newParent = addParent.CreatedParent;
+                newParent.IsParent = true;
+                App.context.Clients.Add(newParent);
+                App.context.SaveChanges();
+                parents.Add(newParent);
+                GrowClientsCmb.SelectedValue = newParent.Id;
+            }
         }
     }
 }

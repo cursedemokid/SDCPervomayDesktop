@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4d668118dd0e4c7dba07356ac2b6202c" Name="Diagram1">
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Achievements" Width="1.5" PointX="5.25" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Cleanings" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Clients" Width="1.5" PointX="5.25" PointY="24.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.ClientSections" Width="1.5" PointX="7.5" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Employees" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.LockerHistory" Width="1.5" PointX="9.75" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Lockers" Width="1.5" PointX="7.5" PointY="28.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Products" Width="1.5" PointX="5.25" PointY="19.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Reminders" Width="1.5" PointX="5.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Roles" Width="1.5" PointX="0.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Sale" Width="1.5" PointX="5.25" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.SaleProduct" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.ScheduleItems" Width="1.5" PointX="7.5" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Sections" Width="1.5" PointX="5.25" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SDCPervomayDBModel.Visitors" Width="1.5" PointX="12.75" PointY="26.25" IsExpanded="true" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Achieveme__Emplo__5441852A" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Cleanings__Perfo__02084FDA" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Clients__ParentI__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__ClientSec__Clien__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__LockerHis__Clien__787EE5A0" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Lockers__Current__74AE54BC" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Visitors__Client__7D439ABD" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__ClientSec__Secti__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Employees__RoleI__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Sections__Traine__5DCAEF64" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK_Reminders_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK_Sale_Employees" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__LockerHis__Locke__778AC167" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__Visitors__Assign__7F2BE32F" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK_SaleProduct_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK_SaleProduct_Sale" ManuallyRouted="false" />
+        <AssociationConnector Association="SDCPervomayDBModel.FK__ScheduleI__Secti__628FA481" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

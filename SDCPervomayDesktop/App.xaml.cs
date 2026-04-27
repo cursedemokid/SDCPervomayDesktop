@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SDCPervomayDesktop.Entities;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,7 @@ namespace SDCPervomayDesktop
     /// </summary>
     public partial class App : Application
     {
+        public static SDCPervomayDBEntities context = new SDCPervomayDBEntities();
+        public static Employees CurrentEmployee { get; set; }
     }
 }

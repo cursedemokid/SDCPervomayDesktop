@@ -1,4 +1,5 @@
-﻿using SDCPervomayDesktop.View;
+﻿using SDCPervomayDesktop.AppData;
+using SDCPervomayDesktop.View;
 using SDCPervomayDesktop.View.Pages;
 using System;
 using System.Windows;
@@ -12,7 +13,12 @@ namespace SDCPervomayDesktop
         public MainWindow()
         {
             InitializeComponent();
-            // Открываем страницу посетителей по умолчанию
+            if (App.CurrentEmployee != null)
+            {
+                var isAdmin = App.CurrentEmployee.RoleId == (int)SystemEnums.Role.Admin;
+                SectionTbl.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
+                EmployeesTbl.Visibility = isAdmin ? Visibility.Visible : Visibility.Collapsed;
+            }
             MainFrame.Navigate(new ClientsPage());
             UpdateMenuUnderline(typeof(ClientsPage));
         }

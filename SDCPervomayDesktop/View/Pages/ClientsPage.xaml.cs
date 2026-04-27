@@ -23,6 +23,7 @@ namespace SDCPervomayDesktop.View.Pages
         public ClientsPage()
         {
             InitializeComponent();
+            LoadClients();
         }
 
         private void ReceptionBtn_Click(object sender, RoutedEventArgs e)
@@ -34,6 +35,19 @@ namespace SDCPervomayDesktop.View.Pages
         {
             var window = new AddEditClientWindow();
             window.ShowDialog();
+            LoadClients();
+        }
+
+        private void LoadClients()
+        {
+            var clients = App.context.Clients.Where(c => c.IsActive).ToList();
+            ClientsListView.ItemsSource = clients.Select(c => new
+            {
+                c.FullName,
+                PhoneNumber = c.Phone,
+                BirthDate = c.BirthDate?.ToString("dd.MM.yyyy"),
+                c.Id
+            }).ToList();
         }
     }
 }

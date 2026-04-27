@@ -5,20 +5,40 @@ using System.Windows.Media;
 using System.Linq;
 using SDCPervomayDesktop.Models;
 using SDCPervomayDesktop.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace SDCPervomayDesktop.View.Pages
 {
     public partial class UnifiedKeysPage : Page
     {
-        private readonly MenKeysPageViewModel _maleViewModel = new MenKeysPageViewModel(true);
-        private readonly MenKeysPageViewModel _femaleViewModel = new MenKeysPageViewModel(false);
+        private MenKeysPageViewModel maleViewModel;
+        private MenKeysPageViewModel femaleViewModel;
 
         public UnifiedKeysPage()
         {
             InitializeComponent();
-            DataContext = _maleViewModel;
-            MaleToggle.Checked += GenderToggle_Checked;
-            FemaleToggle.Checked += GenderToggle_Checked;
+            var maleLockers = App.context.Lockers.Where(l => l.Gender == "М").ToList();
+            var femaleLockers = App.context.Lockers.Where(l => l.Gender == "Ж").ToList();
+
+            maleViewModel = new MenKeysPageViewModel(maleLockers);
+            femaleViewModel = new MenKeysPageViewModel(femaleLockers);
+            DataContext = maleViewModel;
+
+            LoadVisitors();
+        }
+
+        private void LoadVisitors()
+        {
+            var activeVisitors = App.context.Visitors
+                .Where(v => v.DepartureTime == null)
+                .ToList()
+                .Select(v => new Visitor
+                {
+                    FullName = App.context.Clients.FirstOrDefault(c => c.Id == v.ClientId)?.FullName,
+
+                }).ToList();
+            maleViewModel.Visitors = new ObservableCollection<Visitor>(activeVisitors);
+            femaleViewModel.Visitors = new ObservableCollection<Visitor>(activeVisitors); 
         }
 
         private void GenderToggle_Checked(object sender, RoutedEventArgs e)
