@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
+using SDCPervomayDesktop.Properties;
 
 namespace SDCPervomayDesktop.View
 {
@@ -14,6 +15,12 @@ namespace SDCPervomayDesktop.View
         public AuthorizationWindow()
         {
             InitializeComponent();
+
+            if (!string.IsNullOrEmpty(Settings.Default.SavedLogin) && !string.IsNullOrEmpty(Settings.Default.SavedPassword))
+            {
+                LoginTextBox.Text = Settings.Default.SavedLogin;
+                PasswordPasswordBox.Password = Settings.Default.SavedPassword;
+            }
         }
 
         private void PasswordPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
@@ -49,6 +56,9 @@ namespace SDCPervomayDesktop.View
                 FeedbackService.Error("Неверный логин или пароль", "Ошибка");
                 return;
             }
+
+            Settings.Default.SavedLogin = login;
+            Settings.Default.SavedPassword = password;
 
             App.CurrentEmployee = employee;
             MainWindow main = new MainWindow();
