@@ -8,11 +8,11 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Текст заслуги:" FontSize="16" Margin="5"/>
-        <TextBox x:Name="AchievementTextBox" Grid.Row="1" Width="300" Height="80" TextWrapping="Wrap" AcceptsReturn="True" FontSize="14" Margin="5"/>
+        <TextBlock Text="Текст заслуги:" FontSize="16" Margin="5" FontFamily="{StaticResource GothamProFamily}"/>
+        <TextBox x:Name="AchievementTextBox" Grid.Row="1" Width="300" Height="80" TextWrapping="Wrap" AcceptsReturn="True" FontSize="14" Margin="5" FontFamily="{StaticResource GothamProFamily}"/>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-            <Button Content="OK"  Margin="5" Click="Ok_Click"/>
-            <Button Content="Отмена"  Margin="5" Click="Cancel_Click"/>
+            <Button Content="OK"  Margin="5" Click="Ok_Click" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button Content="Отмена"  Margin="5" Click="Cancel_Click" FontFamily="{StaticResource GothamProFamily}"/>
         </StackPanel>
     </Grid>
 </Window>

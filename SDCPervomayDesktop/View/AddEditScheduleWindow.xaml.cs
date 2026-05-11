@@ -48,13 +48,9 @@ namespace SDCPervomayDesktop.View
 
         private void LoadSections()
         {
-            // Заглушка
-            Sections = new ObservableCollection<Sections>
-            {
-                new Sections { Id = 1, Title = "Футбол" },
-                new Sections { Id = 2, Title = "Баскетбол" },
-                new Sections { Id = 3, Title = "Плавание" }
-            };
+            Sections = new ObservableCollection<Sections>(
+                App.context.Sections.Where(s => s.IsActive).ToList()
+            );
             SectionCombo.ItemsSource = Sections;
         }
 

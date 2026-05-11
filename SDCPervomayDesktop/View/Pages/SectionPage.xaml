@@ -63,5 +63,17 @@
             </ListView.View>
         </ListView>
 
+        <Grid Background="White" Width="600" Margin="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="60" />
+            </Grid.ColumnDefinitions>
+            <TextBox Name="SearchTextBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button Grid.Column="1" Width="50" Height="50" Padding="0" Background="White" BorderThickness="0" >
+                <Button.Content>
+                    <Image Source="/Resources/search.png"  Grid.Column="1" Width="45" Height="45"/>
+                </Button.Content>
+            </Button>
+        </Grid>
     </Grid>
 </Page>

@@ -1,37 +1,46 @@
-﻿using System;
+﻿using SDCPervomayDesktop.AppData;
+using SDCPervomayDesktop.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace SDCPervomayDesktop.View.Pages
 {
-    /// <summary>
-    /// Логика взаимодействия для EmployeesPage.xaml
-    /// </summary>
     public partial class EmployeesPage : Page
     {
+        private List<Employees> allEmployees;
+
         public EmployeesPage()
         {
             InitializeComponent();
             LoadEmployees();
+            if (App.CurrentEmployee.RoleId == 3)
+                AdminGrid.Visibility = Visibility.Collapsed;
+
+            SearchTextBox.TextChanged += (s, e) => ApplyFilter();
         }
 
         private void LoadEmployees()
         {
-            var employees = App.context.Employees
-                .Where(e => e.IsActive)
-                .ToList();
-            SectionListView.ItemsSource = employees.Select(e => new
+            allEmployees = App.context.Employees.Where(e => e.IsActive).ToList();
+            ApplyFilter();
+        }
+
+        private void ApplyFilter()
+        {
+            string search = SearchTextBox.Text?.Trim().ToLower();
+            var filtered = allEmployees;
+            if (!string.IsNullOrEmpty(search))
+                filtered = filtered.Where(e =>
+                    (e.FullName ?? "").ToLower().Contains(search) ||
+                    (e.Email ?? "").ToLower().Contains(search) ||
+                    (e.Phone ?? "").ToLower().Contains(search) ||
+                    (e.Login ?? "").ToLower().Contains(search)
+                ).ToList();
+
+            EmployeeListView.ItemsSource = filtered.Select(e => new
             {
                 e.FullName,
                 e.Email,
@@ -50,6 +59,39 @@ namespace SDCPervomayDesktop.View.Pages
                 LoadEmployees();
         }
 
-        // EditBtn, DeleteBtn – аналогично, передача Id
+        private void EditBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = GetSelectedEmployee();
+            if (selected != null)
+            {
+                var window = new AddEditEmployeeWindow(selected);
+                if (window.ShowDialog() == true)
+                    LoadEmployees();
+            }
+            else FeedbackService.Error("Выберите сотрудника!");
+        }
+
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = GetSelectedEmployee();
+            if (selected != null)
+            {
+                if (FeedbackService.Question("Вы уверены, что хотите удалить сотрудника?") == MessageBoxResult.Yes)
+                {
+                    App.context.Employees.Remove(selected);
+                    App.context.SaveChanges();
+                    LoadEmployees();
+                }
+            }
+            else FeedbackService.Error("Выберите сотрудника!");
+        }
+
+        private Employees GetSelectedEmployee()
+        {
+            if (EmployeeListView.SelectedItem == null) return null;
+            dynamic item = EmployeeListView.SelectedItem;
+            int id = item.Id;
+            return App.context.Employees.Find(id);
+        }
     }
 }

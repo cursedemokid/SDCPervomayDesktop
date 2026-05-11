@@ -48,7 +48,7 @@
                 <ComboBox Name="GrowClientsCmb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
             </GroupBox>
             
-            <Button Margin="0 10 0 10" Grid.Row="1" Content="Добавить родителя" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250" HorizontalAlignment="Right"/>
+            <Button Name="AddParent" Margin="0 10 0 10" Grid.Row="1" Content="Добавить родителя" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250" HorizontalAlignment="Right" Click="AddParent_Click"/>
         </Grid>
         
         <Grid Grid.Row="8">
@@ -59,7 +59,7 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Name="AddBtn" Grid.Column="1" Content="Добавить" Click="AddBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button Name="AddBtn" Grid.Column="1" Content="Добавить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
             <Button Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
             <Button Name="CancelBtn" Grid.Column="3" Content="Отмена" Click="CancelBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </Grid>

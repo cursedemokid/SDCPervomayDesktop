@@ -57,8 +57,11 @@ namespace SDCPervomayDesktop.View
                 return;
             }
 
-            Settings.Default.SavedLogin = login;
-            Settings.Default.SavedPassword = password;
+            if (RememberMeCheckBox.IsChecked == true)
+            {
+                Settings.Default.SavedLogin = login;
+                Settings.Default.SavedPassword = password;
+            }
 
             App.CurrentEmployee = employee;
             MainWindow main = new MainWindow();

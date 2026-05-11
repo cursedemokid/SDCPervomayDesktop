@@ -78,7 +78,7 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <ListBox Grid.Row="4">
+        <ListBox Name="ScheduleListBox" Grid.Row="4">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border 
@@ -124,8 +124,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Grid>
-            
-        </Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,10">
+            <Button Content="←" FontSize="20" Click="PrevWeek_Click" Background="Transparent" BorderThickness="0"/>
+            <TextBlock x:Name="WeekLabel" FontSize="20" VerticalAlignment="Center" Margin="10,0"/>
+            <Button Content="→" FontSize="20" Click="NextWeek_Click" Background="Transparent" BorderThickness="0"/>
+        </StackPanel>
     </Grid>
 </Page>

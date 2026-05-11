@@ -27,7 +27,7 @@
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Name="EditBtn" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+            <Button Name="EditBtn" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5" Click="EditBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Редактировать" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
@@ -43,7 +43,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Name="DeleteBtn" Grid.Column="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+            <Button Name="DeleteBtn" Grid.Column="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5" Click="DeleteBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Удалить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
@@ -52,7 +52,7 @@
                 </Button.Content>
             </Button>
         </Grid>
-        <ListView Name="SectionListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
+        <ListView Name="EmployeeListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ФИО" DisplayMemberBinding="{Binding FullName}"/>
@@ -64,5 +64,35 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        
+        <Grid Grid.Row="0" Width="600">
+            <Border Grid.Column="3"    
+            CornerRadius="3" 
+            Background="White" 
+            ClipToBounds="False" 
+            UseLayoutRounding="True">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="20" 
+              ShadowDepth="0" 
+              Opacity="0.25" 
+              Color="Gray"/>
+                </Border.Effect>
+
+
+                <Grid Background="White" Width="600" Margin="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="60" />
+                    </Grid.ColumnDefinitions>
+                    <TextBox Name="SearchTextBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+                    <Button Grid.Column="1" Width="50" Height="50" Padding="0" Background="White" BorderThickness="0" >
+                        <Button.Content>
+                            <Image Source="/Resources/search.png"  Grid.Column="1" Width="45" Height="45"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
+
 </Page>

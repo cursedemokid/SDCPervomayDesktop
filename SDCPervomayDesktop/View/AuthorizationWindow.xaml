@@ -81,7 +81,7 @@
                         <PasswordBox x:Name="PasswordPasswordBox" FontSize="15" FontFamily="{StaticResource GothamProFamily}" 
                                      PasswordChanged="PasswordPasswordBox_PasswordChanged"/>
                     </GroupBox>
-                    <CheckBox Grid.Row="4" Content="Запомнить меня" FontSize="20" 
+                    <CheckBox Name="RememberMeCheckBox" Grid.Row="4" Content="Запомнить меня" FontSize="20" 
                    FontFamily="{StaticResource GothamProFamily}" HorizontalAlignment="Center" Width="400"/>
                     <Button Name="EnterBtn" Grid.Row="6" Content="Войти" Width="400" FontSize="20" 
                    FontFamily="{StaticResource GothamProFamily}" Height="32" VerticalAlignment="Bottom" Click="EnterBtn_Click"/>

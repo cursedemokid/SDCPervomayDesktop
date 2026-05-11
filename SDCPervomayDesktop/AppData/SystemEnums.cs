@@ -11,8 +11,8 @@ namespace SDCPervomayDesktop.AppData
         public enum Role
         {
             Admin = 1,
-            Worker = 2,
-            Coach = 3,
+            Worker = 3,
+            Coach = 2,
             Client = 4,
             Parent = 5,
         }
