@@ -203,7 +203,7 @@ namespace SDCPervomayDesktop.View
         {
             if (_achievements == null) return;
 
-            var existing = _currentEmployee.Achievements.ToList();
+            var existing = (_currentEmployee.Achievements ?? Enumerable.Empty<Achievements>()).ToList();
             foreach (var exist in existing)
             {
                 if (!_achievements.Any(a => a.Id == exist.Id))

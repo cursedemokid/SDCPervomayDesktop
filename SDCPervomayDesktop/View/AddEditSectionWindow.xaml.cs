@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using SDCPervomayDesktop;
 using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 using System;
@@ -65,6 +66,8 @@ namespace SDCPervomayDesktop.View
         {
             if (!ValidateFields()) return;
             UpdateSectionFromForm();
+            _currentSection.CreatedAt = DateTime.Now;
+            _currentSection.IsActive = true;
             App.context.Sections.Add(_currentSection);
             App.context.SaveChanges();
             FeedbackService.Information($"Секция \"{_currentSection.Title}\" добавлена!", "Успех");

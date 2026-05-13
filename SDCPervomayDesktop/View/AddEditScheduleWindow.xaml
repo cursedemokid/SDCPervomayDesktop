@@ -48,7 +48,7 @@
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="auto"/>
-                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="auto"/>
@@ -57,7 +57,7 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="{Binding DayName}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
                                 <TextBlock Grid.Column="2" Text="{Binding StartTimeString}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-                                <TextBlock Grid.Column="3" Text="-" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+                                <TextBlock Grid.Column="3" Text="–" FontSize="20" FontFamily="{StaticResource GothamProFamily}" VerticalAlignment="Center"/>
                                 <TextBlock Grid.Column="4" Text="{Binding EndTimeString}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
                                 <Button Padding="2" Grid.Column="6" Width="35" Height="35" Click="EditScheduleItem_Click" Tag="{Binding}">
                                     <Image Source="/Resources/edit.png" Width="30" Height="30"/>
@@ -82,7 +82,7 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Button Name="AddBtn" Grid.Column="1" Content="Добавить" Click="AddBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-            <Button Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Visibility="Collapsed"/>
             <Button Name="CancelBtn" Grid.Column="3" Content="Отмена" Click="CancelBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </Grid>
     </Grid>

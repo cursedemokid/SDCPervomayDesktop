@@ -93,16 +93,18 @@
                             </Border.Effect>
                             <Grid Margin="10">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="10"/>
                                     <ColumnDefinition Width="auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="{Binding Text}" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Text}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" TextWrapping="Wrap"/>
                                 <Button Padding="2" Grid.Column="2" Width="35" Height="35"
                                         Click="EditAchievement_Click" Tag="{Binding}">
                                     <Image Source="/Resources/edit.png" Width="30" Height="30"/>
                                 </Button>
-                                <Button Padding="2" Grid.Column="3" Width="35" Height="35"
+                                <Button Padding="2" Grid.Column="4" Width="35" Height="35"
                                         Click="DeleteAchievement_Click" Tag="{Binding}">
                                     <Image Source="/Resources/bin.png" Width="30" Height="30"/>
                                 </Button>
@@ -140,7 +142,7 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Button x:Name="AddBtn" Grid.Column="1" Content="Добавить" Click="AddBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-            <Button x:Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button x:Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Visibility="Collapsed"/>
             <Button x:Name="CancelBtn" Grid.Column="3" Content="Отмена" Click="CancelBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </Grid>
     </Grid>

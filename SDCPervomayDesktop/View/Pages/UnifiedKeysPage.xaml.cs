@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
+using SDCPervomayDesktop;
 using SDCPervomayDesktop.Entities;
 using SDCPervomayDesktop.ViewModels;
 
@@ -13,8 +14,8 @@ namespace SDCPervomayDesktop.View.Pages
 {
     public partial class UnifiedKeysPage : Page
     {
-        private MenKeysPageViewModel maleViewModel;
-        private MenKeysPageViewModel femaleViewModel;
+        private readonly MenKeysPageViewModel maleViewModel;
+        private readonly MenKeysPageViewModel femaleViewModel;
 
         public UnifiedKeysPage()
         {
@@ -29,42 +30,28 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void LoadVisitors()
         {
-            var activeVisitors = App.context.Visitors
-                .Where(v => v.DepartureTime == null)
-                .ToList()
-                .Select(v => new Visitors
+            var maleItems = App.context.Visitors
+                .Where(v => v.DepartureTime == null && v.Gender == "М")
+                .Select(v => new ActiveVisitorListItem
                 {
                     Id = v.Id,
                     ClientId = v.ClientId,
-                    ArrivalTime = v.ArrivalTime,
-                    AssignedLockerId = v.AssignedLockerId,
-                    Gender = v.Gender,
-                    DepartureTime = v.DepartureTime,
-                }).ToList();
+                    FullName = v.Clients.FullName
+                })
+                .ToList();
 
-            maleViewModel.Visitors = new ObservableCollection<Visitors>(activeVisitors);
-            femaleViewModel.Visitors = new ObservableCollection<Visitors>(activeVisitors);
-        }
+            var femaleItems = App.context.Visitors
+                .Where(v => v.DepartureTime == null && v.Gender == "Ж")
+                .Select(v => new ActiveVisitorListItem
+                {
+                    Id = v.Id,
+                    ClientId = v.ClientId,
+                    FullName = v.Clients.FullName
+                })
+                .ToList();
 
-        private void GenderToggle_Checked(object sender, RoutedEventArgs e)
-        {
-            var toggle = sender as ToggleButton;
-            if (toggle == MaleToggle)
-            {
-                DataContext = maleViewModel;
-                MaleGrid.Visibility = Visibility.Visible;
-                FemaleGrid.Visibility = Visibility.Collapsed;
-                MaleToggle.IsChecked = true;
-                FemaleToggle.IsChecked = false;
-            }
-            else if (toggle == FemaleToggle)
-            {
-                DataContext = femaleViewModel;
-                MaleGrid.Visibility = Visibility.Collapsed;
-                FemaleGrid.Visibility = Visibility.Visible;
-                MaleToggle.IsChecked = false;
-                FemaleToggle.IsChecked = true;
-            }
+            maleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(maleItems);
+            femaleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(femaleItems);
         }
 
         private void MaleToggle_Checked(object sender, RoutedEventArgs e)
@@ -86,11 +73,10 @@ namespace SDCPervomayDesktop.View.Pages
         private void LockerButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var locker = button?.Tag as Lockers;
-            if (locker == null) return;
+            var lockerVm = button?.Tag as LockerViewModel;
+            if (lockerVm == null) return;
 
-            var vm = DataContext as MenKeysPageViewModel;
-            if (vm == null) return;
+            var locker = lockerVm.Entity;
 
             var history = GetLockerHistory(locker.Id);
             var tooltipPanel = new StackPanel
@@ -152,9 +138,12 @@ namespace SDCPervomayDesktop.View.Pages
 
                 returnButton.Click += (s, args) =>
                 {
-                    locker.IsOccupied = false;
                     locker.CurrentClientId = null;
-                    App.context.SaveChanges();
+                    lockerVm.IsOccupied = false;
+
+                    var visitor = App.context.Visitors.FirstOrDefault(v => v.AssignedLockerId == locker.Id && v.DepartureTime == null);
+                    if (visitor != null)
+                        visitor.AssignedLockerId = null;
 
                     App.context.LockerHistory.Add(new LockerHistory
                     {
@@ -179,25 +168,29 @@ namespace SDCPervomayDesktop.View.Pages
                 };
                 tooltipPanel.Children.Add(hintText);
 
+                var vm = DataContext as MenKeysPageViewModel;
                 var visitorComboBox = new ComboBox
                 {
                     Width = 220,
                     Height = 25,
                     DisplayMemberPath = "FullName",
-                    SelectedValuePath = "Id",
-                    ItemsSource = vm.Visitors,
+                    ItemsSource = vm?.ActiveVisitors,
                     SelectedIndex = -1
                 };
                 tooltipPanel.Children.Add(visitorComboBox);
 
                 visitorComboBox.SelectionChanged += (s, args) =>
                 {
-                    var selected = visitorComboBox.SelectedItem as Visitors;
-                    if (selected == null) return;
+                    var selected = visitorComboBox.SelectedItem as ActiveVisitorListItem;
+                    if (selected == null)
+                        return;
 
-                    locker.IsOccupied = true;
                     locker.CurrentClientId = selected.ClientId;
-                    App.context.SaveChanges();
+                    lockerVm.IsOccupied = true;
+
+                    var visitorEntity = App.context.Visitors.Find(selected.Id);
+                    if (visitorEntity != null)
+                        visitorEntity.AssignedLockerId = locker.Id;
 
                     App.context.LockerHistory.Add(new LockerHistory
                     {
@@ -205,7 +198,7 @@ namespace SDCPervomayDesktop.View.Pages
                         ClientId = selected.ClientId,
                         ActionType = "Issued",
                         EventTime = DateTime.Now,
-                        Comment = $"Ключ выдан: {selected.Clients.FullName}"
+                        Comment = $"Ключ выдан: {selected.FullName}"
                     });
                     App.context.SaveChanges();
 

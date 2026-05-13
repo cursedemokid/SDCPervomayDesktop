@@ -1,6 +1,7 @@
 ﻿using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,24 +10,48 @@ namespace SDCPervomayDesktop.View
 {
     public partial class AddScheduleItemWindow : Window
     {
+        private readonly ScheduleItems _editItem;
+
         public ScheduleItems ScheduleItem { get; private set; }
 
         public AddScheduleItemWindow(ScheduleItems editItem = null)
         {
             InitializeComponent();
+            _editItem = editItem;
             if (editItem != null)
             {
-                // Заполнить поля
-                DayCombo.SelectedItem = DayCombo.Items.Cast<ComboBoxItem>().FirstOrDefault(i => i.Content.ToString() == editItem.DayName);
-                StartTimeBox.Text = editItem.StartTime.ToString(@"hh\:mm");
-                EndTimeBox.Text = editItem.EndTime.ToString(@"hh\:mm");
+                DayCombo.SelectedItem = DayCombo.Items.Cast<ComboBoxItem>()
+                    .FirstOrDefault(i => i.Content.ToString() == editItem.DayName);
+                StartTimeBox.Text = editItem.StartTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
+                EndTimeBox.Text = editItem.EndTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
             }
+        }
+
+        private static bool TryParseTimeSpan(string text, out TimeSpan value)
+        {
+            text = (text ?? string.Empty).Trim();
+            if (TimeSpan.TryParse(text, out value))
+                return true;
+
+            var formats = new[] { "HH:mm", "H:mm", "hh\\:mm", "h\\:mm" };
+            var today = DateTime.Today;
+            foreach (var fmt in formats)
+            {
+                if (DateTime.TryParseExact(text, fmt, CultureInfo.InvariantCulture, DateTimeStyles.None, out var dt))
+                {
+                    value = dt.TimeOfDay;
+                    return true;
+                }
+            }
+
+            value = default;
+            return false;
         }
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!TimeSpan.TryParse(StartTimeBox.Text, out TimeSpan start) ||
-                !TimeSpan.TryParse(EndTimeBox.Text, out TimeSpan end))
+            if (!TryParseTimeSpan(StartTimeBox.Text, out TimeSpan start) ||
+                !TryParseTimeSpan(EndTimeBox.Text, out TimeSpan end))
             {
                 FeedbackService.Error("Неверный формат времени. Используйте ЧЧ:ММ", "Ошибка");
                 return;
@@ -45,12 +70,23 @@ namespace SDCPervomayDesktop.View
                 return;
             }
 
-            ScheduleItem = new ScheduleItems
+            if (_editItem != null)
             {
-                DayName = dayComboItem.Content.ToString(),
-                StartTime = start,
-                EndTime = end
-            };
+                _editItem.DayName = dayComboItem.Content.ToString();
+                _editItem.StartTime = start;
+                _editItem.EndTime = end;
+                ScheduleItem = _editItem;
+            }
+            else
+            {
+                ScheduleItem = new ScheduleItems
+                {
+                    DayName = dayComboItem.Content.ToString(),
+                    StartTime = start,
+                    EndTime = end
+                };
+            }
+
             DialogResult = true;
             Close();
         }

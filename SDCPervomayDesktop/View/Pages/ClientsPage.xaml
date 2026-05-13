@@ -36,9 +36,9 @@
                 Grid.Column="1">
                 
                 <ComboBox Name="FilterCombo">
+                    <ComboBoxItem Content="Все" Name="All" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
                     <ComboBoxItem Content="Дети до 18" Name="Kids" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
                     <ComboBoxItem Content="Старше 18" Name="Grow" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
-                    <ComboBoxItem Content="Все" Name="All" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
                 </ComboBox>
             </GroupBox>
 
@@ -61,7 +61,7 @@
                         <ColumnDefinition Width="60" />
                     </Grid.ColumnDefinitions>
                     <TextBox Name="SearchTextBox" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-                    <Button Grid.Column="1" Width="50" Height="50" Padding="0" Background="White" BorderThickness="0" >
+                    <Button Grid.Column="1" Width="50" Height="50" Padding="0" Background="White" BorderThickness="0" Click="SearchBtn_Click">
                         <Button.Content>
                             <Image Source="/Resources/search.png"  Grid.Column="1" Width="45" Height="45"/>
                         </Button.Content>
@@ -73,7 +73,8 @@
                     FontFamily="{StaticResource GothamProFamily}" FontSize="20" Click="ReceptionBtn_Click" Visibility="Visible"/>
         </Grid>
 
-        <ListView Name="ClientsListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
+        <ListView Name="ClientsListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0"
+                  MouseDoubleClick="ClientsListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ФИО" DisplayMemberBinding="{Binding FullName}"/>

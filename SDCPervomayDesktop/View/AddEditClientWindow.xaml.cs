@@ -1,4 +1,5 @@
-﻿using SDCPervomayDesktop.AppData;
+﻿using SDCPervomayDesktop;
+using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 using System;
 using System.Collections.ObjectModel;
@@ -9,12 +10,24 @@ namespace SDCPervomayDesktop.View
 {
     public partial class AddEditClientWindow : Window
     {
-        private ObservableCollection<Clients> parents;
-        private Clients _editClient;
+        private readonly ObservableCollection<Clients> parents;
+        private readonly Clients _editClient;
+        private readonly bool _parentQuickAdd;
 
-        public AddEditClientWindow(Clients editClient = null)
+        /// <summary>Заполнено после сохранения в режиме «только родитель».</summary>
+        public Clients SavedParent { get; private set; }
+
+        /// <summary>
+        /// Добавление или редактирование посетителя (клиента).
+        /// </summary>
+        /// <param name="editClient">Клиент для правки или null для нового.</param>
+        /// <param name="parentQuickAdd">Краткая форма добавления родителя (та же сущность Clients).</param>
+        public AddEditClientWindow(Clients editClient = null, bool parentQuickAdd = false)
         {
             InitializeComponent();
+
+            _editClient = editClient;
+            _parentQuickAdd = parentQuickAdd;
 
             parents = new ObservableCollection<Clients>(
                 App.context.Clients.Where(c => c.IsActive && c.IsParent).ToList()
@@ -23,28 +36,49 @@ namespace SDCPervomayDesktop.View
             GrowClientsCmb.DisplayMemberPath = "FullName";
             GrowClientsCmb.SelectedValuePath = "Id";
 
-            IsYoung.Visibility = Visibility.Collapsed; // панель родителя скрыта
+            IsYoung.Visibility = Visibility.Collapsed;
 
-            BirthDateDp.SelectedDateChanged += (s, e) => UpdateParentVisibility();
-
-            if (editClient != null)
+            if (_parentQuickAdd)
             {
-                _editClient = editClient;
-                // Заполняем поля для редактирования
-                LastNameTb.Text = editClient.LastName;
-                FirstNameTb.Text = editClient.FirstName;
-                PatronymicTb.Text = editClient.Patronymic;
-                BirthDateDp.SelectedDate = editClient.BirthDate;
-                PhoneNumberTb.Text = editClient.Phone;
-                if (editClient.ParentId.HasValue)
-                    GrowClientsCmb.SelectedValue = editClient.ParentId.Value;
-                // Обновляем видимость родителя
+                BirthDateGroup.Visibility = Visibility.Collapsed;
+                IsYoung.Visibility = Visibility.Collapsed;
+                PhoneNumberTb.IsEnabled = true;
+                Title = "Добавить родителя";
+                AddBtn.Visibility = Visibility.Collapsed;
+                SaveBtn.Visibility = Visibility.Visible;
+                SaveBtn.Content = "Добавить";
+            }
+            else if (_editClient != null)
+            {
+                Title = "Редактирование посетителя";
+                AddBtn.Visibility = Visibility.Collapsed;
+                SaveBtn.Visibility = Visibility.Visible;
+                SaveBtn.Content = "Сохранить";
+
+                LastNameTb.Text = _editClient.LastName;
+                FirstNameTb.Text = _editClient.FirstName;
+                PatronymicTb.Text = _editClient.Patronymic;
+                BirthDateDp.SelectedDate = _editClient.BirthDate;
+                PhoneNumberTb.Text = _editClient.Phone;
+                if (_editClient.ParentId.HasValue)
+                    GrowClientsCmb.SelectedValue = _editClient.ParentId.Value;
                 UpdateParentVisibility();
             }
+            else
+            {
+                Title = "Новый посетитель";
+                AddBtn.Visibility = Visibility.Visible;
+                SaveBtn.Visibility = Visibility.Collapsed;
+            }
+
+            BirthDateDp.SelectedDateChanged += (s, e) => UpdateParentVisibility();
         }
 
         private void UpdateParentVisibility()
         {
+            if (_parentQuickAdd)
+                return;
+
             var birthDate = BirthDateDp.SelectedDate;
             if (birthDate == null)
             {
@@ -70,21 +104,55 @@ namespace SDCPervomayDesktop.View
 
         private void AddParent_Click(object sender, RoutedEventArgs e)
         {
-            var addParent = new AddParentWindow();
-            if (addParent.ShowDialog() == true)
-            {
-                var newParent = addParent.CreatedParent;
-                newParent.IsParent = true;
-                App.context.Clients.Add(newParent);
-                App.context.SaveChanges();
-                parents.Add(newParent);
-                GrowClientsCmb.SelectedValue = newParent.Id;
-            }
+            var dlg = new AddEditClientWindow(null, parentQuickAdd: true);
+            if (dlg.ShowDialog() != true || dlg.SavedParent == null)
+                return;
+
+            parents.Clear();
+            foreach (var p in App.context.Clients.Where(c => c.IsActive && c.IsParent).OrderBy(c => c.LastName).ThenBy(c => c.FirstName))
+                parents.Add(p);
+            GrowClientsCmb.SelectedValue = dlg.SavedParent.Id;
         }
 
         private void SaveBtn_Click(object sender, RoutedEventArgs e)
         {
-            // Валидация (можно добавить)
+            if (_parentQuickAdd)
+            {
+                if (string.IsNullOrWhiteSpace(LastNameTb.Text))
+                {
+                    FeedbackService.Error("Введите фамилию.", "Ошибка");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(FirstNameTb.Text))
+                {
+                    FeedbackService.Error("Введите имя.", "Ошибка");
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(PhoneNumberTb.Text))
+                {
+                    FeedbackService.Error("Введите номер телефона.", "Ошибка");
+                    return;
+                }
+
+                var parent = new Clients
+                {
+                    LastName = LastNameTb.Text.Trim(),
+                    FirstName = FirstNameTb.Text.Trim(),
+                    Patronymic = string.IsNullOrWhiteSpace(PatronymicTb.Text) ? null : PatronymicTb.Text.Trim(),
+                    Phone = PhoneNumberTb.Text.Trim(),
+                    Email = "",
+                    IsParent = true,
+                    CreatedAt = DateTime.Now,
+                    IsActive = true
+                };
+                App.context.Clients.Add(parent);
+                App.context.SaveChanges();
+                SavedParent = parent;
+                DialogResult = true;
+                Close();
+                return;
+            }
+
             if (string.IsNullOrWhiteSpace(LastNameTb.Text) || string.IsNullOrWhiteSpace(FirstNameTb.Text))
             {
                 FeedbackService.Error("Фамилия и имя обязательны!");
@@ -124,6 +192,5 @@ namespace SDCPervomayDesktop.View
             DialogResult = false;
             Close();
         }
-
     }
 }

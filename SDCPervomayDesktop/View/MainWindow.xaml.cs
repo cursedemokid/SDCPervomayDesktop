@@ -69,14 +69,20 @@ namespace SDCPervomayDesktop
             ClientsTbl.TextDecorations = null;
             ScheduleTbl.TextDecorations = null;
             KeysTbl.TextDecorations = null;
+            SectionTbl.TextDecorations = null;
+            EmployeesTbl.TextDecorations = null;
 
             // Устанавливаем подчёркивание для активной страницы
             if (pageType == typeof(ClientsPage))
                 ClientsTbl.TextDecorations = TextDecorations.Underline;
             else if (pageType == typeof(SchedulePage))
                 ScheduleTbl.TextDecorations = TextDecorations.Underline;
-            else if (pageType == typeof(MenKeysPage))
+            else if (pageType == typeof(UnifiedKeysPage))
                 KeysTbl.TextDecorations = TextDecorations.Underline;
+            else if (pageType == typeof(SectionPage))
+                SectionTbl.TextDecorations = TextDecorations.Underline;
+            else if (pageType == typeof(EmployeesPage))
+                EmployeesTbl.TextDecorations = TextDecorations.Underline;
         }
 
         private void EmployeesTbl_MouseDown(object sender, MouseButtonEventArgs e)

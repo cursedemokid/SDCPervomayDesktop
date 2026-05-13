@@ -6,7 +6,7 @@
       xmlns:local="clr-namespace:SDCPervomayDesktop.View.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="434" d:DesignWidth="1280"
-        Title="ClientsPage">
+        Title="Расписание">
 
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -69,7 +69,7 @@
                     </StackPanel>
                 </Button.Content>
             </Button>
-            <Button Name="DeleteBtn" Grid.Column="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5">
+            <Button Name="DeleteBtn" Grid.Column="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Background="White" Padding="5" Click="DeleteBtn_Click">
                 <Button.Content>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Удалить" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="0 0 10 0"/>
@@ -98,8 +98,8 @@
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="2*" />
                             </Grid.RowDefinitions>
-                            <Image Source="{Binding Source}"/>
-                            <Grid>
+                            <Image Grid.Row="0" Source="{Binding Source}" Stretch="UniformToFill"/>
+                            <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="10" />

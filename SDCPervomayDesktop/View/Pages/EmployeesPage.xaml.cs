@@ -1,4 +1,5 @@
-﻿using SDCPervomayDesktop.AppData;
+﻿using SDCPervomayDesktop;
+using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 using System;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace SDCPervomayDesktop.View.Pages
             {
                 if (FeedbackService.Question("Вы уверены, что хотите удалить сотрудника?") == MessageBoxResult.Yes)
                 {
-                    App.context.Employees.Remove(selected);
+                    selected.IsActive = false;
                     App.context.SaveChanges();
                     LoadEmployees();
                 }

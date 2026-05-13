@@ -16,7 +16,7 @@ namespace SDCPervomayDesktop.View.Pages
         private void LockerButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var locker = button?.Tag as Locker;
+            var locker = button?.Tag as LockerViewModel;
             if (locker == null) return;
 
             // Создаём всплывающее окно (Popup)

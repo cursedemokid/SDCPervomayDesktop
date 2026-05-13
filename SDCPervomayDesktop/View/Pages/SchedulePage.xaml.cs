@@ -1,4 +1,5 @@
-﻿using SDCPervomayDesktop.AppData;
+﻿using SDCPervomayDesktop;
+using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,8 @@ namespace SDCPervomayDesktop.View.Pages
 
             currentMonday = GetMonday(DateTime.Today);
             UpdateWeekLabel();
-            LoadDaySchedule("Пн"); // по умолчанию понедельник
+            HighlightDay(MondayTbl);
+            LoadDaySchedule("Пн");
         }
 
         private DateTime GetMonday(DateTime date)
@@ -52,14 +54,14 @@ namespace SDCPervomayDesktop.View.Pages
 
         private string GetActiveDayName()
         {
-            // Определяем, какой день выбран (по жирному шрифту)
             if (MondayTbl.FontWeight == FontWeights.Bold) return "Пн";
             if (TuesdayTbl.FontWeight == FontWeights.Bold) return "Вт";
             if (WednesdayTbl.FontWeight == FontWeights.Bold) return "Ср";
             if (ThursdayTbl.FontWeight == FontWeights.Bold) return "Чт";
             if (FridayTbl.FontWeight == FontWeights.Bold) return "Пт";
             if (SaturdayTbl.FontWeight == FontWeights.Bold) return "Сб";
-            return "Вс";
+            if (SundayTbl.FontWeight == FontWeights.Bold) return "Вс";
+            return "Пн";
         }
 
         private void HighlightDay(TextBlock selected)
@@ -79,37 +81,36 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void LoadDaySchedule(string dayName)
         {
-            // Выбираем нужные занятия на указанный день недели
             var rawItems = App.context.ScheduleItems
                 .Where(si => si.DayName == dayName)
                 .Select(si => new
                 {
-                    SectionId = si.SectionId,
+                    si.Id,
+                    si.SectionId,
                     SectionTitle = si.Sections.Title,
                     TrainerId = si.Sections.TrainerId,
-                    StartTime = si.StartTime,
-                    EndTime = si.EndTime,
+                    si.StartTime,
+                    si.EndTime,
                     ImageData = si.Sections.ImageData
                 })
                 .ToList();
 
-            // Собираем всех тренеров одним запросом
             var trainerIds = rawItems.Select(i => i.TrainerId).Distinct().ToList();
             var trainers = App.context.Employees
                 .Where(e => trainerIds.Contains(e.Id))
                 .ToDictionary(
                     e => e.Id,
-                    e => e.LastName + " " + e.FirstName + " " + (e.Patronymic ?? "")
+                    e => (e.LastName + " " + e.FirstName + " " + (e.Patronymic ?? "")).Trim()
                 );
 
-            // Формируем финальный список
             var items = rawItems.Select(i => new
             {
-                i.SectionId,
-                i.SectionTitle,
-                CoachFullName = trainers.TryGetValue(i.TrainerId, out var name) ? name : "",
+                Name = i.SectionTitle,
+                Source = i.ImageData != null ? ByteArrayToImage(i.ImageData) : null,
                 Time = $"{i.StartTime:hh\\:mm} - {i.EndTime:hh\\:mm}",
-                ImageSource = i.ImageData != null ? ByteArrayToImage(i.ImageData) : null
+                CoachFullName = trainers.TryGetValue(i.TrainerId, out var name) ? name : "",
+                ScheduleItemId = i.Id,
+                i.SectionId
             }).ToList();
 
             ScheduleListBox.ItemsSource = items;
@@ -154,6 +155,30 @@ namespace SDCPervomayDesktop.View.Pages
                 if (window.ShowDialog() == true)
                     LoadDaySchedule(GetActiveDayName());
             }
+        }
+
+        private void DeleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+            if (ScheduleListBox.SelectedItem == null)
+            {
+                FeedbackService.Error("Выберите занятие!");
+                return;
+            }
+
+            dynamic selected = ScheduleListBox.SelectedItem;
+            int scheduleItemId = (int)selected.ScheduleItemId;
+
+            if (FeedbackService.Question("Удалить выбранный слот расписания?") != MessageBoxResult.Yes)
+                return;
+
+            var item = App.context.ScheduleItems.Find(scheduleItemId);
+            if (item != null)
+            {
+                App.context.ScheduleItems.Remove(item);
+                App.context.SaveChanges();
+            }
+
+            LoadDaySchedule(GetActiveDayName());
         }
     }
 }

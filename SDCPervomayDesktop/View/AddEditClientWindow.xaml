@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SDCPervomayDesktop.View"
         mc:Ignorable="d"
-        Title="AddEditClientWindow" Width="800" SizeToContent="Height">
+        Title="Посетитель" Width="800" SizeToContent="Height">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -31,7 +30,7 @@
             <TextBox Name="PatronymicTb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
-        <GroupBox Grid.Row="3" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Дата рождения" BorderThickness="2" BorderBrush="Black">
+        <GroupBox x:Name="BirthDateGroup" Grid.Row="3" Style="{x:Null}" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Header="Дата рождения" BorderThickness="2" BorderBrush="Black">
             <DatePicker Name="BirthDateDp" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
         </GroupBox>
 
@@ -47,21 +46,21 @@
             <GroupBox Style="{x:Null}" Header="Родитель" FontSize="20" FontFamily="{StaticResource GothamProFamily}" BorderThickness="2" BorderBrush="Black">
                 <ComboBox Name="GrowClientsCmb" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
             </GroupBox>
-            
-            <Button Name="AddParent" Margin="0 10 0 10" Grid.Row="1" Content="Добавить родителя" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="250" HorizontalAlignment="Right" Click="AddParent_Click"/>
+
+            <Button Name="AddParent" Margin="0 10 0 10" Grid.Row="1" Content="Добавить родителя" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Width="280" HorizontalAlignment="Right" Click="AddParent_Click"/>
         </Grid>
-        
+
         <Grid Grid.Row="8">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Name="AddBtn" Grid.Column="1" Content="Добавить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-            <Button Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
-            <Button Name="CancelBtn" Grid.Column="3" Content="Отмена" Click="CancelBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}"/>
+            <Button Name="AddBtn" Grid.Column="1" Content="Добавить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MinWidth="140"/>
+            <Button Name="SaveBtn" Grid.Column="1" Content="Сохранить" Click="SaveBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MinWidth="140" Visibility="Collapsed"/>
+            <Button Name="CancelBtn" Grid.Column="3" Content="Отмена" Click="CancelBtn_Click" FontSize="20" FontFamily="{StaticResource GothamProFamily}" MinWidth="120"/>
         </Grid>
     </Grid>
 </Window>

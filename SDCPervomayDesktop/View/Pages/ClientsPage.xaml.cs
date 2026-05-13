@@ -1,5 +1,7 @@
-﻿using SDCPervomayDesktop.AppData;
+﻿using SDCPervomayDesktop;
+using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
+using SDCPervomayDesktop.View;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,6 +18,7 @@ namespace SDCPervomayDesktop.View.Pages
         public ClientsPage()
         {
             InitializeComponent();
+            FilterCombo.SelectedIndex = 0;
             LoadClients();
             if (App.CurrentEmployee.RoleId == 3)
                 AdminGrid.Visibility = Visibility.Collapsed;
@@ -40,11 +43,18 @@ namespace SDCPervomayDesktop.View.Pages
             if (FilterCombo.SelectedItem is ComboBoxItem selectedItem)
             {
                 string tag = selectedItem.Content.ToString();
-                DateTime today = DateTime.Today;
-                if (tag == "Дети до 18")
-                    filtered = filtered.Where(c => c.BirthDate.HasValue && (today.Year - c.BirthDate.Value.Year - (today.DayOfYear < c.BirthDate.Value.DayOfYear ? 1 : 0)) < 18);
-                else if (tag == "Старше 18")
-                    filtered = filtered.Where(c => !c.BirthDate.HasValue || (today.Year - c.BirthDate.Value.Year - (today.DayOfYear < c.BirthDate.Value.DayOfYear ? 1 : 0)) >= 18);
+                if (tag == "Все")
+                {
+                    // без возрастного фильтра
+                }
+                else
+                {
+                    DateTime today = DateTime.Today;
+                    if (tag == "Дети до 18")
+                        filtered = filtered.Where(c => c.BirthDate.HasValue && (today.Year - c.BirthDate.Value.Year - (today.DayOfYear < c.BirthDate.Value.DayOfYear ? 1 : 0)) < 18);
+                    else if (tag == "Старше 18")
+                        filtered = filtered.Where(c => !c.BirthDate.HasValue || (today.Year - c.BirthDate.Value.Year - (today.DayOfYear < c.BirthDate.Value.DayOfYear ? 1 : 0)) >= 18);
+                }
             }
 
             // Поиск по ФИО
@@ -59,6 +69,13 @@ namespace SDCPervomayDesktop.View.Pages
                 BirthDate = c.BirthDate?.ToString("dd.MM.yyyy"),
                 c.Id
             }).ToList();
+        }
+
+        private void SearchBtn_Click(object sender, RoutedEventArgs e) => ApplyFilters();
+
+        private void ClientsListView_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            EditBtn_Click(sender, e);
         }
 
         private void ReceptionBtn_Click(object sender, RoutedEventArgs e)
@@ -94,7 +111,7 @@ namespace SDCPervomayDesktop.View.Pages
             {
                 if (FeedbackService.Question("Вы уверены, что хотите удалить посетителя?") == MessageBoxResult.Yes)
                 {
-                    App.context.Clients.Remove(selected);
+                    selected.IsActive = false;
                     App.context.SaveChanges();
                     LoadClients();
                 }
