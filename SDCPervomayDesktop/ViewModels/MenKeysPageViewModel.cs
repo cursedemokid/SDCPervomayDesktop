@@ -30,7 +30,15 @@ namespace SDCPervomayDesktop.ViewModels
         private void LoadLockersFromDatabase()
         {
             var ctx = App.context;
-            string[] upperNumbers = { "Ш10", "Ш11", "Ш12", "Ш13", "Ш014", "Ш15", "Ш16", "Ш17", "Ш18" };
+
+            // Раньше в коде была опечатка «Ш014»; приводим существующую запись к «Ш14», если корректной ещё нет.
+            foreach (var legacy in ctx.Lockers.Where(l => l.Number == "Ш014" && l.Gender == _lockerGenderCode).ToList())
+            {
+                if (!ctx.Lockers.Any(l => l.Number == "Ш14" && l.Gender == _lockerGenderCode))
+                    legacy.Number = "Ш14";
+            }
+
+            string[] upperNumbers = { "Ш10", "Ш11", "Ш12", "Ш13", "Ш14", "Ш15", "Ш16", "Ш17", "Ш18" };
             string[] lowerNumbers = { "Ш01", "Ш02", "Ш03", "Ш04", "Ш05", "Ш06", "Ш07", "Ш08", "Ш09" };
 
             foreach (var num in upperNumbers.Concat(lowerNumbers))

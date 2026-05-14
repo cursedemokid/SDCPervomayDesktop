@@ -11,6 +11,7 @@ namespace SDCPervomayDesktop.View.Pages
         public MenKeysPage()
         {
             InitializeComponent();
+            DataContext = new MenKeysPageViewModel(true);
         }
 
         private void LockerButton_Click(object sender, RoutedEventArgs e)

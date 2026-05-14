@@ -3,19 +3,24 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:viewModels="clr-namespace:SDCPervomayDesktop.ViewModels"
       xmlns:converters="clr-namespace:SDCPervomayDesktop.Converters"
       mc:Ignorable="d" 
       d:DesignHeight="434" d:DesignWidth="1280"
       Title="MenKeysPage">
 
     <Page.Resources>
+        <FontFamily x:Key="GothamProFamily">
+                /Fonts/gothampro.ttf#Gotham Pro,
+         /Fonts/gothampro_bold.ttf#Gotham Pro,
+         /Fonts/gothampro_italic.ttf#Gotham Pro,
+         /Fonts/gothampro_bolditalic.ttf#Gotham Pro,
+         /Fonts/gothampro_light.ttf#Gotham Pro,
+         /Fonts/gothampro_lightitalic.ttf#Gotham Pro,
+         /Fonts/gothampro_medium.ttf#Gotham Pro,
+         /Fonts/gothampro_mediumitalic.ttf#Gotham Pro
+        </FontFamily>
         <converters:StringToBrushConverter x:Key="StringToBrushConverter"/>
     </Page.Resources>
-
-    <Page.DataContext>
-        <viewModels:MenKeysPageViewModel/>
-    </Page.DataContext>
 
     <Viewbox Stretch="Uniform" StretchDirection="Both">
         <Border BorderBrush="DarkGray" BorderThickness="3" CornerRadius="8" Margin="10" Background="LightGray">
