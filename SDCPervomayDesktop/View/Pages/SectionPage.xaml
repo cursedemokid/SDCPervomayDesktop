@@ -55,9 +55,9 @@
         <ListView Name="SectionListView" Grid.Row="4" FontSize="20" FontFamily="{StaticResource GothamProFamily}" Margin="20 0 20 0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}"/>
+                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}"/>
                     <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}"/>
-                    <GridViewColumn Header="Тренер" DisplayMemberBinding="{Binding BirthDate}"/>
+                    <GridViewColumn Header="Тренер" DisplayMemberBinding="{Binding FullName}"/>
                     <GridViewColumn Header="Дней в неделю" DisplayMemberBinding="{Binding DaysInWeek}"/>
                 </GridView>
             </ListView.View>
