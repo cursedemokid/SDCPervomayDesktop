@@ -12,6 +12,7 @@ namespace SDCPervomayDesktop.View.Pages
     public partial class SectionPage : Page
     {
         private List<Sections> allSections;
+        private object _selectedListItem;
 
         public SectionPage()
         {
@@ -19,6 +20,12 @@ namespace SDCPervomayDesktop.View.Pages
             LoadSections();
             if (App.CurrentEmployee.RoleId == 3)
                 AdminGrid.Visibility = Visibility.Collapsed;
+
+            SectionListView.SelectionChanged += (s, e) =>
+            {
+                if (SectionListView.SelectedItem != null)
+                    _selectedListItem = SectionListView.SelectedItem;
+            };
 
             SearchTextBox.TextChanged += (s, e) => ApplyFilter();
         }
@@ -82,8 +89,9 @@ namespace SDCPervomayDesktop.View.Pages
 
         private Sections GetSelectedSection()
         {
-            if (SectionListView.SelectedItem == null) return null;
-            dynamic item = SectionListView.SelectedItem;
+            var selectedItem = SectionListView.SelectedItem ?? _selectedListItem;
+            if (selectedItem == null) return null;
+            dynamic item = selectedItem;
             int id = item.Id;
             return App.context.Sections.Find(id);
         }

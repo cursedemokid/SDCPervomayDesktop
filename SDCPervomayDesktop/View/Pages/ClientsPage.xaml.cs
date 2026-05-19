@@ -14,6 +14,7 @@ namespace SDCPervomayDesktop.View.Pages
     public partial class ClientsPage : Page
     {
         private List<Clients> allClients;
+        private object _selectedListItem;
 
         public ClientsPage()
         {
@@ -24,6 +25,12 @@ namespace SDCPervomayDesktop.View.Pages
                 AdminGrid.Visibility = Visibility.Collapsed;
             else
                 ReceptionBtn.Visibility = Visibility.Collapsed;
+
+            ClientsListView.SelectionChanged += (s, e) =>
+            {
+                if (ClientsListView.SelectedItem != null)
+                    _selectedListItem = ClientsListView.SelectedItem;
+            };
 
             FilterCombo.SelectionChanged += (s, e) => ApplyFilters();
             SearchTextBox.TextChanged += (s, e) => ApplyFilters();
@@ -121,8 +128,9 @@ namespace SDCPervomayDesktop.View.Pages
 
         private Clients GetSelectedClient()
         {
-            if (ClientsListView.SelectedItem == null) return null;
-            dynamic item = ClientsListView.SelectedItem;
+            var selectedItem = ClientsListView.SelectedItem ?? _selectedListItem;
+            if (selectedItem == null) return null;
+            dynamic item = selectedItem;
             int id = item.Id;
             return App.context.Clients.Find(id);
         }

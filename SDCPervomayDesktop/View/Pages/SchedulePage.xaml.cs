@@ -13,7 +13,7 @@ namespace SDCPervomayDesktop.View.Pages
 {
     public partial class SchedulePage : Page
     {
-        private DateTime currentMonday;
+        private object _selectedScheduleItem;
 
         public SchedulePage()
         {
@@ -21,35 +21,43 @@ namespace SDCPervomayDesktop.View.Pages
             if (App.CurrentEmployee.RoleId == 3)
                 AdminGrid.Visibility = Visibility.Collapsed;
 
-            currentMonday = GetMonday(DateTime.Today);
-            UpdateWeekLabel();
-            HighlightDay(MondayTbl);
-            LoadDaySchedule("Пн");
+            ScheduleListBox.SelectionChanged += (s, e) =>
+            {
+                if (ScheduleListBox.SelectedItem != null)
+                    _selectedScheduleItem = ScheduleListBox.SelectedItem;
+            };
+
+            var todayName = GetDayName(DateTime.Today.DayOfWeek);
+            HighlightDay(GetDayTextBlock(todayName));
+            LoadDaySchedule(todayName);
         }
 
-        private DateTime GetMonday(DateTime date)
+        private static string GetDayName(DayOfWeek dayOfWeek)
         {
-            int diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
-            return date.AddDays(-diff).Date;
+            switch (dayOfWeek)
+            {
+                case DayOfWeek.Monday: return "Пн";
+                case DayOfWeek.Tuesday: return "Вт";
+                case DayOfWeek.Wednesday: return "Ср";
+                case DayOfWeek.Thursday: return "Чт";
+                case DayOfWeek.Friday: return "Пт";
+                case DayOfWeek.Saturday: return "Сб";
+                default: return "Вс";
+            }
         }
 
-        private void UpdateWeekLabel()
+        private TextBlock GetDayTextBlock(string dayName)
         {
-            WeekLabel.Text = $"{currentMonday:dd.MM.yyyy} – {currentMonday.AddDays(6):dd.MM.yyyy}";
-        }
-
-        private void PrevWeek_Click(object sender, RoutedEventArgs e)
-        {
-            currentMonday = currentMonday.AddDays(-7);
-            UpdateWeekLabel();
-            LoadDaySchedule(GetActiveDayName());
-        }
-
-        private void NextWeek_Click(object sender, RoutedEventArgs e)
-        {
-            currentMonday = currentMonday.AddDays(7);
-            UpdateWeekLabel();
-            LoadDaySchedule(GetActiveDayName());
+            switch (dayName)
+            {
+                case "Пн": return MondayTbl;
+                case "Вт": return TuesdayTbl;
+                case "Ср": return WednesdayTbl;
+                case "Чт": return ThursdayTbl;
+                case "Пт": return FridayTbl;
+                case "Сб": return SaturdayTbl;
+                default: return SundayTbl;
+            }
         }
 
         private string GetActiveDayName()
@@ -83,6 +91,7 @@ namespace SDCPervomayDesktop.View.Pages
         {
             var rawItems = App.context.ScheduleItems
                 .Where(si => si.DayName == dayName)
+                .OrderBy(si => si.StartTime)
                 .Select(si => new
                 {
                     si.Id,
@@ -137,15 +146,18 @@ namespace SDCPervomayDesktop.View.Pages
                 LoadDaySchedule(GetActiveDayName());
         }
 
+        private object GetSelectedScheduleItem() =>
+            ScheduleListBox.SelectedItem ?? _selectedScheduleItem;
+
         private void EditBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ScheduleListBox.SelectedItem == null)
+            if (GetSelectedScheduleItem() == null)
             {
                 FeedbackService.Error("Выберите занятие!");
                 return;
             }
 
-            dynamic selected = ScheduleListBox.SelectedItem;
+            dynamic selected = GetSelectedScheduleItem();
             int sectionId = (int)selected.SectionId;
             var section = App.context.Sections.Find(sectionId);
 
@@ -159,13 +171,13 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void DeleteBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (ScheduleListBox.SelectedItem == null)
+            if (GetSelectedScheduleItem() == null)
             {
                 FeedbackService.Error("Выберите занятие!");
                 return;
             }
 
-            dynamic selected = ScheduleListBox.SelectedItem;
+            dynamic selected = GetSelectedScheduleItem();
             int scheduleItemId = (int)selected.ScheduleItemId;
 
             if (FeedbackService.Question("Удалить выбранный слот расписания?") != MessageBoxResult.Yes)

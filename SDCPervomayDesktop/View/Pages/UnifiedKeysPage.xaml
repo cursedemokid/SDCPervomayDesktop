@@ -51,6 +51,7 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
                     <ToggleButton x:Name="MaleToggle" Content="Мужская раздевалка" 
                                   Style="{StaticResource GenderToggleStyle}"
+                                  IsChecked="True"
                                   Checked="MaleToggle_Checked" Margin="5"/>
                     <ToggleButton x:Name="FemaleToggle" Content="Женская раздевалка" 
                                   Style="{StaticResource GenderToggleStyle}"
@@ -109,55 +110,55 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="1" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[0].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[0]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[0].Id}">
                                 <TextBlock Text="{Binding UpperLockers[0].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="2" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[1].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[1]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[1].Id}">
                                 <TextBlock Text="{Binding UpperLockers[1].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="3" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[2].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[2]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[2].Id}">
                                 <TextBlock Text="{Binding UpperLockers[2].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="4" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[3].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[3]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[3].Id}">
                                 <TextBlock Text="{Binding UpperLockers[3].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="5" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[4].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[4]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[4].Id}">
                                 <TextBlock Text="{Binding UpperLockers[4].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="6" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[5].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[5]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[5].Id}">
                                 <TextBlock Text="{Binding UpperLockers[5].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="7" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[6].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[6]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[6].Id}">
                                 <TextBlock Text="{Binding UpperLockers[6].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="8" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[7].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[7]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[7].Id}">
                                 <TextBlock Text="{Binding UpperLockers[7].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="9" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[8].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[8]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[8].Id}">
                                 <TextBlock Text="{Binding UpperLockers[8].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
@@ -180,55 +181,55 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="1" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[0].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[0]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[0].Id}">
                                 <TextBlock Text="{Binding LowerLockers[0].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="2" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[1].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[1]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[1].Id}">
                                 <TextBlock Text="{Binding LowerLockers[1].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="3" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[2].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[2]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[2].Id}">
                                 <TextBlock Text="{Binding LowerLockers[2].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="4" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[3].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[3]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[3].Id}">
                                 <TextBlock Text="{Binding LowerLockers[3].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="5" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[4].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[4]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[4].Id}">
                                 <TextBlock Text="{Binding LowerLockers[4].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="6" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[5].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[5]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[5].Id}">
                                 <TextBlock Text="{Binding LowerLockers[5].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="7" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[6].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[6]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[6].Id}">
                                 <TextBlock Text="{Binding LowerLockers[6].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="8" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[7].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[7]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[7].Id}">
                                 <TextBlock Text="{Binding LowerLockers[7].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="9" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[8].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[8]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[8].Id}">
                                 <TextBlock Text="{Binding LowerLockers[8].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
@@ -308,55 +309,55 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="1" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[0].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[0]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[0].Id}">
                                 <TextBlock Text="{Binding UpperLockers[0].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="2" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[1].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[1]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[1].Id}">
                                 <TextBlock Text="{Binding UpperLockers[1].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="3" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[2].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[2]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[2].Id}">
                                 <TextBlock Text="{Binding UpperLockers[2].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="4" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[3].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[3]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[3].Id}">
                                 <TextBlock Text="{Binding UpperLockers[3].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="5" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[4].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[4]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[4].Id}">
                                 <TextBlock Text="{Binding UpperLockers[4].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="6" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[5].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[5]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[5].Id}">
                                 <TextBlock Text="{Binding UpperLockers[5].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="7" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[6].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[6]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[6].Id}">
                                 <TextBlock Text="{Binding UpperLockers[6].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="8" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[7].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[7]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[7].Id}">
                                 <TextBlock Text="{Binding UpperLockers[7].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="9" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding UpperLockers[8].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[8]}">
+                                    Click="LockerButton_Click" Tag="{Binding UpperLockers[8].Id}">
                                 <TextBlock Text="{Binding UpperLockers[8].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
@@ -379,55 +380,55 @@
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="1" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[0].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[0]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[0].Id}">
                                 <TextBlock Text="{Binding LowerLockers[0].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="2" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[1].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[1]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[1].Id}">
                                 <TextBlock Text="{Binding LowerLockers[1].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="3" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[2].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[2]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[2].Id}">
                                 <TextBlock Text="{Binding LowerLockers[2].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="4" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[3].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[3]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[3].Id}">
                                 <TextBlock Text="{Binding LowerLockers[3].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="5" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[4].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[4]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[4].Id}">
                                 <TextBlock Text="{Binding LowerLockers[4].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="6" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[5].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[5]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[5].Id}">
                                 <TextBlock Text="{Binding LowerLockers[5].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="7" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[6].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[6]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[6].Id}">
                                 <TextBlock Text="{Binding LowerLockers[6].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="8" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[7].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[7]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[7].Id}">
                                 <TextBlock Text="{Binding LowerLockers[7].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>
                             <Button Grid.Column="9" BorderBrush="Black" BorderThickness="1"
                                     Background="{Binding LowerLockers[8].ButtonColor, Converter={StaticResource StringToBrushConverter}}"
-                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[8]}">
+                                    Click="LockerButton_Click" Tag="{Binding LowerLockers[8].Id}">
                                 <TextBlock Text="{Binding LowerLockers[8].Number}" FontFamily="{StaticResource GothamProFamily}" FontSize="20" 
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Button>

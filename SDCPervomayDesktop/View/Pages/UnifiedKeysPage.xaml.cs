@@ -24,6 +24,7 @@ namespace SDCPervomayDesktop.View.Pages
             maleViewModel = new MenKeysPageViewModel(true);
             femaleViewModel = new MenKeysPageViewModel(false);
             DataContext = maleViewModel;
+            MaleToggle.IsChecked = true;
 
             LoadVisitors();
         }
@@ -36,7 +37,7 @@ namespace SDCPervomayDesktop.View.Pages
                 {
                     Id = v.Id,
                     ClientId = v.ClientId,
-                    FullName = v.Clients.FullName
+                    FullName = v.Clients != null ? v.Clients.FullName : "Неизвестный клиент"
                 })
                 .ToList();
 
@@ -46,7 +47,7 @@ namespace SDCPervomayDesktop.View.Pages
                 {
                     Id = v.Id,
                     ClientId = v.ClientId,
-                    FullName = v.Clients.FullName
+                    FullName = v.Clients != null ? v.Clients.FullName : "Неизвестный клиент"
                 })
                 .ToList();
 
@@ -74,6 +75,12 @@ namespace SDCPervomayDesktop.View.Pages
         {
             var button = sender as Button;
             var lockerVm = button?.Tag as LockerViewModel;
+            if (lockerVm == null && button?.Tag != null)
+            {
+                var lockerId = button.Tag is int id ? id : int.TryParse(button.Tag.ToString(), out var parsed) ? parsed : 0;
+                if (lockerId > 0)
+                    lockerVm = FindLockerViewModel(lockerId);
+            }
             if (lockerVm == null) return;
 
             var locker = lockerVm.Entity;
@@ -220,6 +227,13 @@ namespace SDCPervomayDesktop.View.Pages
 
             button.ToolTip = tooltip;
             tooltip.IsOpen = true;
+        }
+
+        private LockerViewModel FindLockerViewModel(int lockerId)
+        {
+            var vm = DataContext as MenKeysPageViewModel;
+            if (vm == null) return null;
+            return vm.UpperLockers.Concat(vm.LowerLockers).FirstOrDefault(l => l.Id == lockerId);
         }
 
         private List<LockerHistory> GetLockerHistory(int lockerId)

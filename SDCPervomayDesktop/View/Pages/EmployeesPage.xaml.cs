@@ -12,6 +12,7 @@ namespace SDCPervomayDesktop.View.Pages
     public partial class EmployeesPage : Page
     {
         private List<Employees> allEmployees;
+        private object _selectedListItem;
 
         public EmployeesPage()
         {
@@ -19,6 +20,12 @@ namespace SDCPervomayDesktop.View.Pages
             LoadEmployees();
             if (App.CurrentEmployee.RoleId == 3)
                 AdminGrid.Visibility = Visibility.Collapsed;
+
+            EmployeeListView.SelectionChanged += (s, e) =>
+            {
+                if (EmployeeListView.SelectedItem != null)
+                    _selectedListItem = EmployeeListView.SelectedItem;
+            };
 
             SearchTextBox.TextChanged += (s, e) => ApplyFilter();
         }
@@ -89,8 +96,9 @@ namespace SDCPervomayDesktop.View.Pages
 
         private Employees GetSelectedEmployee()
         {
-            if (EmployeeListView.SelectedItem == null) return null;
-            dynamic item = EmployeeListView.SelectedItem;
+            var selectedItem = EmployeeListView.SelectedItem ?? _selectedListItem;
+            if (selectedItem == null) return null;
+            dynamic item = selectedItem;
             int id = item.Id;
             return App.context.Employees.Find(id);
         }

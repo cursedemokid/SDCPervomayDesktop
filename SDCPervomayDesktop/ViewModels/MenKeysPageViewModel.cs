@@ -36,7 +36,11 @@ namespace SDCPervomayDesktop.ViewModels
             {
                 if (!ctx.Lockers.Any(l => l.Number == "Ш14" && l.Gender == _lockerGenderCode))
                     legacy.Number = "Ш14";
+                else
+                    ctx.Lockers.Remove(legacy);
             }
+
+            RemoveDuplicateLockers(ctx);
 
             string[] upperNumbers = { "Ш10", "Ш11", "Ш12", "Ш13", "Ш14", "Ш15", "Ш16", "Ш17", "Ш18" };
             string[] lowerNumbers = { "Ш01", "Ш02", "Ш03", "Ш04", "Ш05", "Ш06", "Ш07", "Ш08", "Ш09" };
@@ -45,17 +49,41 @@ namespace SDCPervomayDesktop.ViewModels
                 EnsureLockerEntity(ctx, num, _lockerGenderCode);
 
             ctx.SaveChanges();
+            RemoveDuplicateLockers(ctx);
+            ctx.SaveChanges();
 
             foreach (var num in upperNumbers)
             {
-                var entity = ctx.Lockers.First(l => l.Number == num && l.Gender == _lockerGenderCode);
-                UpperLockers.Add(new LockerViewModel(entity));
+                var entity = GetLockerEntity(ctx, num);
+                if (entity != null)
+                    UpperLockers.Add(new LockerViewModel(entity));
             }
 
             foreach (var num in lowerNumbers)
             {
-                var entity = ctx.Lockers.First(l => l.Number == num && l.Gender == _lockerGenderCode);
-                LowerLockers.Add(new LockerViewModel(entity));
+                var entity = GetLockerEntity(ctx, num);
+                if (entity != null)
+                    LowerLockers.Add(new LockerViewModel(entity));
+            }
+        }
+
+        private Lockers GetLockerEntity(SDCPervomayDBEntities ctx, string number) =>
+            ctx.Lockers
+                .Where(l => l.Number == number && l.Gender == _lockerGenderCode)
+                .OrderBy(l => l.Id)
+                .FirstOrDefault();
+
+        private void RemoveDuplicateLockers(SDCPervomayDBEntities ctx)
+        {
+            var duplicateGroups = ctx.Lockers
+                .Where(l => l.Gender == _lockerGenderCode)
+                .GroupBy(l => l.Number)
+                .Where(g => g.Count() > 1);
+
+            foreach (var group in duplicateGroups)
+            {
+                foreach (var extra in group.OrderBy(l => l.Id).Skip(1).ToList())
+                    ctx.Lockers.Remove(extra);
             }
         }
 
