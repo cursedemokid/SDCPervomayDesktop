@@ -1,5 +1,7 @@
 ﻿using SDCPervomayDesktop;
 using SDCPervomayDesktop.Entities;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -48,9 +50,9 @@ namespace SDCPervomayDesktop.ViewModels
             foreach (var num in upperNumbers.Concat(lowerNumbers))
                 EnsureLockerEntity(ctx, num, _lockerGenderCode);
 
-            ctx.SaveChanges();
+            SaveLockersSafely(ctx);
             RemoveDuplicateLockers(ctx);
-            ctx.SaveChanges();
+            SaveLockersSafely(ctx);
 
             foreach (var num in upperNumbers)
             {
@@ -89,6 +91,9 @@ namespace SDCPervomayDesktop.ViewModels
 
         private static void EnsureLockerEntity(SDCPervomayDBEntities ctx, string number, string genderCode)
         {
+            if (ctx.Lockers.Local.Any(l => l.Number == number))
+                return;
+
             var existing = ctx.Lockers.FirstOrDefault(l => l.Number == number);
             if (existing != null)
             {
@@ -103,6 +108,22 @@ namespace SDCPervomayDesktop.ViewModels
                 Gender = genderCode,
                 IsOccupied = false
             });
+        }
+
+        private static void SaveLockersSafely(SDCPervomayDBEntities ctx)
+        {
+            if (!ctx.ChangeTracker.Entries().Any(e => e.State != EntityState.Unchanged))
+                return;
+
+            try
+            {
+                ctx.SaveChanges();
+            }
+            catch (DbUpdateException ex) when (ex.InnerException?.InnerException?.Message?.Contains("UQ__Lockers__78A1A19D") == true)
+            {
+                foreach (var addedLocker in ctx.ChangeTracker.Entries<Lockers>().Where(e => e.State == EntityState.Added).ToList())
+                    addedLocker.State = EntityState.Detached;
+            }
         }
     }
 }

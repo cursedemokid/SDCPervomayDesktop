@@ -57,7 +57,7 @@
                 <GridView>
                     <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Title}"/>
                     <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}"/>
-                    <GridViewColumn Header="Тренер" DisplayMemberBinding="{Binding FullName}"/>
+                    <GridViewColumn Header="Тренер" DisplayMemberBinding="{Binding TrainerName}"/>
                     <GridViewColumn Header="Дней в неделю" DisplayMemberBinding="{Binding DaysInWeek}"/>
                 </GridView>
             </ListView.View>
