@@ -43,12 +43,25 @@ namespace SDCPervomayDesktop.View.Pages
             if (!string.IsNullOrEmpty(search))
                 filtered = filtered.Where(s => s.Title.ToLower().Contains(search)).ToList();
 
+            var trainerIds = filtered.Select(s => s.TrainerId).Distinct().ToList();
+            var trainers = App.context.Employees
+                .Where(e => trainerIds.Contains(e.Id))
+                .ToDictionary(
+                    e => e.Id,
+                    e => (e.LastName + " " + e.FirstName + " " + (e.Patronymic ?? "")).Trim());
+
+            var sectionIds = filtered.Select(s => s.Id).ToList();
+            var daysPerSection = App.context.ScheduleItems
+                .Where(si => sectionIds.Contains(si.SectionId))
+                .GroupBy(si => si.SectionId)
+                .ToDictionary(g => g.Key, g => g.Count());
+
             SectionListView.ItemsSource = filtered.Select(s => new
             {
                 s.Title,
                 s.Description,
-                TrainerName = App.context.Employees.FirstOrDefault(e => e.Id == s.TrainerId)?.FullName,
-                DaysInWeek = App.context.ScheduleItems.Count(si => si.SectionId == s.Id),
+                TrainerName = trainers.TryGetValue(s.TrainerId, out var trainerName) ? trainerName : "",
+                DaysInWeek = daysPerSection.TryGetValue(s.Id, out var days) ? days : 0,
                 s.Id
             }).ToList();
         }

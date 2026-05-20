@@ -37,7 +37,9 @@ namespace SDCPervomayDesktop.View.Pages
                 {
                     Id = v.Id,
                     ClientId = v.ClientId,
-                    FullName = v.Clients != null ? v.Clients.FullName : "Неизвестный клиент"
+                    FullName = v.Clients != null
+                        ? (v.Clients.LastName + " " + v.Clients.FirstName + " " + (v.Clients.Patronymic ?? "")).Trim()
+                        : "Неизвестный клиент"
                 })
                 .ToList();
 
@@ -47,7 +49,9 @@ namespace SDCPervomayDesktop.View.Pages
                 {
                     Id = v.Id,
                     ClientId = v.ClientId,
-                    FullName = v.Clients != null ? v.Clients.FullName : "Неизвестный клиент"
+                    FullName = v.Clients != null
+                        ? (v.Clients.LastName + " " + v.Clients.FirstName + " " + (v.Clients.Patronymic ?? "")).Trim()
+                        : "Неизвестный клиент"
                 })
                 .ToList();
 
@@ -263,11 +267,20 @@ namespace SDCPervomayDesktop.View.Pages
             {
                 string action = h.ActionType == "Issued" ? "Выдан" : "Возвращён";
                 string clientName = h.ClientId != null
-                    ? App.context.Clients.FirstOrDefault(c => c.Id == h.ClientId)?.FullName ?? "Клиент"
+                    ? GetClientDisplayName(App.context.Clients.FirstOrDefault(c => c.Id == h.ClientId))
+                    ?? "Клиент"
                     : "";
                 lines.Add($"[{h.EventTime:dd.MM.yyyy HH:mm}] {action}: {clientName}");
             }
             return string.Join("\n", lines);
+        }
+
+        private static string GetClientDisplayName(Clients client)
+        {
+            if (client == null)
+                return null;
+
+            return (client.LastName + " " + client.FirstName + " " + (client.Patronymic ?? "")).Trim();
         }
     }
 }
