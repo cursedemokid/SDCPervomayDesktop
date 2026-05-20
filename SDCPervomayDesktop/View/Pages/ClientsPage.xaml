@@ -35,8 +35,8 @@
                 FontSize="20"
                 Grid.Column="1">
                 
-                <ComboBox Name="FilterCombo">
-                    <ComboBoxItem Content="Все" Name="All" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
+                <ComboBox Name="FilterCombo" SelectedIndex="0">
+                    <ComboBoxItem Content="Все" Name="All" IsSelected="True" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
                     <ComboBoxItem Content="Дети до 18" Name="Kids" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
                     <ComboBoxItem Content="Старше 18" Name="Grow" FontFamily="{StaticResource GothamProFamily}" FontSize="20"/>
                 </ComboBox>

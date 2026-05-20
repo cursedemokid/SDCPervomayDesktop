@@ -46,6 +46,21 @@ namespace SDCPervomayDesktop.View.Pages
             }
         }
 
+        private static string GetFullDayName(string shortDayName)
+        {
+            switch (shortDayName)
+            {
+                case "Пн": return "Понедельник";
+                case "Вт": return "Вторник";
+                case "Ср": return "Среда";
+                case "Чт": return "Четверг";
+                case "Пт": return "Пятница";
+                case "Сб": return "Суббота";
+                case "Вс": return "Воскресенье";
+                default: return shortDayName;
+            }
+        }
+
         private TextBlock GetDayTextBlock(string dayName)
         {
             switch (dayName)
@@ -89,8 +104,9 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void LoadDaySchedule(string dayName)
         {
+            var fullDayName = GetFullDayName(dayName);
             var rawItems = App.context.ScheduleItems
-                .Where(si => si.DayName == dayName)
+                .Where(si => si.DayName == dayName || si.DayName == fullDayName)
                 .OrderBy(si => si.StartTime)
                 .Select(si => new
                 {

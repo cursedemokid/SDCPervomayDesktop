@@ -57,18 +57,26 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void MaleToggle_Checked(object sender, RoutedEventArgs e)
         {
-            FemaleToggle.IsChecked = false;
+            if (FemaleToggle != null)
+                FemaleToggle.IsChecked = false;
+
             DataContext = maleViewModel;
-            MaleGrid.Visibility = Visibility.Visible;
-            FemaleGrid.Visibility = Visibility.Collapsed;
+            if (MaleGrid != null)
+                MaleGrid.Visibility = Visibility.Visible;
+            if (FemaleGrid != null)
+                FemaleGrid.Visibility = Visibility.Collapsed;
         }
 
         private void FemaleToggle_Checked(object sender, RoutedEventArgs e)
         {
-            MaleToggle.IsChecked = false;
+            if (MaleToggle != null)
+                MaleToggle.IsChecked = false;
+
             DataContext = femaleViewModel;
-            MaleGrid.Visibility = Visibility.Collapsed;
-            FemaleGrid.Visibility = Visibility.Visible;
+            if (MaleGrid != null)
+                MaleGrid.Visibility = Visibility.Collapsed;
+            if (FemaleGrid != null)
+                FemaleGrid.Visibility = Visibility.Visible;
         }
 
         private void LockerButton_Click(object sender, RoutedEventArgs e)
@@ -180,6 +188,7 @@ namespace SDCPervomayDesktop.View.Pages
                 {
                     Width = 220,
                     Height = 25,
+                    Padding = new Thickness(8, 2, 8, 2),
                     DisplayMemberPath = "FullName",
                     ItemsSource = vm?.ActiveVisitors,
                     SelectedIndex = -1

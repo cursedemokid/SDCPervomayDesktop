@@ -11,6 +11,17 @@ namespace SDCPervomayDesktop.View
     public partial class AddScheduleItemWindow : Window
     {
         private readonly ScheduleItems _editItem;
+        private static readonly System.Collections.Generic.Dictionary<string, string> DayMap =
+            new System.Collections.Generic.Dictionary<string, string>
+            {
+                ["Понедельник"] = "Пн",
+                ["Вторник"] = "Вт",
+                ["Среда"] = "Ср",
+                ["Четверг"] = "Чт",
+                ["Пятница"] = "Пт",
+                ["Суббота"] = "Сб",
+                ["Воскресенье"] = "Вс"
+            };
 
         public ScheduleItems ScheduleItem { get; private set; }
 
@@ -20,8 +31,9 @@ namespace SDCPervomayDesktop.View
             _editItem = editItem;
             if (editItem != null)
             {
+                var displayDay = DayMap.FirstOrDefault(kv => kv.Value == editItem.DayName).Key ?? editItem.DayName;
                 DayCombo.SelectedItem = DayCombo.Items.Cast<ComboBoxItem>()
-                    .FirstOrDefault(i => i.Content.ToString() == editItem.DayName);
+                    .FirstOrDefault(i => i.Content.ToString() == displayDay);
                 StartTimeBox.Text = editItem.StartTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
                 EndTimeBox.Text = editItem.EndTime.ToString(@"hh\:mm", CultureInfo.InvariantCulture);
             }
@@ -70,9 +82,14 @@ namespace SDCPervomayDesktop.View
                 return;
             }
 
+            var selectedDisplayDay = dayComboItem.Content.ToString();
+            var normalizedDayName = DayMap.TryGetValue(selectedDisplayDay, out var shortDayName)
+                ? shortDayName
+                : selectedDisplayDay;
+
             if (_editItem != null)
             {
-                _editItem.DayName = dayComboItem.Content.ToString();
+                _editItem.DayName = normalizedDayName;
                 _editItem.StartTime = start;
                 _editItem.EndTime = end;
                 ScheduleItem = _editItem;
@@ -81,7 +98,7 @@ namespace SDCPervomayDesktop.View
             {
                 ScheduleItem = new ScheduleItems
                 {
-                    DayName = dayComboItem.Content.ToString(),
+                    DayName = normalizedDayName,
                     StartTime = start,
                     EndTime = end
                 };

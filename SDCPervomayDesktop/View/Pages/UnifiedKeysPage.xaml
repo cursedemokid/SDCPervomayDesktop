@@ -10,6 +10,12 @@
 
     <Page.Resources>
         <converters:StringToBrushConverter x:Key="StringToBrushConverter"/>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="8,2,8,2"/>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Padding" Value="8,2,8,2"/>
+        </Style>
         <Style TargetType="ToggleButton" x:Key="GenderToggleStyle">
             <Setter Property="FontFamily" Value="{StaticResource GothamProFamily}"/>
             <Setter Property="FontSize" Value="20"/>
