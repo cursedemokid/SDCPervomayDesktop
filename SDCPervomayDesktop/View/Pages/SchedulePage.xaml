@@ -95,7 +95,12 @@
                                 <RowDefinition Height="1*" />
                                 <RowDefinition Height="2*" />
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0" Source="{Binding Source}" Stretch="UniformToFill"/>
+                            <Border Grid.Row="0" Height="140" ClipToBounds="True">
+                                <Image Source="{Binding Source}"
+                                       Stretch="UniformToFill"
+                                       MaxWidth="260"
+                                       MaxHeight="140"/>
+                            </Border>
                             <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />

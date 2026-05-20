@@ -32,9 +32,9 @@ namespace SDCPervomayDesktop.ViewModels
             var ctx = App.context;
 
             // Раньше в коде была опечатка «Ш014»; приводим существующую запись к «Ш14», если корректной ещё нет.
-            foreach (var legacy in ctx.Lockers.Where(l => l.Number == "Ш014" && l.Gender == _lockerGenderCode).ToList())
+            foreach (var legacy in ctx.Lockers.Where(l => l.Number == "Ш014").ToList())
             {
-                if (!ctx.Lockers.Any(l => l.Number == "Ш14" && l.Gender == _lockerGenderCode))
+                if (!ctx.Lockers.Any(l => l.Number == "Ш14"))
                     legacy.Number = "Ш14";
                 else
                     ctx.Lockers.Remove(legacy);
@@ -69,14 +69,14 @@ namespace SDCPervomayDesktop.ViewModels
 
         private Lockers GetLockerEntity(SDCPervomayDBEntities ctx, string number) =>
             ctx.Lockers
-                .Where(l => l.Number == number && l.Gender == _lockerGenderCode)
-                .OrderBy(l => l.Id)
+                .Where(l => l.Number == number)
+                .OrderBy(l => l.Gender == _lockerGenderCode ? 0 : 1)
+                .ThenBy(l => l.Id)
                 .FirstOrDefault();
 
         private void RemoveDuplicateLockers(SDCPervomayDBEntities ctx)
         {
             var duplicateGroups = ctx.Lockers
-                .Where(l => l.Gender == _lockerGenderCode)
                 .GroupBy(l => l.Number)
                 .Where(g => g.Count() > 1);
 
@@ -89,8 +89,13 @@ namespace SDCPervomayDesktop.ViewModels
 
         private static void EnsureLockerEntity(SDCPervomayDBEntities ctx, string number, string genderCode)
         {
-            if (ctx.Lockers.Any(l => l.Number == number && l.Gender == genderCode))
+            var existing = ctx.Lockers.FirstOrDefault(l => l.Number == number);
+            if (existing != null)
+            {
+                if (string.IsNullOrWhiteSpace(existing.Gender))
+                    existing.Gender = genderCode;
                 return;
+            }
 
             ctx.Lockers.Add(new Lockers
             {
