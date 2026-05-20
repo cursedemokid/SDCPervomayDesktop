@@ -31,33 +31,48 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void LoadVisitors()
         {
-            var maleItems = App.context.Visitors
-                .Where(v => v.DepartureTime == null && v.Gender == "М")
-                .Select(v => new ActiveVisitorListItem
-                {
-                    Id = v.Id,
-                    ClientId = v.ClientId,
-                    FullName = v.Clients != null
-                        ? (v.Clients.LastName + " " + v.Clients.FirstName + " " + (v.Clients.Patronymic ?? "")).Trim()
-                        : "Неизвестный клиент"
-                })
-                .ToList();
-
-            var femaleItems = App.context.Visitors
-                .Where(v => v.DepartureTime == null && v.Gender == "Ж")
-                .Select(v => new ActiveVisitorListItem
-                {
-                    Id = v.Id,
-                    ClientId = v.ClientId,
-                    FullName = v.Clients != null
-                        ? (v.Clients.LastName + " " + v.Clients.FirstName + " " + (v.Clients.Patronymic ?? "")).Trim()
-                        : "Неизвестный клиент"
-                })
-                .ToList();
-
-            maleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(maleItems);
-            femaleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(femaleItems);
+            maleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(
+                LoadActiveVisitors(isMaleRoom: true));
+            femaleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(
+                LoadActiveVisitors(isMaleRoom: false));
         }
+
+        private static bool MatchesLockerRoomGender(string visitorGender, bool isMaleRoom)
+        {
+            var g = (visitorGender ?? "").Trim();
+            if (string.IsNullOrEmpty(g))
+                return true;
+
+            if (isMaleRoom)
+                return g == "М" || g == "M" || g == "м" || g == "m";
+
+            return g == "Ж" || g == "F" || g == "ж" || g == "f";
+        }
+
+        private List<ActiveVisitorListItem> LoadActiveVisitors(bool isMaleRoom, bool onlyWithoutLocker = false)
+        {
+            var visitors = App.context.Visitors
+                .Where(v => v.DepartureTime == null)
+                .ToList()
+                .Where(v => MatchesLockerRoomGender(v.Gender, isMaleRoom));
+
+            if (onlyWithoutLocker)
+                visitors = visitors.Where(v => v.AssignedLockerId == null).ToList();
+
+            return visitors.Select(v =>
+            {
+                var client = v.Clients ?? App.context.Clients.Find(v.ClientId);
+                return new ActiveVisitorListItem
+                {
+                    Id = v.Id,
+                    ClientId = v.ClientId,
+                    FullName = GetClientDisplayName(client) ?? "Неизвестный клиент"
+                };
+            }).ToList();
+        }
+
+        private bool IsMaleRoomActive() =>
+            MaleGrid != null && MaleGrid.Visibility == Visibility.Visible;
 
         private void MaleToggle_Checked(object sender, RoutedEventArgs e)
         {
@@ -139,6 +154,8 @@ namespace SDCPervomayDesktop.View.Pages
             };
             tooltipPanel.Children.Add(separator);
 
+            Popup lockerPopup = null;
+
             if (locker.IsOccupied)
             {
                 var returnButton = new Button
@@ -172,8 +189,10 @@ namespace SDCPervomayDesktop.View.Pages
                         Comment = "Ключ возвращён"
                     });
                     App.context.SaveChanges();
+                    LoadVisitors();
 
-                    button.ToolTip = null;
+                    if (lockerPopup != null)
+                        lockerPopup.IsOpen = false;
                 };
             }
             else
@@ -187,59 +206,81 @@ namespace SDCPervomayDesktop.View.Pages
                 };
                 tooltipPanel.Children.Add(hintText);
 
-                var vm = DataContext as MenKeysPageViewModel;
-                var visitorComboBox = new ComboBox
+                var visitors = LoadActiveVisitors(IsMaleRoomActive(), onlyWithoutLocker: true);
+                if (visitors.Count == 0)
                 {
-                    Width = 220,
-                    Height = 25,
-                    Padding = new Thickness(8, 2, 8, 2),
-                    DisplayMemberPath = "FullName",
-                    ItemsSource = vm?.ActiveVisitors,
-                    SelectedIndex = -1
-                };
-                tooltipPanel.Children.Add(visitorComboBox);
-
-                visitorComboBox.SelectionChanged += (s, args) =>
-                {
-                    var selected = visitorComboBox.SelectedItem as ActiveVisitorListItem;
-                    if (selected == null)
-                        return;
-
-                    locker.CurrentClientId = selected.ClientId;
-                    lockerVm.IsOccupied = true;
-
-                    var visitorEntity = App.context.Visitors.Find(selected.Id);
-                    if (visitorEntity != null)
-                        visitorEntity.AssignedLockerId = locker.Id;
-
-                    App.context.LockerHistory.Add(new LockerHistory
+                    tooltipPanel.Children.Add(new TextBlock
                     {
-                        LockerId = locker.Id,
-                        ClientId = selected.ClientId,
-                        ActionType = "Issued",
-                        EventTime = DateTime.Now,
-                        Comment = $"Ключ выдан: {selected.FullName}"
+                        Text = "Нет активных посетителей без ключа",
+                        FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
+                        Foreground = Brushes.Gray,
+                        TextWrapping = TextWrapping.Wrap
                     });
-                    App.context.SaveChanges();
+                }
+                else
+                {
+                    var visitorComboBox = new ComboBox
+                    {
+                        Width = 220,
+                        MinHeight = 28,
+                        Padding = new Thickness(8, 2, 8, 2),
+                        FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
+                        FontSize = 14,
+                        DisplayMemberPath = "FullName",
+                        ItemsSource = visitors,
+                        SelectedIndex = -1
+                    };
+                    tooltipPanel.Children.Add(visitorComboBox);
 
-                    button.ToolTip = null;
-                };
+                    visitorComboBox.SelectionChanged += (s, args) =>
+                    {
+                        var selected = visitorComboBox.SelectedItem as ActiveVisitorListItem;
+                        if (selected == null)
+                            return;
+
+                        locker.CurrentClientId = selected.ClientId;
+                        lockerVm.IsOccupied = true;
+
+                        var visitorEntity = App.context.Visitors.Find(selected.Id);
+                        if (visitorEntity != null)
+                            visitorEntity.AssignedLockerId = locker.Id;
+
+                        App.context.LockerHistory.Add(new LockerHistory
+                        {
+                            LockerId = locker.Id,
+                            ClientId = selected.ClientId,
+                            ActionType = "Issued",
+                            EventTime = DateTime.Now,
+                            Comment = $"Ключ выдан: {selected.FullName}"
+                        });
+                        App.context.SaveChanges();
+                        LoadVisitors();
+
+                        if (lockerPopup != null)
+                            lockerPopup.IsOpen = false;
+                    };
+                }
             }
 
-            var tooltip = new ToolTip
+            var panelBorder = new Border
             {
-                Content = tooltipPanel,
                 Background = Brushes.White,
-                Foreground = Brushes.Black,
                 BorderBrush = Brushes.Black,
                 BorderThickness = new Thickness(1),
-                PlacementTarget = button,
-                Placement = PlacementMode.Bottom,
-                StaysOpen = false
+                Child = tooltipPanel
             };
 
-            button.ToolTip = tooltip;
-            tooltip.IsOpen = true;
+            lockerPopup = new Popup
+            {
+                Child = panelBorder,
+                PlacementTarget = button,
+                Placement = PlacementMode.Bottom,
+                StaysOpen = true,
+                AllowsTransparency = true,
+                PopupAnimation = PopupAnimation.Fade
+            };
+
+            lockerPopup.IsOpen = true;
         }
 
         private LockerViewModel FindLockerViewModel(int lockerId)
