@@ -16,6 +16,7 @@ namespace SDCPervomayDesktop.View.Pages
     {
         private readonly MenKeysPageViewModel maleViewModel;
         private readonly MenKeysPageViewModel femaleViewModel;
+        private Popup _activeLockerPopup;
 
         public UnifiedKeysPage()
         {
@@ -27,6 +28,15 @@ namespace SDCPervomayDesktop.View.Pages
             MaleToggle.IsChecked = true;
 
             LoadVisitors();
+        }
+
+        private void CloseActiveLockerPopup()
+        {
+            if (_activeLockerPopup == null)
+                return;
+
+            _activeLockerPopup.IsOpen = false;
+            _activeLockerPopup = null;
         }
 
         private void LoadVisitors()
@@ -76,6 +86,7 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void MaleToggle_Checked(object sender, RoutedEventArgs e)
         {
+            CloseActiveLockerPopup();
             if (FemaleToggle != null)
                 FemaleToggle.IsChecked = false;
 
@@ -88,6 +99,7 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void FemaleToggle_Checked(object sender, RoutedEventArgs e)
         {
+            CloseActiveLockerPopup();
             if (MaleToggle != null)
                 MaleToggle.IsChecked = false;
 
@@ -100,6 +112,8 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void LockerButton_Click(object sender, RoutedEventArgs e)
         {
+            CloseActiveLockerPopup();
+
             var button = sender as Button;
             var lockerVm = button?.Tag as LockerViewModel;
             if (lockerVm == null && button?.Tag != null)
@@ -191,8 +205,7 @@ namespace SDCPervomayDesktop.View.Pages
                     App.context.SaveChanges();
                     LoadVisitors();
 
-                    if (lockerPopup != null)
-                        lockerPopup.IsOpen = false;
+                    CloseActiveLockerPopup();
                 };
             }
             else
@@ -256,8 +269,7 @@ namespace SDCPervomayDesktop.View.Pages
                         App.context.SaveChanges();
                         LoadVisitors();
 
-                        if (lockerPopup != null)
-                            lockerPopup.IsOpen = false;
+                        CloseActiveLockerPopup();
                     };
                 }
             }
@@ -279,7 +291,13 @@ namespace SDCPervomayDesktop.View.Pages
                 AllowsTransparency = true,
                 PopupAnimation = PopupAnimation.Fade
             };
+            lockerPopup.Closed += (s, args) =>
+            {
+                if (ReferenceEquals(_activeLockerPopup, lockerPopup))
+                    _activeLockerPopup = null;
+            };
 
+            _activeLockerPopup = lockerPopup;
             lockerPopup.IsOpen = true;
         }
 
