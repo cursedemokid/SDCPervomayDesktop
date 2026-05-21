@@ -27,7 +27,7 @@ namespace SDCPervomayDesktop.View.Pages
             DataContext = maleViewModel;
             MaleToggle.IsChecked = true;
 
-            LoadVisitors();
+            RefreshLockerAssigneeLists();
         }
 
         private void CloseActiveLockerPopup()
@@ -39,12 +39,12 @@ namespace SDCPervomayDesktop.View.Pages
             _activeLockerPopup = null;
         }
 
-        private void LoadVisitors()
+        private void RefreshLockerAssigneeLists()
         {
             maleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(
-                LoadActiveVisitors(isMaleRoom: true));
+                LoadLockerAssignees(isMaleRoom: true));
             femaleViewModel.ActiveVisitors = new ObservableCollection<ActiveVisitorListItem>(
-                LoadActiveVisitors(isMaleRoom: false));
+                LoadLockerAssignees(isMaleRoom: false));
         }
 
         private static bool MatchesLockerRoomGender(string visitorGender, bool isMaleRoom)
@@ -59,26 +59,44 @@ namespace SDCPervomayDesktop.View.Pages
             return g == "Ж" || g == "F" || g == "ж" || g == "f";
         }
 
-        private List<ActiveVisitorListItem> LoadActiveVisitors(bool isMaleRoom, bool onlyWithoutLocker = false)
+        private bool ClientMatchesLockerRoom(int clientId, bool isMaleRoom)
         {
-            var visitors = App.context.Visitors
-                .Where(v => v.DepartureTime == null)
+            var genders = App.context.Visitors
+                .Where(v => v.ClientId == clientId)
+                .Select(v => v.Gender)
+                .ToList();
+
+            if (genders.Count == 0)
+                return true;
+
+            return genders.Any(g => MatchesLockerRoomGender(g, isMaleRoom));
+        }
+
+        private List<ActiveVisitorListItem> LoadLockerAssignees(bool isMaleRoom)
+        {
+            return App.context.Clients
+                .Where(c => c.IsActive && !c.IsParent)
                 .ToList()
-                .Where(v => MatchesLockerRoomGender(v.Gender, isMaleRoom));
-
-            if (onlyWithoutLocker)
-                visitors = visitors.Where(v => v.AssignedLockerId == null).ToList();
-
-            return visitors.Select(v =>
-            {
-                var client = v.Clients ?? App.context.Clients.Find(v.ClientId);
-                return new ActiveVisitorListItem
+                .Where(c => ClientMatchesLockerRoom(c.Id, isMaleRoom))
+                .OrderBy(c => c.LastName)
+                .ThenBy(c => c.FirstName)
+                .Select(c =>
                 {
-                    Id = v.Id,
-                    ClientId = v.ClientId,
-                    FullName = GetClientDisplayName(client) ?? "Неизвестный клиент"
-                };
-            }).ToList();
+                    var visitor = App.context.Visitors
+                        .Where(v => v.ClientId == c.Id)
+                        .ToList()
+                        .Where(v => MatchesLockerRoomGender(v.Gender, isMaleRoom))
+                        .OrderByDescending(v => v.ArrivalTime)
+                        .FirstOrDefault();
+
+                    return new ActiveVisitorListItem
+                    {
+                        Id = visitor?.Id ?? 0,
+                        ClientId = c.Id,
+                        FullName = GetClientDisplayName(c) ?? "Неизвестный клиент"
+                    };
+                })
+                .ToList();
         }
 
         private bool IsMaleRoomActive() =>
@@ -203,7 +221,7 @@ namespace SDCPervomayDesktop.View.Pages
                         Comment = "Ключ возвращён"
                     });
                     App.context.SaveChanges();
-                    LoadVisitors();
+                    RefreshLockerAssigneeLists();
 
                     CloseActiveLockerPopup();
                 };
@@ -212,66 +230,90 @@ namespace SDCPervomayDesktop.View.Pages
             {
                 var hintText = new TextBlock
                 {
-                    Text = "Выберите, кому выдать ключ",
+                    Text = "Выберите посетителя",
                     FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
                     Foreground = Brushes.Black,
                     Margin = new Thickness(0, 0, 0, 6)
                 };
                 tooltipPanel.Children.Add(hintText);
 
-                var visitors = LoadActiveVisitors(IsMaleRoomActive(), onlyWithoutLocker: true);
-                if (visitors.Count == 0)
+                var isMaleRoom = IsMaleRoomActive();
+                var assignees = LoadLockerAssignees(isMaleRoom);
+
+                var visitorComboBox = new ComboBox
                 {
+                    Width = 220,
+                    MinHeight = 28,
+                    Padding = new Thickness(8, 2, 8, 2),
+                    FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
+                    FontSize = 14,
+                    DisplayMemberPath = "FullName",
+                    ItemsSource = assignees,
+                    SelectedIndex = -1
+                };
+                tooltipPanel.Children.Add(visitorComboBox);
+
+                if (assignees.Count == 0)
+                {
+                    visitorComboBox.IsEnabled = false;
                     tooltipPanel.Children.Add(new TextBlock
                     {
-                        Text = "Нет активных посетителей без ключа",
+                        Text = isMaleRoom
+                            ? "Нет клиентов для мужской раздевалки"
+                            : "Нет клиентов для женской раздевалки",
                         FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
                         Foreground = Brushes.Gray,
-                        TextWrapping = TextWrapping.Wrap
+                        TextWrapping = TextWrapping.Wrap,
+                        Margin = new Thickness(0, 6, 0, 0)
                     });
                 }
-                else
+
+                visitorComboBox.SelectionChanged += (s, args) =>
                 {
-                    var visitorComboBox = new ComboBox
+                    var selected = visitorComboBox.SelectedItem as ActiveVisitorListItem;
+                    if (selected == null)
+                        return;
+
+                    locker.CurrentClientId = selected.ClientId;
+                    lockerVm.IsOccupied = true;
+
+                    var visitorEntity = selected.Id > 0
+                        ? App.context.Visitors.Find(selected.Id)
+                        : null;
+                    visitorEntity = visitorEntity
+                        ?? App.context.Visitors
+                            .Where(v => v.ClientId == selected.ClientId)
+                            .ToList()
+                            .Where(v => MatchesLockerRoomGender(v.Gender, isMaleRoom))
+                            .OrderByDescending(v => v.ArrivalTime)
+                            .FirstOrDefault();
+
+                    if (visitorEntity == null)
                     {
-                        Width = 220,
-                        MinHeight = 28,
-                        Padding = new Thickness(8, 2, 8, 2),
-                        FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
-                        FontSize = 14,
-                        DisplayMemberPath = "FullName",
-                        ItemsSource = visitors,
-                        SelectedIndex = -1
-                    };
-                    tooltipPanel.Children.Add(visitorComboBox);
-
-                    visitorComboBox.SelectionChanged += (s, args) =>
-                    {
-                        var selected = visitorComboBox.SelectedItem as ActiveVisitorListItem;
-                        if (selected == null)
-                            return;
-
-                        locker.CurrentClientId = selected.ClientId;
-                        lockerVm.IsOccupied = true;
-
-                        var visitorEntity = App.context.Visitors.Find(selected.Id);
-                        if (visitorEntity != null)
-                            visitorEntity.AssignedLockerId = locker.Id;
-
-                        App.context.LockerHistory.Add(new LockerHistory
+                        visitorEntity = new Visitors
                         {
-                            LockerId = locker.Id,
                             ClientId = selected.ClientId,
-                            ActionType = "Issued",
-                            EventTime = DateTime.Now,
-                            Comment = $"Ключ выдан: {selected.FullName}"
-                        });
-                        App.context.SaveChanges();
-                        LoadVisitors();
+                            Gender = isMaleRoom ? "М" : "Ж",
+                            ArrivalTime = DateTime.Now
+                        };
+                        App.context.Visitors.Add(visitorEntity);
+                    }
 
-                        CloseActiveLockerPopup();
-                    };
-                }
+                    visitorEntity.AssignedLockerId = locker.Id;
+
+                    App.context.LockerHistory.Add(new LockerHistory
+                    {
+                        LockerId = locker.Id,
+                        ClientId = selected.ClientId,
+                        ActionType = "Issued",
+                        EventTime = DateTime.Now,
+                        Comment = $"Ключ выдан: {selected.FullName}"
+                    });
+                    App.context.SaveChanges();
+                    RefreshLockerAssigneeLists();
+
+                    CloseActiveLockerPopup();
+                };
             }
 
             var panelBorder = new Border

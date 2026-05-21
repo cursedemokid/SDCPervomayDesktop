@@ -1,7 +1,7 @@
 namespace SDCPervomayDesktop.ViewModels
 {
     /// <summary>
-    /// Элемент списка активных посетителей для выдачи ключа (ФИО из клиента).
+    /// Элемент списка посетителей для выдачи ключа (ФИО из клиента).
     /// </summary>
     public class ActiveVisitorListItem
     {
