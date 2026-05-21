@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using SDCPervomayDesktop;
+using SDCPervomayDesktop.AppData;
 using SDCPervomayDesktop.Entities;
 using SDCPervomayDesktop.ViewModels;
 
@@ -102,6 +103,10 @@ namespace SDCPervomayDesktop.View.Pages
         private bool IsMaleRoomActive() =>
             MaleGrid != null && MaleGrid.Visibility == Visibility.Visible;
 
+        private static bool CanManageKeys() =>
+            App.CurrentEmployee != null &&
+            App.CurrentEmployee.RoleId == (int)SystemEnums.Role.Worker;
+
         private void MaleToggle_Checked(object sender, RoutedEventArgs e)
         {
             CloseActiveLockerPopup();
@@ -188,7 +193,17 @@ namespace SDCPervomayDesktop.View.Pages
 
             Popup lockerPopup = null;
 
-            if (locker.IsOccupied)
+            if (!CanManageKeys())
+            {
+                tooltipPanel.Children.Add(new TextBlock
+                {
+                    Text = "Просмотр. Выдача и возврат ключей доступны только сотруднику ресепшена.",
+                    FontFamily = (FontFamily)Application.Current.Resources["GothamProFamily"],
+                    Foreground = Brushes.Gray,
+                    TextWrapping = TextWrapping.Wrap
+                });
+            }
+            else if (locker.IsOccupied)
             {
                 var returnButton = new Button
                 {
