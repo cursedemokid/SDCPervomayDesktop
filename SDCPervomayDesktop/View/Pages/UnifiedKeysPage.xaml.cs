@@ -31,6 +31,7 @@ namespace SDCPervomayDesktop.View.Pages
             MaleToggle.IsChecked = true;
 
             RefreshLockerAssigneeLists();
+            Unloaded += (_, __) => ClearLockerUiState();
         }
 
         private void CloseActiveLockerPopup()
