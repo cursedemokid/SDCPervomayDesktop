@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using SDCPervomayDesktop;
 using SDCPervomayDesktop.AppData;
@@ -18,6 +19,7 @@ namespace SDCPervomayDesktop.View.Pages
         private readonly MenKeysPageViewModel maleViewModel;
         private readonly MenKeysPageViewModel femaleViewModel;
         private Popup _activeLockerPopup;
+        private Button _highlightedLockerButton;
 
         public UnifiedKeysPage()
         {
@@ -38,6 +40,36 @@ namespace SDCPervomayDesktop.View.Pages
 
             _activeLockerPopup.IsOpen = false;
             _activeLockerPopup = null;
+        }
+
+        private void ClearLockerButtonHighlight()
+        {
+            if (_highlightedLockerButton != null)
+            {
+                _highlightedLockerButton.BorderThickness = new Thickness(1);
+                _highlightedLockerButton = null;
+            }
+
+            Keyboard.ClearFocus();
+            Focus();
+        }
+
+        private void ClearLockerUiState()
+        {
+            CloseActiveLockerPopup();
+            ClearLockerButtonHighlight();
+        }
+
+        private void HighlightLockerButton(Button button)
+        {
+            ClearLockerButtonHighlight();
+            if (button == null)
+                return;
+
+            _highlightedLockerButton = button;
+            button.BorderThickness = new Thickness(3);
+            Keyboard.ClearFocus();
+            Focus();
         }
 
         private void RefreshLockerAssigneeLists()
@@ -109,7 +141,7 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void MaleToggle_Checked(object sender, RoutedEventArgs e)
         {
-            CloseActiveLockerPopup();
+            ClearLockerUiState();
             if (FemaleToggle != null)
                 FemaleToggle.IsChecked = false;
 
@@ -122,7 +154,7 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void FemaleToggle_Checked(object sender, RoutedEventArgs e)
         {
-            CloseActiveLockerPopup();
+            ClearLockerUiState();
             if (MaleToggle != null)
                 MaleToggle.IsChecked = false;
 
@@ -135,7 +167,7 @@ namespace SDCPervomayDesktop.View.Pages
 
         private void LockerButton_Click(object sender, RoutedEventArgs e)
         {
-            CloseActiveLockerPopup();
+            ClearLockerUiState();
 
             var button = sender as Button;
             var lockerVm = button?.Tag as LockerViewModel;
@@ -238,7 +270,7 @@ namespace SDCPervomayDesktop.View.Pages
                     App.context.SaveChanges();
                     RefreshLockerAssigneeLists();
 
-                    CloseActiveLockerPopup();
+                    ClearLockerUiState();
                 };
             }
             else
@@ -327,7 +359,7 @@ namespace SDCPervomayDesktop.View.Pages
                     App.context.SaveChanges();
                     RefreshLockerAssigneeLists();
 
-                    CloseActiveLockerPopup();
+                    ClearLockerUiState();
                 };
             }
 
@@ -350,11 +382,13 @@ namespace SDCPervomayDesktop.View.Pages
             };
             lockerPopup.Closed += (s, args) =>
             {
+                ClearLockerButtonHighlight();
                 if (ReferenceEquals(_activeLockerPopup, lockerPopup))
                     _activeLockerPopup = null;
             };
 
             _activeLockerPopup = lockerPopup;
+            HighlightLockerButton(button);
             lockerPopup.IsOpen = true;
         }
 

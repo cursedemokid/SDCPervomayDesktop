@@ -10,7 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="1*" />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="0" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0"  Background="White"  ClipToBounds="False">
             <Border.Effect>
@@ -55,20 +55,5 @@
         </Border>
 
         <Frame Name="MainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
-        <Border Grid.Row="2" Background="White" ClipToBounds="False">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.25" Color="Gray"/>
-            </Border.Effect>
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="Контакты" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                <TextBlock Grid.Column="2" Text="Тех. поддержка" FontSize="20" FontFamily="{StaticResource GothamProLight}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            </Grid>
-        </Border>
     </Grid>
 </Window>
