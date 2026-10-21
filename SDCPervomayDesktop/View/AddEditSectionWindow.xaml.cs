@@ -15,6 +15,7 @@ namespace SDCPervomayDesktop.View
     {
         private bool _isEditMode;
         private Sections _currentSection;
+        private byte[] _pendingImageData;
         public ObservableCollection<Employees> Trainers { get; set; }
 
         public AddEditSectionWindow(Sections sectionToEdit = null)
@@ -28,6 +29,7 @@ namespace SDCPervomayDesktop.View
             {
                 _isEditMode = true;
                 _currentSection = sectionToEdit;
+                _pendingImageData = sectionToEdit.ImageData;
                 LoadSectionData();
                 AddBtn.Visibility = Visibility.Collapsed;
                 SaveBtn.Visibility = Visibility.Visible;
@@ -98,7 +100,7 @@ namespace SDCPervomayDesktop.View
             if (openDialog.ShowDialog() == true)
             {
                 byte[] imageData = File.ReadAllBytes(openDialog.FileName);
-                _currentSection.ImageData = imageData;
+                _pendingImageData = imageData;
                 PreviewImage.Source = ByteArrayToBitmapImage(imageData);
             }
         }
@@ -120,6 +122,7 @@ namespace SDCPervomayDesktop.View
 
         private void UpdateSectionFromForm()
         {
+            _currentSection.ImageData = _pendingImageData;
             _currentSection.Title = TitleTextBox.Text;
             _currentSection.Description = DescTextBox.Text;
             _currentSection.TrainerId = (int)TrainerCombo.SelectedValue;
